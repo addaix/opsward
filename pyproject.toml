@@ -33,11 +33,11 @@ dependencies = [
 opsward = "opsward.__main__:main"
 
 [project.urls]
-Homepage = "https://thorwhalen.github.io/opsward/"
-Repository = "https://github.com/thorwhalen/opsward"
-Documentation = "https://thorwhalen.github.io/opsward/"
-Issues = "https://github.com/thorwhalen/opsward/issues"
-Changelog = "https://github.com/thorwhalen/opsward/blob/main/CHANGELOG.md"
+Homepage = "https://addaix.github.io/opsward/"
+Repository = "https://github.com/addaix/opsward"
+Documentation = "https://addaix.github.io/opsward/"
+Issues = "https://github.com/addaix/opsward/issues"
+Changelog = "https://github.com/addaix/opsward/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 lint = [

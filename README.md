@@ -296,7 +296,7 @@ The repo ships a reusable GitHub Action and pre-commit hooks:
 
 ```yaml
 # a workflow step, after actions/checkout
-- uses: thorwhalen/opsward@<a release tag>
+- uses: addaix/opsward@<a release tag>
   with:
     min-score: "70"   # "" skips the scored gate
     lint: "true"
@@ -304,7 +304,7 @@ The repo ships a reusable GitHub Action and pre-commit hooks:
 
 ```yaml
 # .pre-commit-config.yaml
-- repo: https://github.com/thorwhalen/opsward
+- repo: https://github.com/addaix/opsward
   rev: <a release tag>
   hooks:
     - id: opsward-lint
