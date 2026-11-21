@@ -6,7 +6,7 @@ branding:
 
 # Usage, in a workflow step after actions/checkout:
 #
-#   - uses: thorwhalen/opsward@<a release tag>
+#   - uses: addaix/opsward@<a release tag>
 #     with:
 #       min-score: "70"        # "" skips the scored gate
 #       lint: "true"           # "false" skips the lint
