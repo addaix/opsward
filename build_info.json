@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-08T17:24:44Z",
+  "built_at": "2026-11-21T15:36:57Z",
   "package": {
     "name": "opsward",
-    "version": "0.0.41",
+    "version": "0.0.42",
     "display_name": "opsward",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "b4ebda35954df002c996952f769747348646263b",
-    "short_commit": "b4ebda3",
+    "commit": "c2559873e5e824802ca72660e826dfd05fa25be6",
+    "short_commit": "c255987",
     "branch": "main",
     "tags": [],
     "dirty": false,
-    "remote_url": "https://github.com/thorwhalen/opsward",
-    "commit_url": "https://github.com/thorwhalen/opsward/commit/b4ebda35954df002c996952f769747348646263b",
+    "remote_url": "https://github.com/addaix/opsward",
+    "commit_url": "https://github.com/addaix/opsward/commit/c2559873e5e824802ca72660e826dfd05fa25be6",
     "error": null
   },
   "ci": {
     "provider": "github",
-    "repository": "thorwhalen/opsward",
-    "sha": "b4ebda35954df002c996952f769747348646263b",
+    "repository": "addaix/opsward",
+    "sha": "c2559873e5e824802ca72660e826dfd05fa25be6",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "42504695267",
-    "run_url": "https://github.com/thorwhalen/opsward/actions/runs/42504695267",
+    "run_id": "44919981189",
+    "run_url": "https://github.com/addaix/opsward/actions/runs/44919981189",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -60,11 +60,11 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.0.41",
+    "latest": "0.0.42",
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/opsward && cd opsward\ngit checkout b4ebda35954df002c996952f769747348646263b\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/addaix/opsward && cd opsward\ngit checkout c2559873e5e824802ca72660e826dfd05fa25be6\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

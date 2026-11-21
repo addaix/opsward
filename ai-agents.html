@@ -40,7 +40,7 @@
   <input type="text" name="q" placeholder="Search" />
   <kbd>/</kbd>
 </form><div class="sy-head-socials">
-  <a href="https://github.com/thorwhalen/opsward" aria-label="GitHub">
+  <a href="https://github.com/addaix/opsward" aria-label="GitHub">
     <iconify-icon icon="simple-icons:github"></iconify-icon>
   </a></div></div>
     </div>
@@ -166,89 +166,89 @@ machine-readable copies of this documentation.</p>
 <section id="opsward">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward</span></code><a class="headerlink" href="#opsward" title="Link to this heading">#</a></h3>
 <p>Run opsward to assess and improve this project’s AI agent setup. Use when the user says ‘opsward’, ‘check my setup’, ‘improve my AI config’, or wants a full audit and remediation.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward</span></code></a>.</p>
 </section>
 <section id="opsward-add-drift-check">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-add-drift-check</span></code><a class="headerlink" href="#opsward-add-drift-check" title="Link to this heading">#</a></h3>
 <p>Add a new staleness or drift check to opsward’s maintain stage (maintain.py), so <code class="docutils literal notranslate"><span class="pre">opsward</span> <span class="pre">maintain</span></code> reports a new kind of MaintenanceSuggestion — a stale reference, an out-of-sync index, an outdated or empty doc, an incomplete skill. Use when extending what <code class="docutils literal notranslate"><span class="pre">opsward</span> <span class="pre">maintain</span></code> detects, adding a suggestion category, or deciding whether a finding belongs in maintain or in the diagnose score. Covers the check-generator shape, categories, the diff field, the exit-code contract, and the CLI golden it can move.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-add-drift-check"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-drift-check</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-add-drift-check"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-drift-check</span></code></a>.</p>
 </section>
 <section id="opsward-add-recommendation">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-add-recommendation</span></code><a class="headerlink" href="#opsward-add-recommendation" title="Link to this heading">#</a></h3>
 <p>Add a tech-stack→skill mapping to opsward’s recommendation engine in recommend.py, so <code class="docutils literal notranslate"><span class="pre">opsward</span> <span class="pre">recommend</span></code> suggests an ecosystem skill when it detects a dependency or framework (e.g. Supabase, FastAPI, Tailwind). Use when extending the curated <code class="docutils literal notranslate"><span class="pre">_RECOMMENDATIONS</span></code> list, adding a new detection signal, or changing where recommended skills are sourced from.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-add-recommendation"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-recommendation</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-add-recommendation"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-recommendation</span></code></a>.</p>
 </section>
 <section id="opsward-add-scan-field">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-add-scan-field</span></code><a class="headerlink" href="#opsward-add-scan-field" title="Link to this heading">#</a></h3>
 <p>Add a new fact that opsward learns about a target project — a field on ScanResult populated by scan.py — and consume it downstream in score/generate/maintain/recommend. Use when a new check, score, template variable, or drift detector needs data the scan does not yet collect (a new config file, a new .claude/ inventory, a project signal), or when changing project-type detection. Covers the read-only contract, the dataclass-default rule, the util read helpers, and the CLI goldens a scan change can move.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-add-scan-field"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-scan-field</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-add-scan-field"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-scan-field</span></code></a>.</p>
 </section>
 <section id="opsward-add-scoring">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-add-scoring</span></code><a class="headerlink" href="#opsward-add-scoring" title="Link to this heading">#</a></h3>
 <p>Add or adjust opsward’s quality scoring — a CLAUDE.md sub-dimension, a whole weighted component, or the skill/spec validation rules — in score.py. Use when changing how <code class="docutils literal notranslate"><span class="pre">opsward</span> <span class="pre">diagnose</span></code> grades a project, tuning weights or point thresholds, adding a new ComponentScore, or modifying validate_skill_spec. Explains the pure-function contract, the weighting math, and the constants to keep balanced.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-add-scoring"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-scoring</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-add-scoring"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-scoring</span></code></a>.</p>
 </section>
 <section id="opsward-add-template">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-add-template</span></code><a class="headerlink" href="#opsward-add-template" title="Link to this heading">#</a></h3>
 <p>Add or edit a generation template in opsward — a doc template (architecture.md, testing.md, …), an installable skill (SKILL.md), or an agent definition — and wire it into generate.py so opsward produces it. Use when adding a new artifact opsward should scaffold into target projects, adding a template variable, or changing what <code class="docutils literal notranslate"><span class="pre">opsward</span> <span class="pre">generate</span></code> / <code class="docutils literal notranslate"><span class="pre">install-skills</span></code> emit. Covers string.Template rules and the python/jsts/shared layout.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-add-template"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-template</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-add-template"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-add-template</span></code></a>.</p>
 </section>
 <section id="opsward-dev">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-dev</span></code><a class="headerlink" href="#opsward-dev" title="Link to this heading">#</a></h3>
 <p>Contributor guide for developing opsward itself — its architecture, hard invariants, and where each kind of change goes. Use when modifying opsward’s own source (scan/score/generate/maintain/recommend/cli), adding a template, scoring dimension, or skill recommendation, or when unsure which module owns a change. NOT for running opsward on a target project (use the <code class="docutils literal notranslate"><span class="pre">opsward</span></code> skill for that).</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-dev"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-dev</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-dev"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-dev</span></code></a>.</p>
 </section>
 <section id="opsward-diagnose">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-diagnose</span></code><a class="headerlink" href="#opsward-diagnose" title="Link to this heading">#</a></h3>
 <p>Diagnose the health of this project’s AI agent setup. Use when the user asks to check, audit, or score the project’s CLAUDE.md, skills, docs, or agent configuration.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-diagnose"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-diagnose</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-diagnose"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-diagnose</span></code></a>.</p>
 </section>
 <section id="opsward-generate">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-generate</span></code><a class="headerlink" href="#opsward-generate" title="Link to this heading">#</a></h3>
 <p>Generate missing AI setup artifacts for this project. Use when the user asks to scaffold, create, or bootstrap CLAUDE.md, docs, skills, or agent configuration.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-generate"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-generate</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-generate"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-generate</span></code></a>.</p>
 </section>
 <section id="opsward-maintain">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-maintain</span></code><a class="headerlink" href="#opsward-maintain" title="Link to this heading">#</a></h3>
 <p>Check documentation and AI setup for staleness, drift, or inconsistency. Use when the user asks to maintain, refresh, or update project docs and AI configuration.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-maintain"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-maintain</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-maintain"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-maintain</span></code></a>.</p>
 </section>
 <section id="opsward-subagents">
 <h3><code class="docutils literal notranslate"><span class="pre">opsward-subagents</span></code><a class="headerlink" href="#opsward-subagents" title="Link to this heading">#</a></h3>
 <p>Decide which of a repo’s skills should also run as subagents (in their own context), declare it in each skill’s frontmatter, and generate or refresh the twin agent files with opsward. Use when a skill does bulky or read-heavy work whose output should stay out of the main context, when a skill needs a tool restriction or a cheaper model, when a hand-written agent duplicates a skill, when <code class="docutils literal notranslate"><span class="pre">opsward</span> <span class="pre">maintain</span></code> reports a <code class="docutils literal notranslate"><span class="pre">subagent_twin</span></code> finding, or when asked “should this skill be a subagent”, “make this skill usable as a subagent”, “generate agents from skills”, or to sweep a repo for skill/agent pairs. Also usable as a subagent itself.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/skills/opsward-subagents"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-subagents</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/skills/opsward-subagents"><code class="docutils literal notranslate"><span class="pre">.claude/skills/opsward-subagents</span></code></a>.</p>
 </section>
 </section>
 <section id="subagents">
 <h2>Subagents<a class="headerlink" href="#subagents" title="Link to this heading">#</a></h2>
 <p>Subagents are Markdown files with a frontmatter (<code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">description</span></code>, <code class="docutils literal notranslate"><span class="pre">tools</span></code>) and a system prompt as the body. Copy one into your project’s <code class="docutils literal notranslate"><span class="pre">.claude/agents/</span></code> (or your agent host’s equivalent) to delegate the task it describes.</p>
 <section id="id1">
-<h3><code class="docutils literal notranslate"><span class="pre">opsward-subagents</span></code><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<span id="opsward-subagents-1"></span><h3><code class="docutils literal notranslate"><span class="pre">opsward-subagents</span></code><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <p>Decide which of a repo’s skills should also run as subagents (in their own context), declare it in each skill’s frontmatter, and generate or refresh the twin agent files with opsward. Use when a skill does bulky or read-heavy work whose output should stay out of the main context, when a skill needs a tool restriction or a cheaper model, when a hand-written agent duplicates a skill, when <code class="docutils literal notranslate"><span class="pre">opsward</span> <span class="pre">maintain</span></code> reports a <code class="docutils literal notranslate"><span class="pre">subagent_twin</span></code> finding, or when asked “should this skill be a subagent”, “make this skill usable as a subagent”, “generate agents from skills”, or to sweep a repo for skill/agent pairs. Also usable as a subagent itself.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/agents/opsward-subagents.md"><code class="docutils literal notranslate"><span class="pre">.claude/agents/opsward-subagents.md</span></code></a>; tools: <code class="docutils literal notranslate"><span class="pre">Bash,</span> <span class="pre">Read,</span> <span class="pre">Grep,</span> <span class="pre">Glob,</span> <span class="pre">Edit,</span> <span class="pre">Write</span></code>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/agents/opsward-subagents.md"><code class="docutils literal notranslate"><span class="pre">.claude/agents/opsward-subagents.md</span></code></a>; tools: <code class="docutils literal notranslate"><span class="pre">Bash,</span> <span class="pre">Read,</span> <span class="pre">Grep,</span> <span class="pre">Glob,</span> <span class="pre">Edit,</span> <span class="pre">Write</span></code>.</p>
 </section>
 <section id="setup-auditor">
 <h3><code class="docutils literal notranslate"><span class="pre">setup-auditor</span></code><a class="headerlink" href="#setup-auditor" title="Link to this heading">#</a></h3>
 <p>Read-only diagnostic agent that audits the project’s AI setup (CLAUDE.md, skills, docs, rules). Use when you want to check the health of the project’s agent configuration without making changes.</p>
-<p>Source: <a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/.claude/agents/setup-auditor.md"><code class="docutils literal notranslate"><span class="pre">.claude/agents/setup-auditor.md</span></code></a>.</p>
+<p>Source: <a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/.claude/agents/setup-auditor.md"><code class="docutils literal notranslate"><span class="pre">.claude/agents/setup-auditor.md</span></code></a>.</p>
 </section>
 </section>
 <section id="instruction-files">
 <h2>Instruction files<a class="headerlink" href="#instruction-files" title="Link to this heading">#</a></h2>
 <p>Files agents read before working in this repository.</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/CLAUDE.md"><code class="docutils literal notranslate"><span class="pre">CLAUDE.md</span></code></a>: read by Claude Code</p></li>
-<li><p><a class="reference external" href="https://github.com/thorwhalen/opsward/tree/HEAD/AGENTS.md"><code class="docutils literal notranslate"><span class="pre">AGENTS.md</span></code></a>: read by Codex, Copilot, Cursor and other agents</p></li>
+<li><p><a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/CLAUDE.md"><code class="docutils literal notranslate"><span class="pre">CLAUDE.md</span></code></a>: read by Claude Code</p></li>
+<li><p><a class="reference external" href="https://github.com/addaix/opsward/tree/HEAD/AGENTS.md"><code class="docutils literal notranslate"><span class="pre">AGENTS.md</span></code></a>: read by Codex, Copilot, Cursor and other agents</p></li>
 </ul>
 </section>
 <section id="machine-readable-documentation">
 <h2>Machine-readable documentation<a class="headerlink" href="#machine-readable-documentation" title="Link to this heading">#</a></h2>
 <p>This site publishes the same documentation in forms that fit an agent’s context window:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://thorwhalen.github.io/opsward/llms.txt"><code class="docutils literal notranslate"><span class="pre">llms.txt</span></code></a>: an index of every page with a one-line description (<a class="reference external" href="https://llmstxt.org">llms.txt</a> format)</p></li>
-<li><p><a class="reference external" href="https://thorwhalen.github.io/opsward/opsward.md"><code class="docutils literal notranslate"><span class="pre">opsward.md</span></code></a>: the whole documentation as one Markdown file</p></li>
+<li><p><a class="reference external" href="https://addaix.github.io/opsward/llms.txt"><code class="docutils literal notranslate"><span class="pre">llms.txt</span></code></a>: an index of every page with a one-line description (<a class="reference external" href="https://llmstxt.org">llms.txt</a> format)</p></li>
+<li><p><a class="reference external" href="https://addaix.github.io/opsward/opsward.md"><code class="docutils literal notranslate"><span class="pre">opsward.md</span></code></a>: the whole documentation as one Markdown file</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;page&gt;.html.md</span></code>: a rendered Markdown twin of every page, advertised from each page’s <code class="docutils literal notranslate"><span class="pre">&lt;head&gt;</span></code> with <code class="docutils literal notranslate"><span class="pre">&lt;link</span> <span class="pre">rel=&quot;alternate&quot;</span> <span class="pre">type=&quot;text/markdown&quot;&gt;</span></code></p></li>
-<li><p><a class="reference external" href="https://thorwhalen.github.io/opsward/objects.inv"><code class="docutils literal notranslate"><span class="pre">objects.inv</span></code></a>: the Sphinx inventory: a symbol-to-URL index (<code class="docutils literal notranslate"><span class="pre">sphobjinv</span> <span class="pre">convert</span> <span class="pre">plain</span> <span class="pre">objects.inv</span> <span class="pre">-</span></code>)</p></li>
+<li><p><a class="reference external" href="https://addaix.github.io/opsward/objects.inv"><code class="docutils literal notranslate"><span class="pre">objects.inv</span></code></a>: the Sphinx inventory: a symbol-to-URL index (<code class="docutils literal notranslate"><span class="pre">sphobjinv</span> <span class="pre">convert</span> <span class="pre">plain</span> <span class="pre">objects.inv</span> <span class="pre">-</span></code>)</p></li>
 </ul>
 </section>
 </section>
@@ -279,13 +279,13 @@ machine-readable copies of this documentation.</p>
   </p>
 </div>
       <div class="sy-foot-socials">
-  <a href="https://github.com/thorwhalen/opsward" aria-label="GitHub">
+  <a href="https://github.com/addaix/opsward" aria-label="GitHub">
     <iconify-icon icon="simple-icons:github"></iconify-icon>
   </a></div>
     </div>
   </div>
 </footer>
-      <script src="_static/documentation_options.js?v=20c5f126"></script>
+      <script src="_static/documentation_options.js?v=173d7b4c"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
