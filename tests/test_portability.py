@@ -349,10 +349,13 @@ def test_hosts_and_the_skill_registry_are_joined_not_copied():
 
     from opsward.portability import AGENT_HOSTS
 
+    from opsward.portability import _skill_host
+
     linked = {h.skill_target for h in AGENT_HOSTS.values() if h.skill_target}
+    hosts_of_targets = {_skill_host(t) for t in agent_targets.values()}
     assert linked <= set(agent_targets), linked - set(agent_targets)
     # every host the skill package can install into is a host opsward knows
-    assert set(agent_targets) <= linked, set(agent_targets) - linked
+    assert hosts_of_targets <= linked, hosts_of_targets - linked
 
 
 def test_lossy_review_cases(tmp_path):
