@@ -8,10 +8,10 @@ violation with a repo-relative path. A validator is ``SkillInfo -> list[str]``:
   always available;
 * ``skill`` -- the ``skill`` package's ``skill.validate()`` (``pip install 'opsward[lint]'``),
   which composes its own registered validators;
-* ``agnix`` and ``skillcheck`` -- external linters, run as subprocesses
-  (``npm install -g agnix``, ``pip install skillcheck``); their JSON diagnostics of level
-  ``error`` and ``warning`` become findings. opsward does not depend on either, and they
-  are opt-in by name: their rule sets are wider and noisier than the spec check, so a
+* ``agnix``, ``skillcheck`` and ``skillsaw`` -- external linters, run as subprocesses
+  (``npm install -g agnix``, ``pip install skillcheck``, ``pip install skillsaw``); their
+  JSON diagnostics of level ``error`` and ``warning`` become findings. opsward depends on
+  none of them, and they are opt-in by name: their rule sets are wider and noisier than the spec check, so a
   gate on ``"auto"`` must not turn red because a machine happens to have one installed.
 
 ``"auto"`` (the default) is :data:`AUTO_VALIDATORS`, each when it is available. A host
@@ -104,7 +104,9 @@ def _run_json(argv: list[str], *, timeout: float = DFLT_EXTERNAL_TIMEOUT):
         ) from None
 
 
-def _messages(diagnostics: Iterable[Mapping], *, level_key: str) -> list[str]:
+def _messages(
+    diagnostics: Iterable[Mapping], *, level_key: str, rule_key: str = "rule"
+) -> list[str]:
     """``rule: message (line N)`` for each diagnostic at a finding level.
 
     >>> _messages([{"rule": "AS-004", "level": "error", "message": "bad name", "line": 2},
@@ -112,7 +114,7 @@ def _messages(diagnostics: Iterable[Mapping], *, level_key: str) -> list[str]:
     ['AS-004: bad name (line 2)']
     """
     return [
-        f"{d.get('rule', '?')}: {d.get('message', '')}"
+        f"{d.get(rule_key, '?')}: {d.get('message', '')}"
         + (f" (line {d['line']})" if d.get("line") else "")
         for d in diagnostics
         if d.get(level_key) in EXTERNAL_FINDING_LEVELS
@@ -146,6 +148,33 @@ def skillcheck_validator(skill: SkillInfo) -> list[str]:
     ]
 
 
+def skillsaw_validator(skill: SkillInfo) -> list[str]:
+    """`skillsaw <https://github.com/stbenjam/skillsaw>`_ (Apache-2.0) over the skill's directory.
+
+    Its rule worth having beside the spec check is ``context-budget``: a frontmatter
+    description too long for the host's skill listing. Custom rules from a
+    ``.skillsaw.yaml`` and third-party rule plugins are switched off, so linting a
+    checkout never runs code that checkout supplies.
+    """
+    if not skill.has_skill_md:
+        return []
+    argv = [
+        "skillsaw",
+        "lint",
+        "--format",
+        "json",
+        "--no-custom-rules",
+        "--no-plugins",
+        "--no-progress",
+        "--no-color",
+        str(skill.path),
+    ]
+    report = _run_json(argv)
+    return _messages(
+        report.get("violations", ()), level_key="severity", rule_key="rule_id"
+    )
+
+
 def _on_path(executable: str) -> Callable[[], bool]:
     return lambda: shutil.which(executable) is not None
 
@@ -156,6 +185,7 @@ VALIDATORS: dict[str, tuple[Validator, Callable[[], bool]]] = {
     "skill": (skill_package_validator, _skill_package_available),
     "agnix": (agnix_validator, _on_path("agnix")),
     "skillcheck": (skillcheck_validator, _on_path("skillcheck")),
+    "skillsaw": (skillsaw_validator, _on_path("skillsaw")),
 }
 
 #: What ``"auto"`` runs (each when available): the same set on every machine.
@@ -166,6 +196,7 @@ INSTALL_HINTS = {
     "skill": "pip install 'opsward[lint]'",
     "agnix": "npm install -g agnix",
     "skillcheck": "pip install skillcheck",
+    "skillsaw": "pip install skillsaw",
 }
 
 
@@ -181,7 +212,7 @@ def resolve_validators(
     >>> resolve_validators("nope")
     Traceback (most recent call last):
     ...
-    ValueError: unknown validator 'nope' (known: opsward, skill, agnix, skillcheck)
+    ValueError: unknown validator 'nope' (known: opsward, skill, agnix, skillcheck, skillsaw)
     """
     chosen = _resolve(spec)
     if not chosen:  # a gate that checks nothing must not pass

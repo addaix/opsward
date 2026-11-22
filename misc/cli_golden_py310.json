@@ -677,7 +677,7 @@
         "nosuchvalidator"
       ],
       "returncode": 2,
-      "stderr": "Error: unknown validator 'nosuchvalidator' (known: opsward, skill, agnix, skillcheck)\n",
+      "stderr": "Error: unknown validator 'nosuchvalidator' (known: opsward, skill, agnix, skillcheck, skillsaw)\n",
       "stdout": "",
       "tier": 1,
       "usage": ""

@@ -58,7 +58,7 @@ def test_unknown_or_uninstalled_validators_are_refused(monkeypatch):
         resolve_validators("opsward,nope")
     import opsward.lint as mod
 
-    for name in ("skill", "agnix", "skillcheck"):
+    for name in ("skill", "agnix", "skillcheck", "skillsaw"):
         validator, _ = mod.VALIDATORS[name]
         monkeypatch.setitem(mod.VALIDATORS, name, (validator, lambda: False))
     with pytest.raises(ValueError, match="not installed"):
@@ -71,10 +71,10 @@ def test_unknown_or_uninstalled_validators_are_refused(monkeypatch):
 def test_auto_never_picks_an_external_linter(monkeypatch):
     import opsward.lint as mod
 
-    for name in ("agnix", "skillcheck"):
+    for name in ("agnix", "skillcheck", "skillsaw"):
         validator, _ = mod.VALIDATORS[name]
         monkeypatch.setitem(mod.VALIDATORS, name, (validator, lambda: True))
-    assert not {"agnix", "skillcheck"} & set(resolve_validators("auto"))
+    assert not {"agnix", "skillcheck", "skillsaw"} & set(resolve_validators("auto"))
 
 
 def _fake_run(stdout, *, calls=None):
@@ -122,6 +122,36 @@ def test_agnix_and_skillcheck_json_become_findings(monkeypatch, tmp_path):
     assert mod.agnix_validator(SkillInfo("x", tmp_path / "x")) == []  # no SKILL.md
 
 
+def test_skillsaw_json_becomes_findings_and_never_runs_repo_supplied_rules(
+    monkeypatch, tmp_path
+):
+    import json
+
+    import opsward.lint as mod
+
+    skill = SkillInfo("s", tmp_path / "s", has_skill_md=True)
+    calls = []
+    out = {
+        "violations": [
+            {
+                "rule_id": "context-budget",
+                "severity": "warning",
+                "message": "Frontmatter description is ~204 tokens",
+                "file_path": "SKILL.md",
+                "line": 3,
+            },
+            {"rule_id": "x", "severity": "info", "message": "fyi"},
+        ]
+    }
+    monkeypatch.setattr(mod.subprocess, "run", _fake_run(json.dumps(out), calls=calls))
+    assert mod.skillsaw_validator(skill) == [
+        "context-budget: Frontmatter description is ~204 tokens (line 3)"
+    ]
+    assert calls[0][:4] == ["skillsaw", "lint", "--format", "json"]
+    assert {"--no-custom-rules", "--no-plugins"} <= set(calls[0])
+    assert mod.skillsaw_validator(SkillInfo("x", tmp_path / "x")) == []  # no SKILL.md
+
+
 def test_an_external_linter_without_json_is_a_validator_failure(monkeypatch):
     import opsward.lint as mod
 
@@ -134,7 +164,7 @@ def test_an_external_linter_without_json_is_a_validator_failure(monkeypatch):
     assert "validator failed" in finding.message and "boom" in finding.message
 
 
-@pytest.mark.parametrize("name", ["agnix", "skillcheck"])
+@pytest.mark.parametrize("name", ["agnix", "skillcheck", "skillsaw"])
 def test_the_real_external_linter_flags_a_bad_skill(name, tmp_path):
     import shutil
 
