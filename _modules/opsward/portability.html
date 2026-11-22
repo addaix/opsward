@@ -228,7 +228,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="88">            <span class="p">(</span><span class="s2">".claude/rules"</span><span class="p">,),</span>
 </span><span data-line="89">            <span class="n">skill_target</span><span class="o">=</span><span class="s2">"claude-code"</span><span class="p">,</span>
 </span><span data-line="90">        <span class="p">),</span>
-</span><span data-line="91">        <span class="n">HostSpec</span><span class="p">(</span><span class="s2">"codex"</span><span class="p">,</span> <span class="n">reads_agents_md</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+</span><span data-line="91">        <span class="n">HostSpec</span><span class="p">(</span><span class="s2">"codex"</span><span class="p">,</span> <span class="n">reads_agents_md</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skill_target</span><span class="o">=</span><span class="s2">"codex"</span><span class="p">),</span>
 </span><span data-line="92">        <span class="n">HostSpec</span><span class="p">(</span>
 </span><span data-line="93">            <span class="s2">"copilot"</span><span class="p">,</span>
 </span><span data-line="94">            <span class="p">(</span><span class="s2">".github/copilot-instructions.md"</span><span class="p">,),</span>
@@ -461,284 +461,292 @@ data-aria-dark="Switch to auto color mode">
 
 </span><span data-line="298">
 </span><span data-line="299">
+</span><span data-line="300"><span class="k">def</span><span class="w"> </span><span class="nf">_skill_host</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="301"><span class="w">    </span><span class="sd">"""The host a ``skill`` agent target installs for (``host``, else its ``name``)."""</span>
+</span><span data-line="302">    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">"host"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">target</span><span class="o">.</span><span class="n">name</span>
+</span><span data-line="303">
+</span><span data-line="304">
 <div class="viewcode-block" id="check_portability">
 <a class="viewcode-back" href="../../_autosummary/opsward.portability.html#opsward.portability.check_portability">[docs]</a>
-</span><span data-line="300"><span class="k">def</span><span class="w"> </span><span class="nf">check_portability</span><span class="p">(</span>
-</span><span data-line="301">    <span class="n">root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">hosts</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">HostSpec</span><span class="p">]</span> <span class="o">=</span> <span class="n">AGENT_HOSTS</span>
-</span><span data-line="302"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PortabilityReport</span><span class="p">:</span>
-</span><span data-line="303"><span class="w">    </span><span class="sd">"""``analyze`` over what is on disk under *root*, plus ``lossy`` skill renders.</span>
-</span><span data-line="304">
-</span><span data-line="305"><span class="sd">    The library entry point. Read-only.</span>
-</span><span data-line="306"><span class="sd">    """</span>
-</span><span data-line="307">    <span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
-</span><span data-line="308">    <span class="n">report</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span>
-</span><span data-line="309">        <span class="n">read_text_safe</span><span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="n">CANONICAL</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\ufeff</span><span class="s2">"</span><span class="p">),</span>
-</span><span data-line="310">        <span class="n">read_host_files</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="n">hosts</span><span class="p">),</span>
-</span><span data-line="311">        <span class="n">hosts</span><span class="o">=</span><span class="n">hosts</span><span class="p">,</span>
-</span><span data-line="312">    <span class="p">)</span>
-</span><span data-line="313">    <span class="n">report</span><span class="o">.</span><span class="n">findings</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lossy_findings</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="n">hosts</span><span class="p">))</span>
-</span><span data-line="314">    <span class="k">return</span> <span class="n">report</span></div>
+</span><span data-line="305"><span class="k">def</span><span class="w"> </span><span class="nf">check_portability</span><span class="p">(</span>
+</span><span data-line="306">    <span class="n">root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">hosts</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">HostSpec</span><span class="p">]</span> <span class="o">=</span> <span class="n">AGENT_HOSTS</span>
+</span><span data-line="307"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PortabilityReport</span><span class="p">:</span>
+</span><span data-line="308"><span class="w">    </span><span class="sd">"""``analyze`` over what is on disk under *root*, plus ``lossy`` skill renders.</span>
+</span><span data-line="309">
+</span><span data-line="310"><span class="sd">    The library entry point. Read-only.</span>
+</span><span data-line="311"><span class="sd">    """</span>
+</span><span data-line="312">    <span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+</span><span data-line="313">    <span class="n">report</span> <span class="o">=</span> <span class="n">analyze</span><span class="p">(</span>
+</span><span data-line="314">        <span class="n">read_text_safe</span><span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="n">CANONICAL</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\ufeff</span><span class="s2">"</span><span class="p">),</span>
+</span><span data-line="315">        <span class="n">read_host_files</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="n">hosts</span><span class="p">),</span>
+</span><span data-line="316">        <span class="n">hosts</span><span class="o">=</span><span class="n">hosts</span><span class="p">,</span>
+</span><span data-line="317">    <span class="p">)</span>
+</span><span data-line="318">    <span class="n">report</span><span class="o">.</span><span class="n">findings</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lossy_findings</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">hosts</span><span class="o">=</span><span class="n">hosts</span><span class="p">))</span>
+</span><span data-line="319">    <span class="k">return</span> <span class="n">report</span></div>
 
-</span><span data-line="315">
-</span><span data-line="316">
+</span><span data-line="320">
+</span><span data-line="321">
 <div class="viewcode-block" id="lossy_findings">
 <a class="viewcode-back" href="../../_autosummary/opsward.portability.html#opsward.portability.lossy_findings">[docs]</a>
-</span><span data-line="317"><span class="k">def</span><span class="w"> </span><span class="nf">lossy_findings</span><span class="p">(</span>
-</span><span data-line="318">    <span class="n">root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">hosts</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">HostSpec</span><span class="p">]</span> <span class="o">=</span> <span class="n">AGENT_HOSTS</span>
-</span><span data-line="319"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">DriftFinding</span><span class="p">]:</span>
-</span><span data-line="320"><span class="w">    </span><span class="sd">"""One ``lossy`` finding per project skill rendered for a host whose format drops fields.</span>
-</span><span data-line="321">
-</span><span data-line="322"><span class="sd">    A skill counts as rendered for a host when its translated file exists where the</span>
-</span><span data-line="323"><span class="sd">    ``skill`` package installs it (or, for a shared file such as ``GEMINI.md``, when the</span>
-</span><span data-line="324"><span class="sd">    file holds the skill's section). Yields nothing when ``skill`` is not installed.</span>
-</span><span data-line="325"><span class="sd">    Read-only.</span>
-</span><span data-line="326"><span class="sd">    """</span>
-</span><span data-line="327">    <span class="k">try</span><span class="p">:</span>
-</span><span data-line="328">        <span class="kn">from</span><span class="w"> </span><span class="nn">skill.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Skill</span>
-</span><span data-line="329">        <span class="kn">from</span><span class="w"> </span><span class="nn">skill.install</span><span class="w"> </span><span class="kn">import</span> <span class="n">agent_targets</span>
-</span><span data-line="330">        <span class="kn">from</span><span class="w"> </span><span class="nn">skill.translate</span><span class="w"> </span><span class="kn">import</span> <span class="n">lost_fields</span>
-</span><span data-line="331">    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># optional: pip install 'opsward[lint]'</span>
-</span><span data-line="332">        <span class="k">return</span>
-</span><span data-line="333">    <span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
-</span><span data-line="334">    <span class="n">skills_dir</span> <span class="o">=</span> <span class="n">root</span> <span class="o">/</span> <span class="s2">".claude"</span> <span class="o">/</span> <span class="s2">"skills"</span>
-</span><span data-line="335">    <span class="k">try</span><span class="p">:</span>
-</span><span data-line="336">        <span class="n">skill_dirs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
-</span><span data-line="337">            <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">skills_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">/</span> <span class="s2">"SKILL.md"</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
-</span><span data-line="338">        <span class="p">)</span>
-</span><span data-line="339">    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-</span><span data-line="340">        <span class="k">return</span>
-</span><span data-line="341">    <span class="n">targets</span> <span class="o">=</span> <span class="p">[</span>
-</span><span data-line="342">        <span class="n">agent_targets</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">skill_target</span><span class="p">]</span>
-</span><span data-line="343">        <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">hosts</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-</span><span data-line="344">        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">skill_target</span> <span class="ow">in</span> <span class="n">agent_targets</span>
-</span><span data-line="345">        <span class="ow">and</span> <span class="n">agent_targets</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">skill_target</span><span class="p">]</span><span class="o">.</span><span class="n">needs_translation</span>
-</span><span data-line="346">    <span class="p">]</span>
-</span><span data-line="347">    <span class="k">for</span> <span class="n">skill_dir</span> <span class="ow">in</span> <span class="n">skill_dirs</span><span class="p">:</span>
-</span><span data-line="348">        <span class="k">try</span><span class="p">:</span>
-</span><span data-line="349">            <span class="n">skill</span> <span class="o">=</span> <span class="n">Skill</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="n">skill_dir</span><span class="p">)</span>
-</span><span data-line="350">        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># a malformed SKILL.md is lint's business, not drift's</span>
-</span><span data-line="351">            <span class="k">continue</span>
-</span><span data-line="352">        <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">skill</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="n">skill_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</span><span data-line="353">        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">".."</span><span class="p">):</span>
-</span><span data-line="354">            <span class="k">continue</span>  <span class="c1"># a name that is not one path component would leave the repo</span>
-</span><span data-line="355">        <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
-</span><span data-line="356">            <span class="n">dest</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">format_project_path</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-</span><span data-line="357">            <span class="k">if</span> <span class="n">dest</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">_renders</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">appends</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">appends</span><span class="p">):</span>
-</span><span data-line="358">                <span class="k">continue</span>
-</span><span data-line="359">            <span class="k">if</span> <span class="n">lost</span> <span class="o">:=</span> <span class="n">lost_fields</span><span class="p">(</span><span class="n">skill</span><span class="p">,</span> <span class="n">target_format</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">format</span><span class="p">):</span>
-</span><span data-line="360">                <span class="n">rel</span> <span class="o">=</span> <span class="n">dest</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
-</span><span data-line="361">                <span class="k">yield</span> <span class="n">DriftFinding</span><span class="p">(</span><span class="n">LOSSY</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">lost</span><span class="p">))</span></div>
+</span><span data-line="322"><span class="k">def</span><span class="w"> </span><span class="nf">lossy_findings</span><span class="p">(</span>
+</span><span data-line="323">    <span class="n">root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">hosts</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">HostSpec</span><span class="p">]</span> <span class="o">=</span> <span class="n">AGENT_HOSTS</span>
+</span><span data-line="324"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">DriftFinding</span><span class="p">]:</span>
+</span><span data-line="325"><span class="w">    </span><span class="sd">"""One ``lossy`` finding per project skill rendered for a host whose format drops fields.</span>
+</span><span data-line="326">
+</span><span data-line="327"><span class="sd">    A skill counts as rendered for a host when its translated file exists where the</span>
+</span><span data-line="328"><span class="sd">    ``skill`` package installs it (or, for a shared file such as ``GEMINI.md``, when the</span>
+</span><span data-line="329"><span class="sd">    file holds the skill's section). Yields nothing when ``skill`` is not installed.</span>
+</span><span data-line="330"><span class="sd">    Read-only.</span>
+</span><span data-line="331"><span class="sd">    """</span>
+</span><span data-line="332">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="333">        <span class="kn">from</span><span class="w"> </span><span class="nn">skill.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Skill</span>
+</span><span data-line="334">        <span class="kn">from</span><span class="w"> </span><span class="nn">skill.install</span><span class="w"> </span><span class="kn">import</span> <span class="n">agent_targets</span>
+</span><span data-line="335">        <span class="kn">from</span><span class="w"> </span><span class="nn">skill.translate</span><span class="w"> </span><span class="kn">import</span> <span class="n">lost_fields</span>
+</span><span data-line="336">    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># optional: pip install 'opsward[lint]'</span>
+</span><span data-line="337">        <span class="k">return</span>
+</span><span data-line="338">    <span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+</span><span data-line="339">    <span class="n">skills_dir</span> <span class="o">=</span> <span class="n">root</span> <span class="o">/</span> <span class="s2">".claude"</span> <span class="o">/</span> <span class="s2">"skills"</span>
+</span><span data-line="340">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="341">        <span class="n">skill_dirs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+</span><span data-line="342">            <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">skills_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">/</span> <span class="s2">"SKILL.md"</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
+</span><span data-line="343">        <span class="p">)</span>
+</span><span data-line="344">    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+</span><span data-line="345">        <span class="k">return</span>
+</span><span data-line="346">    <span class="n">linked</span> <span class="o">=</span> <span class="p">{</span><span class="n">spec</span><span class="o">.</span><span class="n">skill_target</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">hosts</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">skill_target</span><span class="p">}</span>
+</span><span data-line="347">    <span class="c1"># A host can have several targets: its native SKILL.md folder and a lossy rules-file</span>
+</span><span data-line="348">    <span class="c1"># translation (``cursor-rules`` serves host ``cursor``). ``skill`` releases before</span>
+</span><span data-line="349">    <span class="c1"># ``AgentTarget.host`` existed named the translating target after the host itself.</span>
+</span><span data-line="350">    <span class="n">targets</span> <span class="o">=</span> <span class="p">[</span>
+</span><span data-line="351">        <span class="n">t</span>
+</span><span data-line="352">        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">agent_targets</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span data-line="353">        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">needs_translation</span> <span class="ow">and</span> <span class="n">_skill_host</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="n">linked</span>
+</span><span data-line="354">    <span class="p">]</span>
+</span><span data-line="355">    <span class="k">for</span> <span class="n">skill_dir</span> <span class="ow">in</span> <span class="n">skill_dirs</span><span class="p">:</span>
+</span><span data-line="356">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="357">            <span class="n">skill</span> <span class="o">=</span> <span class="n">Skill</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="n">skill_dir</span><span class="p">)</span>
+</span><span data-line="358">        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># a malformed SKILL.md is lint's business, not drift's</span>
+</span><span data-line="359">            <span class="k">continue</span>
+</span><span data-line="360">        <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">skill</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="n">skill_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span data-line="361">        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">".."</span><span class="p">):</span>
+</span><span data-line="362">            <span class="k">continue</span>  <span class="c1"># a name that is not one path component would leave the repo</span>
+</span><span data-line="363">        <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">:</span>
+</span><span data-line="364">            <span class="n">dest</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">format_project_path</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</span><span data-line="365">            <span class="k">if</span> <span class="n">dest</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">_renders</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">appends</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">appends</span><span class="p">):</span>
+</span><span data-line="366">                <span class="k">continue</span>
+</span><span data-line="367">            <span class="k">if</span> <span class="n">lost</span> <span class="o">:=</span> <span class="n">lost_fields</span><span class="p">(</span><span class="n">skill</span><span class="p">,</span> <span class="n">target_format</span><span class="o">=</span><span class="n">target</span><span class="o">.</span><span class="n">format</span><span class="p">):</span>
+</span><span data-line="368">                <span class="n">rel</span> <span class="o">=</span> <span class="n">dest</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+</span><span data-line="369">                <span class="k">yield</span> <span class="n">DriftFinding</span><span class="p">(</span><span class="n">LOSSY</span><span class="p">,</span> <span class="n">rel</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">lost</span><span class="p">))</span></div>
 
-</span><span data-line="362">
-</span><span data-line="363">
-</span><span data-line="364"><span class="k">def</span><span class="w"> </span><span class="nf">_renders</span><span class="p">(</span><span class="n">dest</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">appends</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span data-line="365">    <span class="k">try</span><span class="p">:</span>
-</span><span data-line="366">        <span class="c1"># the installer never appends through a symlink (GEMINI.md -&gt; AGENTS.md)</span>
-</span><span data-line="367">        <span class="k">if</span> <span class="ow">not</span> <span class="n">dest</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span><span class="n">appends</span> <span class="ow">and</span> <span class="n">dest</span><span class="o">.</span><span class="n">is_symlink</span><span class="p">()):</span>
-</span><span data-line="368">            <span class="k">return</span> <span class="kc">False</span>
-</span><span data-line="369">        <span class="k">return</span> <span class="ow">not</span> <span class="n">appends</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">"&lt;!-- skill:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> --&gt;"</span> <span class="ow">in</span> <span class="n">read_text_safe</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
-</span><span data-line="370">    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-</span><span data-line="371">        <span class="k">return</span> <span class="kc">False</span>
-</span><span data-line="372">
-</span><span data-line="373">
+</span><span data-line="370">
+</span><span data-line="371">
+</span><span data-line="372"><span class="k">def</span><span class="w"> </span><span class="nf">_renders</span><span class="p">(</span><span class="n">dest</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">appends</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="373">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="374">        <span class="c1"># the installer never appends through a symlink (GEMINI.md -&gt; AGENTS.md)</span>
+</span><span data-line="375">        <span class="k">if</span> <span class="ow">not</span> <span class="n">dest</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span><span class="n">appends</span> <span class="ow">and</span> <span class="n">dest</span><span class="o">.</span><span class="n">is_symlink</span><span class="p">()):</span>
+</span><span data-line="376">            <span class="k">return</span> <span class="kc">False</span>
+</span><span data-line="377">        <span class="k">return</span> <span class="ow">not</span> <span class="n">appends</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">"&lt;!-- skill:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> --&gt;"</span> <span class="ow">in</span> <span class="n">read_text_safe</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
+</span><span data-line="378">    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+</span><span data-line="379">        <span class="k">return</span> <span class="kc">False</span>
+</span><span data-line="380">
+</span><span data-line="381">
 <div class="viewcode-block" id="summarize">
 <a class="viewcode-back" href="../../_autosummary/opsward.portability.html#opsward.portability.summarize">[docs]</a>
-</span><span data-line="374"><span class="k">def</span><span class="w"> </span><span class="nf">summarize</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">PortabilityReport</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span data-line="375"><span class="w">    </span><span class="sd">"""One diagnose suggestion per drifting render."""</span>
-</span><span data-line="376">    <span class="n">by_path</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">DriftFinding</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span data-line="377">    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">findings</span><span class="p">:</span>
-</span><span data-line="378">        <span class="n">by_path</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-</span><span data-line="379">    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">findings</span> <span class="ow">in</span> <span class="n">by_path</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span data-line="380">        <span class="n">counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">kind</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">kind</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">findings</span><span class="p">)</span> <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">DRIFT_KINDS</span><span class="p">}</span>
-</span><span data-line="381">        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">kind</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="s1">'-'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">n</span><span class="p">]</span>
-</span><span data-line="382">        <span class="k">yield</span> <span class="p">(</span>
-</span><span data-line="383">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> drifts from AGENTS.md (</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="si">}</span><span class="s2"> section(s)) — "</span>
-</span><span data-line="384">            <span class="s2">"see `opsward.check_portability(root)` for the list"</span>
-</span><span data-line="385">        <span class="p">)</span></div>
+</span><span data-line="382"><span class="k">def</span><span class="w"> </span><span class="nf">summarize</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="n">PortabilityReport</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span data-line="383"><span class="w">    </span><span class="sd">"""One diagnose suggestion per drifting render."""</span>
+</span><span data-line="384">    <span class="n">by_path</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">DriftFinding</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span data-line="385">    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">findings</span><span class="p">:</span>
+</span><span data-line="386">        <span class="n">by_path</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span><span data-line="387">    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">findings</span> <span class="ow">in</span> <span class="n">by_path</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span data-line="388">        <span class="n">counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">kind</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">kind</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">findings</span><span class="p">)</span> <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">DRIFT_KINDS</span><span class="p">}</span>
+</span><span data-line="389">        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">kind</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="s1">'-'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">n</span><span class="p">]</span>
+</span><span data-line="390">        <span class="k">yield</span> <span class="p">(</span>
+</span><span data-line="391">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> drifts from AGENTS.md (</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="si">}</span><span class="s2"> section(s)) — "</span>
+</span><span data-line="392">            <span class="s2">"see `opsward.check_portability(root)` for the list"</span>
+</span><span data-line="393">        <span class="p">)</span></div>
 
-</span><span data-line="386">
-</span><span data-line="387">
+</span><span data-line="394">
+</span><span data-line="395">
 <div class="viewcode-block" id="as_read">
 <a class="viewcode-back" href="../../_autosummary/opsward.portability.html#opsward.portability.as_read">[docs]</a>
-</span><span data-line="388"><span class="k">def</span><span class="w"> </span><span class="nf">as_read</span><span class="p">(</span><span class="n">render</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">canonical</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"CLAUDE.md"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span data-line="389"><span class="w">    </span><span class="sd">"""*render* (the file at root-relative *path*) as its host reads it, import inlined.</span>
-</span><span data-line="390">
-</span><span data-line="391"><span class="sd">    An ``@…AGENTS.md`` import that resolves to the canonical from *path*'s folder is</span>
-</span><span data-line="392"><span class="sd">    replaced by *canonical*: a line that is only the import is replaced in place; an</span>
-</span><span data-line="393"><span class="sd">    import inside a sentence appends the canonical at the end. A copy, or an import that</span>
-</span><span data-line="394"><span class="sd">    does not resolve (``@AGENTS.md`` in ``.claude/CLAUDE.md``), comes back unchanged, so</span>
-</span><span data-line="395"><span class="sd">    scoring a shim judges what the agent actually sees, not the three-line file.</span>
-</span><span data-line="396">
-</span><span data-line="397"><span class="sd">    &gt;&gt;&gt; as_read("@AGENTS.md\\n\\n## Claude\\n\\nx", "## Build\\n\\npytest\\n")</span>
-</span><span data-line="398"><span class="sd">    '## Build\\n\\npytest\\n\\n## Claude\\n\\nx'</span>
-</span><span data-line="399"><span class="sd">    &gt;&gt;&gt; as_read("Read @AGENTS.md first.", "## Build")</span>
-</span><span data-line="400"><span class="sd">    'Read @AGENTS.md first.\\n\\n## Build'</span>
-</span><span data-line="401"><span class="sd">    &gt;&gt;&gt; as_read("## Build\\n\\npytest", "## Other")</span>
-</span><span data-line="402"><span class="sd">    '## Build\\n\\npytest'</span>
-</span><span data-line="403"><span class="sd">    &gt;&gt;&gt; as_read("@AGENTS.md", "## Build", path=".claude/CLAUDE.md")</span>
-</span><span data-line="404"><span class="sd">    '@AGENTS.md'</span>
-</span><span data-line="405"><span class="sd">    &gt;&gt;&gt; as_read("@../AGENTS.md", "## Build", path=".claude/CLAUDE.md")</span>
-</span><span data-line="406"><span class="sd">    '## Build'</span>
-</span><span data-line="407"><span class="sd">    """</span>
-</span><span data-line="408">    <span class="n">render</span> <span class="o">=</span> <span class="n">render</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\ufeff</span><span class="s2">"</span><span class="p">)</span>
-</span><span data-line="409">    <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical</span> <span class="ow">or</span> <span class="n">HostFile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">render</span><span class="p">)</span><span class="o">.</span><span class="n">relation</span> <span class="o">!=</span> <span class="s2">"import"</span><span class="p">:</span>
-</span><span data-line="410">        <span class="k">return</span> <span class="n">render</span>
-</span><span data-line="411">    <span class="n">canonical</span> <span class="o">=</span> <span class="n">canonical</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\ufeff</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-</span><span data-line="412">    <span class="n">lines</span><span class="p">,</span> <span class="n">replaced</span> <span class="o">=</span> <span class="p">[],</span> <span class="kc">False</span>
-</span><span data-line="413">    <span class="k">for</span> <span class="n">line</span><span class="p">,</span> <span class="n">fenced</span> <span class="ow">in</span> <span class="n">_lines</span><span class="p">(</span><span class="n">render</span><span class="p">):</span>
-</span><span data-line="414">        <span class="c1"># Inlined once, and never from code (fenced, or indented as a code block)</span>
-</span><span data-line="415">        <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="416">            <span class="kc">None</span>
-</span><span data-line="417">            <span class="k">if</span> <span class="n">replaced</span> <span class="ow">or</span> <span class="n">fenced</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"    "</span><span class="p">)</span>
-</span><span data-line="418">            <span class="k">else</span> <span class="p">(</span><span class="n">_IMPORT_RE</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
-</span><span data-line="419">        <span class="p">)</span>
-</span><span data-line="420">        <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">resolves_to_canonical</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">importer</span><span class="o">=</span><span class="n">path</span><span class="p">):</span>
-</span><span data-line="421">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canonical</span><span class="p">)</span>
-</span><span data-line="422">            <span class="n">replaced</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span data-line="423">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="424">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span data-line="425">    <span class="n">out</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-</span><span data-line="426">    <span class="k">return</span> <span class="n">out</span> <span class="k">if</span> <span class="n">replaced</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">canonical</span><span class="si">}</span><span class="s2">"</span></div>
+</span><span data-line="396"><span class="k">def</span><span class="w"> </span><span class="nf">as_read</span><span class="p">(</span><span class="n">render</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">canonical</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"CLAUDE.md"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="397"><span class="w">    </span><span class="sd">"""*render* (the file at root-relative *path*) as its host reads it, import inlined.</span>
+</span><span data-line="398">
+</span><span data-line="399"><span class="sd">    An ``@…AGENTS.md`` import that resolves to the canonical from *path*'s folder is</span>
+</span><span data-line="400"><span class="sd">    replaced by *canonical*: a line that is only the import is replaced in place; an</span>
+</span><span data-line="401"><span class="sd">    import inside a sentence appends the canonical at the end. A copy, or an import that</span>
+</span><span data-line="402"><span class="sd">    does not resolve (``@AGENTS.md`` in ``.claude/CLAUDE.md``), comes back unchanged, so</span>
+</span><span data-line="403"><span class="sd">    scoring a shim judges what the agent actually sees, not the three-line file.</span>
+</span><span data-line="404">
+</span><span data-line="405"><span class="sd">    &gt;&gt;&gt; as_read("@AGENTS.md\\n\\n## Claude\\n\\nx", "## Build\\n\\npytest\\n")</span>
+</span><span data-line="406"><span class="sd">    '## Build\\n\\npytest\\n\\n## Claude\\n\\nx'</span>
+</span><span data-line="407"><span class="sd">    &gt;&gt;&gt; as_read("Read @AGENTS.md first.", "## Build")</span>
+</span><span data-line="408"><span class="sd">    'Read @AGENTS.md first.\\n\\n## Build'</span>
+</span><span data-line="409"><span class="sd">    &gt;&gt;&gt; as_read("## Build\\n\\npytest", "## Other")</span>
+</span><span data-line="410"><span class="sd">    '## Build\\n\\npytest'</span>
+</span><span data-line="411"><span class="sd">    &gt;&gt;&gt; as_read("@AGENTS.md", "## Build", path=".claude/CLAUDE.md")</span>
+</span><span data-line="412"><span class="sd">    '@AGENTS.md'</span>
+</span><span data-line="413"><span class="sd">    &gt;&gt;&gt; as_read("@../AGENTS.md", "## Build", path=".claude/CLAUDE.md")</span>
+</span><span data-line="414"><span class="sd">    '## Build'</span>
+</span><span data-line="415"><span class="sd">    """</span>
+</span><span data-line="416">    <span class="n">render</span> <span class="o">=</span> <span class="n">render</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\ufeff</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="417">    <span class="k">if</span> <span class="ow">not</span> <span class="n">canonical</span> <span class="ow">or</span> <span class="n">HostFile</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">render</span><span class="p">)</span><span class="o">.</span><span class="n">relation</span> <span class="o">!=</span> <span class="s2">"import"</span><span class="p">:</span>
+</span><span data-line="418">        <span class="k">return</span> <span class="n">render</span>
+</span><span data-line="419">    <span class="n">canonical</span> <span class="o">=</span> <span class="n">canonical</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\ufeff</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="420">    <span class="n">lines</span><span class="p">,</span> <span class="n">replaced</span> <span class="o">=</span> <span class="p">[],</span> <span class="kc">False</span>
+</span><span data-line="421">    <span class="k">for</span> <span class="n">line</span><span class="p">,</span> <span class="n">fenced</span> <span class="ow">in</span> <span class="n">_lines</span><span class="p">(</span><span class="n">render</span><span class="p">):</span>
+</span><span data-line="422">        <span class="c1"># Inlined once, and never from code (fenced, or indented as a code block)</span>
+</span><span data-line="423">        <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="424">            <span class="kc">None</span>
+</span><span data-line="425">            <span class="k">if</span> <span class="n">replaced</span> <span class="ow">or</span> <span class="n">fenced</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"    "</span><span class="p">)</span>
+</span><span data-line="426">            <span class="k">else</span> <span class="p">(</span><span class="n">_IMPORT_RE</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+</span><span data-line="427">        <span class="p">)</span>
+</span><span data-line="428">        <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">resolves_to_canonical</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">importer</span><span class="o">=</span><span class="n">path</span><span class="p">):</span>
+</span><span data-line="429">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">canonical</span><span class="p">)</span>
+</span><span data-line="430">            <span class="n">replaced</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span data-line="431">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="432">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span data-line="433">    <span class="n">out</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+</span><span data-line="434">    <span class="k">return</span> <span class="n">out</span> <span class="k">if</span> <span class="n">replaced</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">canonical</span><span class="si">}</span><span class="s2">"</span></div>
 
-</span><span data-line="427">
-</span><span data-line="428">
+</span><span data-line="435">
+</span><span data-line="436">
 <div class="viewcode-block" id="claude_md_as_read">
 <a class="viewcode-back" href="../../_autosummary/opsward.portability.html#opsward.portability.claude_md_as_read">[docs]</a>
-</span><span data-line="429"><span class="k">def</span><span class="w"> </span><span class="nf">claude_md_as_read</span><span class="p">(</span><span class="n">scan_result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span data-line="430"><span class="w">    </span><span class="sd">"""The scanned CLAUDE.md as Claude Code reads it (``as_read`` at its own path)."""</span>
-</span><span data-line="431">    <span class="k">return</span> <span class="n">as_read</span><span class="p">(</span>
-</span><span data-line="432">        <span class="n">scan_result</span><span class="o">.</span><span class="n">claude_md_content</span><span class="p">,</span>
-</span><span data-line="433">        <span class="n">scan_result</span><span class="o">.</span><span class="n">agents_md_content</span><span class="p">,</span>
-</span><span data-line="434">        <span class="n">path</span><span class="o">=</span><span class="n">claude_md_relpath</span><span class="p">(</span><span class="n">scan_result</span><span class="p">),</span>
-</span><span data-line="435">    <span class="p">)</span></div>
+</span><span data-line="437"><span class="k">def</span><span class="w"> </span><span class="nf">claude_md_as_read</span><span class="p">(</span><span class="n">scan_result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="438"><span class="w">    </span><span class="sd">"""The scanned CLAUDE.md as Claude Code reads it (``as_read`` at its own path)."""</span>
+</span><span data-line="439">    <span class="k">return</span> <span class="n">as_read</span><span class="p">(</span>
+</span><span data-line="440">        <span class="n">scan_result</span><span class="o">.</span><span class="n">claude_md_content</span><span class="p">,</span>
+</span><span data-line="441">        <span class="n">scan_result</span><span class="o">.</span><span class="n">agents_md_content</span><span class="p">,</span>
+</span><span data-line="442">        <span class="n">path</span><span class="o">=</span><span class="n">claude_md_relpath</span><span class="p">(</span><span class="n">scan_result</span><span class="p">),</span>
+</span><span data-line="443">    <span class="p">)</span></div>
 
-</span><span data-line="436">
-</span><span data-line="437">
+</span><span data-line="444">
+</span><span data-line="445">
 <div class="viewcode-block" id="claude_md_relpath">
 <a class="viewcode-back" href="../../_autosummary/opsward.portability.html#opsward.portability.claude_md_relpath">[docs]</a>
-</span><span data-line="438"><span class="k">def</span><span class="w"> </span><span class="nf">claude_md_relpath</span><span class="p">(</span><span class="n">scan_result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span data-line="439"><span class="w">    </span><span class="sd">"""The scanned CLAUDE.md's path relative to the project root (``CLAUDE.md`` if unknown)."""</span>
-</span><span data-line="440">    <span class="n">p</span> <span class="o">=</span> <span class="n">scan_result</span><span class="o">.</span><span class="n">claude_md_path</span>
-</span><span data-line="441">    <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="442">        <span class="k">return</span> <span class="s2">"CLAUDE.md"</span>
-</span><span data-line="443">    <span class="k">try</span><span class="p">:</span>
-</span><span data-line="444">        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">scan_result</span><span class="o">.</span><span class="n">project_root</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
-</span><span data-line="445">    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-</span><span data-line="446">        <span class="k">return</span> <span class="s2">"CLAUDE.md"</span></div>
+</span><span data-line="446"><span class="k">def</span><span class="w"> </span><span class="nf">claude_md_relpath</span><span class="p">(</span><span class="n">scan_result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="447"><span class="w">    </span><span class="sd">"""The scanned CLAUDE.md's path relative to the project root (``CLAUDE.md`` if unknown)."""</span>
+</span><span data-line="448">    <span class="n">p</span> <span class="o">=</span> <span class="n">scan_result</span><span class="o">.</span><span class="n">claude_md_path</span>
+</span><span data-line="449">    <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="450">        <span class="k">return</span> <span class="s2">"CLAUDE.md"</span>
+</span><span data-line="451">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="452">        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">scan_result</span><span class="o">.</span><span class="n">project_root</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+</span><span data-line="453">    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span><span data-line="454">        <span class="k">return</span> <span class="s2">"CLAUDE.md"</span></div>
 
-</span><span data-line="447">
-</span><span data-line="448">
-</span><span data-line="449"><span class="c1"># Strongest first: a host covered several ways reports the least drift-prone one.</span>
-</span><span data-line="450"><span class="n">_RELATION_ORDER</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"symlink"</span><span class="p">,</span> <span class="s2">"import"</span><span class="p">,</span> <span class="s2">"native"</span><span class="p">,</span> <span class="s2">"copy"</span><span class="p">,</span> <span class="s2">"rules"</span><span class="p">)</span>
-</span><span data-line="451">
-</span><span data-line="452">
-</span><span data-line="453"><span class="k">def</span><span class="w"> </span><span class="nf">_strongest</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span data-line="454">    <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">_RELATION_ORDER</span><span class="p">:</span>
-</span><span data-line="455">        <span class="k">if</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
-</span><span data-line="456">            <span class="k">return</span> <span class="n">rel</span>
-</span><span data-line="457">    <span class="k">return</span> <span class="s2">"none"</span>
-</span><span data-line="458">
+</span><span data-line="455">
+</span><span data-line="456">
+</span><span data-line="457"><span class="c1"># Strongest first: a host covered several ways reports the least drift-prone one.</span>
+</span><span data-line="458"><span class="n">_RELATION_ORDER</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"symlink"</span><span class="p">,</span> <span class="s2">"import"</span><span class="p">,</span> <span class="s2">"native"</span><span class="p">,</span> <span class="s2">"copy"</span><span class="p">,</span> <span class="s2">"rules"</span><span class="p">)</span>
 </span><span data-line="459">
-</span><span data-line="460"><span class="k">def</span><span class="w"> </span><span class="nf">_drift</span><span class="p">(</span><span class="n">canonical</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf</span><span class="p">:</span> <span class="n">HostFile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">DriftFinding</span><span class="p">]:</span>
-</span><span data-line="461">    <span class="n">relation</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">relation</span>
-</span><span data-line="462">    <span class="c1"># An empty (or undecodable: read as '') file says nothing about drift</span>
-</span><span data-line="463">    <span class="k">if</span> <span class="n">relation</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"symlink"</span><span class="p">,</span> <span class="s2">"rules"</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">hf</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
-</span><span data-line="464">        <span class="k">return</span>
-</span><span data-line="465">    <span class="k">if</span> <span class="ow">not</span> <span class="n">hf</span><span class="o">.</span><span class="n">compared</span> <span class="ow">and</span> <span class="n">relation</span> <span class="o">==</span> <span class="s2">"copy"</span><span class="p">:</span>
-</span><span data-line="466">        <span class="k">return</span>
-</span><span data-line="467">    <span class="n">canon</span> <span class="o">=</span> <span class="n">_sections</span><span class="p">(</span><span class="n">canonical</span><span class="p">)</span>
-</span><span data-line="468">    <span class="n">render</span> <span class="o">=</span> <span class="n">_sections</span><span class="p">(</span><span class="n">hf</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-</span><span data-line="469">    <span class="k">for</span> <span class="n">heading</span><span class="p">,</span> <span class="n">body</span> <span class="ow">in</span> <span class="n">render</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span data-line="470">        <span class="k">if</span> <span class="n">heading</span> <span class="ow">in</span> <span class="n">canon</span><span class="p">:</span>
-</span><span data-line="471">            <span class="k">if</span> <span class="n">canon</span><span class="p">[</span><span class="n">heading</span><span class="p">]</span> <span class="o">!=</span> <span class="n">body</span><span class="p">:</span>
-</span><span data-line="472">                <span class="k">yield</span> <span class="n">DriftFinding</span><span class="p">(</span><span class="s2">"diverged"</span><span class="p">,</span> <span class="n">hf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">heading</span><span class="p">)</span>
-</span><span data-line="473">        <span class="k">elif</span> <span class="n">relation</span> <span class="o">==</span> <span class="s2">"copy"</span><span class="p">:</span>
-</span><span data-line="474">            <span class="c1"># After an import, render-only sections are the intended host deltas.</span>
-</span><span data-line="475">            <span class="k">yield</span> <span class="n">DriftFinding</span><span class="p">(</span><span class="s2">"host_only"</span><span class="p">,</span> <span class="n">hf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">heading</span><span class="p">)</span>
-</span><span data-line="476">    <span class="k">if</span> <span class="n">relation</span> <span class="o">==</span> <span class="s2">"copy"</span><span class="p">:</span>
-</span><span data-line="477">        <span class="k">for</span> <span class="n">heading</span> <span class="ow">in</span> <span class="n">canon</span><span class="p">:</span>
-</span><span data-line="478">            <span class="k">if</span> <span class="n">heading</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">render</span><span class="p">:</span>
-</span><span data-line="479">                <span class="k">yield</span> <span class="n">DriftFinding</span><span class="p">(</span><span class="s2">"stale"</span><span class="p">,</span> <span class="n">hf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">heading</span><span class="p">)</span>
-</span><span data-line="480">
-</span><span data-line="481">
-</span><span data-line="482"><span class="k">def</span><span class="w"> </span><span class="nf">_sections</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span data-line="483"><span class="w">    </span><span class="sd">"""Sections keyed by normalised heading; bodies whitespace-normalised.</span>
-</span><span data-line="484">
-</span><span data-line="485"><span class="sd">    The first level-1 heading is skipped (it titles the file); ATX and setext headings</span>
-</span><span data-line="486"><span class="sd">    count, fenced code (backtick or tilde) never does.</span>
-</span><span data-line="487">
-</span><span data-line="488"><span class="sd">    &gt;&gt;&gt; _sections("# T\\n\\n## Build &amp; Test\\n\\n  pytest  \\n\\n\\n## Notes\\nx")</span>
-</span><span data-line="489"><span class="sd">    {'build test': 'pytest', 'notes': 'x'}</span>
-</span><span data-line="490"><span class="sd">    &gt;&gt;&gt; _sections("# T\\n~~~\\n## not one\\n~~~\\n# Usage\\nrun\\nAPI\\n---\\nf()")</span>
-</span><span data-line="491"><span class="sd">    {'usage': 'run', 'api': 'f()'}</span>
-</span><span data-line="492"><span class="sd">    """</span>
-</span><span data-line="493">    <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span data-line="494">    <span class="n">current</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="495">    <span class="n">title_seen</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span data-line="496">    <span class="n">pending</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># a prose line that a setext underline may promote</span>
-</span><span data-line="497">
-</span><span data-line="498">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">heading</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="499">        <span class="k">nonlocal</span> <span class="n">current</span><span class="p">,</span> <span class="n">title_seen</span>
-</span><span data-line="500">        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">title_seen</span><span class="p">:</span>
-</span><span data-line="501">            <span class="n">title_seen</span><span class="p">,</span> <span class="n">current</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">None</span>
-</span><span data-line="502">            <span class="k">return</span>
-</span><span data-line="503">        <span class="n">title_seen</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span data-line="504">        <span class="n">current</span> <span class="o">=</span> <span class="n">_norm_heading</span><span class="p">(</span><span class="n">heading</span><span class="p">)</span>
-</span><span data-line="505">        <span class="n">out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="p">[])</span>
-</span><span data-line="506">
-</span><span data-line="507">    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="508">        <span class="k">if</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="509">            <span class="n">out</span><span class="p">[</span><span class="n">current</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-</span><span data-line="510">
-</span><span data-line="511">    <span class="k">for</span> <span class="n">line</span><span class="p">,</span> <span class="n">fenced</span> <span class="ow">in</span> <span class="n">_lines</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-</span><span data-line="512">        <span class="n">setext</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">fenced</span> <span class="k">else</span> <span class="n">_SETEXT_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span data-line="513">        <span class="k">if</span> <span class="n">setext</span> <span class="ow">and</span> <span class="n">pending</span> <span class="ow">and</span> <span class="n">pending</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
-</span><span data-line="514">            <span class="n">start</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">setext</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"="</span> <span class="k">else</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pending</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-</span><span data-line="515">            <span class="n">pending</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="516">            <span class="k">continue</span>
-</span><span data-line="517">        <span class="k">if</span> <span class="n">pending</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="518">            <span class="n">emit</span><span class="p">(</span><span class="n">pending</span><span class="p">)</span>
-</span><span data-line="519">            <span class="n">pending</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="520">        <span class="n">atx</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">fenced</span> <span class="k">else</span> <span class="n">_HEADING_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span data-line="521">        <span class="k">if</span> <span class="n">atx</span><span class="p">:</span>
-</span><span data-line="522">            <span class="n">start</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="n">atx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-</span><span data-line="523">        <span class="k">elif</span> <span class="ow">not</span> <span class="n">fenced</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_FENCE_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-</span><span data-line="524">            <span class="n">pending</span> <span class="o">=</span> <span class="n">line</span>
-</span><span data-line="525">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="526">            <span class="n">emit</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span data-line="527">    <span class="k">if</span> <span class="n">pending</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="528">        <span class="n">emit</span><span class="p">(</span><span class="n">pending</span><span class="p">)</span>
-</span><span data-line="529">    <span class="k">return</span> <span class="p">{</span><span class="n">h</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span> <span class="k">if</span> <span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">lines</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-</span><span data-line="530">
-</span><span data-line="531">
-</span><span data-line="532"><span class="k">def</span><span class="w"> </span><span class="nf">_lines</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]:</span>
-</span><span data-line="533"><span class="w">    </span><span class="sd">"""Each line with whether it is inside (or delimits) a fenced code block.</span>
-</span><span data-line="534">
-</span><span data-line="535"><span class="sd">    A fence closes only on the same character, at least as long, with no info string;</span>
-</span><span data-line="536"><span class="sd">    a backtick fence's info string may not contain a backtick (CommonMark).</span>
-</span><span data-line="537"><span class="sd">    """</span>
-</span><span data-line="538">    <span class="n">fence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="539">    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
-</span><span data-line="540">        <span class="n">m</span> <span class="o">=</span> <span class="n">_FENCE_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span data-line="541">        <span class="k">if</span> <span class="n">fence</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="542">            <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"`"</span> <span class="ow">and</span> <span class="s2">"`"</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)):</span>
-</span><span data-line="543">                <span class="n">fence</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span data-line="544">                <span class="k">yield</span> <span class="n">line</span><span class="p">,</span> <span class="kc">True</span>
-</span><span data-line="545">            <span class="k">else</span><span class="p">:</span>
-</span><span data-line="546">                <span class="k">yield</span> <span class="n">line</span><span class="p">,</span> <span class="kc">False</span>
-</span><span data-line="547">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="548">            <span class="k">if</span> <span class="p">(</span>
-</span><span data-line="549">                <span class="n">m</span>
-</span><span data-line="550">                <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">fence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span data-line="551">                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fence</span><span class="p">)</span>
-</span><span data-line="552">                <span class="ow">and</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</span><span data-line="553">            <span class="p">):</span>
-</span><span data-line="554">                <span class="n">fence</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="555">            <span class="k">yield</span> <span class="n">line</span><span class="p">,</span> <span class="kc">True</span>
-</span><span data-line="556">
-</span><span data-line="557">
-</span><span data-line="558"><span class="k">def</span><span class="w"> </span><span class="nf">_norm_heading</span><span class="p">(</span><span class="n">heading</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span data-line="559">    <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\w\s]"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">heading</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+</span><span data-line="460">
+</span><span data-line="461"><span class="k">def</span><span class="w"> </span><span class="nf">_strongest</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="462">    <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">_RELATION_ORDER</span><span class="p">:</span>
+</span><span data-line="463">        <span class="k">if</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+</span><span data-line="464">            <span class="k">return</span> <span class="n">rel</span>
+</span><span data-line="465">    <span class="k">return</span> <span class="s2">"none"</span>
+</span><span data-line="466">
+</span><span data-line="467">
+</span><span data-line="468"><span class="k">def</span><span class="w"> </span><span class="nf">_drift</span><span class="p">(</span><span class="n">canonical</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf</span><span class="p">:</span> <span class="n">HostFile</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">DriftFinding</span><span class="p">]:</span>
+</span><span data-line="469">    <span class="n">relation</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">relation</span>
+</span><span data-line="470">    <span class="c1"># An empty (or undecodable: read as '') file says nothing about drift</span>
+</span><span data-line="471">    <span class="k">if</span> <span class="n">relation</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"symlink"</span><span class="p">,</span> <span class="s2">"rules"</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">hf</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+</span><span data-line="472">        <span class="k">return</span>
+</span><span data-line="473">    <span class="k">if</span> <span class="ow">not</span> <span class="n">hf</span><span class="o">.</span><span class="n">compared</span> <span class="ow">and</span> <span class="n">relation</span> <span class="o">==</span> <span class="s2">"copy"</span><span class="p">:</span>
+</span><span data-line="474">        <span class="k">return</span>
+</span><span data-line="475">    <span class="n">canon</span> <span class="o">=</span> <span class="n">_sections</span><span class="p">(</span><span class="n">canonical</span><span class="p">)</span>
+</span><span data-line="476">    <span class="n">render</span> <span class="o">=</span> <span class="n">_sections</span><span class="p">(</span><span class="n">hf</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span><span data-line="477">    <span class="k">for</span> <span class="n">heading</span><span class="p">,</span> <span class="n">body</span> <span class="ow">in</span> <span class="n">render</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span data-line="478">        <span class="k">if</span> <span class="n">heading</span> <span class="ow">in</span> <span class="n">canon</span><span class="p">:</span>
+</span><span data-line="479">            <span class="k">if</span> <span class="n">canon</span><span class="p">[</span><span class="n">heading</span><span class="p">]</span> <span class="o">!=</span> <span class="n">body</span><span class="p">:</span>
+</span><span data-line="480">                <span class="k">yield</span> <span class="n">DriftFinding</span><span class="p">(</span><span class="s2">"diverged"</span><span class="p">,</span> <span class="n">hf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">heading</span><span class="p">)</span>
+</span><span data-line="481">        <span class="k">elif</span> <span class="n">relation</span> <span class="o">==</span> <span class="s2">"copy"</span><span class="p">:</span>
+</span><span data-line="482">            <span class="c1"># After an import, render-only sections are the intended host deltas.</span>
+</span><span data-line="483">            <span class="k">yield</span> <span class="n">DriftFinding</span><span class="p">(</span><span class="s2">"host_only"</span><span class="p">,</span> <span class="n">hf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">heading</span><span class="p">)</span>
+</span><span data-line="484">    <span class="k">if</span> <span class="n">relation</span> <span class="o">==</span> <span class="s2">"copy"</span><span class="p">:</span>
+</span><span data-line="485">        <span class="k">for</span> <span class="n">heading</span> <span class="ow">in</span> <span class="n">canon</span><span class="p">:</span>
+</span><span data-line="486">            <span class="k">if</span> <span class="n">heading</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">render</span><span class="p">:</span>
+</span><span data-line="487">                <span class="k">yield</span> <span class="n">DriftFinding</span><span class="p">(</span><span class="s2">"stale"</span><span class="p">,</span> <span class="n">hf</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">heading</span><span class="p">)</span>
+</span><span data-line="488">
+</span><span data-line="489">
+</span><span data-line="490"><span class="k">def</span><span class="w"> </span><span class="nf">_sections</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span data-line="491"><span class="w">    </span><span class="sd">"""Sections keyed by normalised heading; bodies whitespace-normalised.</span>
+</span><span data-line="492">
+</span><span data-line="493"><span class="sd">    The first level-1 heading is skipped (it titles the file); ATX and setext headings</span>
+</span><span data-line="494"><span class="sd">    count, fenced code (backtick or tilde) never does.</span>
+</span><span data-line="495">
+</span><span data-line="496"><span class="sd">    &gt;&gt;&gt; _sections("# T\\n\\n## Build &amp; Test\\n\\n  pytest  \\n\\n\\n## Notes\\nx")</span>
+</span><span data-line="497"><span class="sd">    {'build test': 'pytest', 'notes': 'x'}</span>
+</span><span data-line="498"><span class="sd">    &gt;&gt;&gt; _sections("# T\\n~~~\\n## not one\\n~~~\\n# Usage\\nrun\\nAPI\\n---\\nf()")</span>
+</span><span data-line="499"><span class="sd">    {'usage': 'run', 'api': 'f()'}</span>
+</span><span data-line="500"><span class="sd">    """</span>
+</span><span data-line="501">    <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span data-line="502">    <span class="n">current</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="503">    <span class="n">title_seen</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span data-line="504">    <span class="n">pending</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># a prose line that a setext underline may promote</span>
+</span><span data-line="505">
+</span><span data-line="506">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">heading</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="507">        <span class="k">nonlocal</span> <span class="n">current</span><span class="p">,</span> <span class="n">title_seen</span>
+</span><span data-line="508">        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">title_seen</span><span class="p">:</span>
+</span><span data-line="509">            <span class="n">title_seen</span><span class="p">,</span> <span class="n">current</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">None</span>
+</span><span data-line="510">            <span class="k">return</span>
+</span><span data-line="511">        <span class="n">title_seen</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span data-line="512">        <span class="n">current</span> <span class="o">=</span> <span class="n">_norm_heading</span><span class="p">(</span><span class="n">heading</span><span class="p">)</span>
+</span><span data-line="513">        <span class="n">out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="p">[])</span>
+</span><span data-line="514">
+</span><span data-line="515">    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="516">        <span class="k">if</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="517">            <span class="n">out</span><span class="p">[</span><span class="n">current</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</span><span data-line="518">
+</span><span data-line="519">    <span class="k">for</span> <span class="n">line</span><span class="p">,</span> <span class="n">fenced</span> <span class="ow">in</span> <span class="n">_lines</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</span><span data-line="520">        <span class="n">setext</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">fenced</span> <span class="k">else</span> <span class="n">_SETEXT_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span data-line="521">        <span class="k">if</span> <span class="n">setext</span> <span class="ow">and</span> <span class="n">pending</span> <span class="ow">and</span> <span class="n">pending</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+</span><span data-line="522">            <span class="n">start</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">setext</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"="</span> <span class="k">else</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pending</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</span><span data-line="523">            <span class="n">pending</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="524">            <span class="k">continue</span>
+</span><span data-line="525">        <span class="k">if</span> <span class="n">pending</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="526">            <span class="n">emit</span><span class="p">(</span><span class="n">pending</span><span class="p">)</span>
+</span><span data-line="527">            <span class="n">pending</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="528">        <span class="n">atx</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">fenced</span> <span class="k">else</span> <span class="n">_HEADING_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span data-line="529">        <span class="k">if</span> <span class="n">atx</span><span class="p">:</span>
+</span><span data-line="530">            <span class="n">start</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="n">atx</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</span><span data-line="531">        <span class="k">elif</span> <span class="ow">not</span> <span class="n">fenced</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_FENCE_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+</span><span data-line="532">            <span class="n">pending</span> <span class="o">=</span> <span class="n">line</span>
+</span><span data-line="533">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="534">            <span class="n">emit</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span data-line="535">    <span class="k">if</span> <span class="n">pending</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="536">        <span class="n">emit</span><span class="p">(</span><span class="n">pending</span><span class="p">)</span>
+</span><span data-line="537">    <span class="k">return</span> <span class="p">{</span><span class="n">h</span><span class="p">:</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span> <span class="k">if</span> <span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">lines</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+</span><span data-line="538">
+</span><span data-line="539">
+</span><span data-line="540"><span class="k">def</span><span class="w"> </span><span class="nf">_lines</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]:</span>
+</span><span data-line="541"><span class="w">    </span><span class="sd">"""Each line with whether it is inside (or delimits) a fenced code block.</span>
+</span><span data-line="542">
+</span><span data-line="543"><span class="sd">    A fence closes only on the same character, at least as long, with no info string;</span>
+</span><span data-line="544"><span class="sd">    a backtick fence's info string may not contain a backtick (CommonMark).</span>
+</span><span data-line="545"><span class="sd">    """</span>
+</span><span data-line="546">    <span class="n">fence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="547">    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+</span><span data-line="548">        <span class="n">m</span> <span class="o">=</span> <span class="n">_FENCE_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span data-line="549">        <span class="k">if</span> <span class="n">fence</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="550">            <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"`"</span> <span class="ow">and</span> <span class="s2">"`"</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)):</span>
+</span><span data-line="551">                <span class="n">fence</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span data-line="552">                <span class="k">yield</span> <span class="n">line</span><span class="p">,</span> <span class="kc">True</span>
+</span><span data-line="553">            <span class="k">else</span><span class="p">:</span>
+</span><span data-line="554">                <span class="k">yield</span> <span class="n">line</span><span class="p">,</span> <span class="kc">False</span>
+</span><span data-line="555">        <span class="k">else</span><span class="p">:</span>
+</span><span data-line="556">            <span class="k">if</span> <span class="p">(</span>
+</span><span data-line="557">                <span class="n">m</span>
+</span><span data-line="558">                <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">fence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span data-line="559">                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fence</span><span class="p">)</span>
+</span><span data-line="560">                <span class="ow">and</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span data-line="561">            <span class="p">):</span>
+</span><span data-line="562">                <span class="n">fence</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="563">            <span class="k">yield</span> <span class="n">line</span><span class="p">,</span> <span class="kc">True</span>
+</span><span data-line="564">
+</span><span data-line="565">
+</span><span data-line="566"><span class="k">def</span><span class="w"> </span><span class="nf">_norm_heading</span><span class="p">(</span><span class="n">heading</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="567">    <span class="k">return</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\w\s]"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">heading</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
 </span></pre></div>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -766,7 +774,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=b345ff55"></script>
+      <script src="../../_static/documentation_options.js?v=78cc6f98"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

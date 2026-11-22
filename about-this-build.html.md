@@ -2,7 +2,7 @@
 
 # About this build
 
-This documentation was built on **2026-11-22 15:33 UTC** from commit <a href="https://github.com/addaix/opsward/commit/d8ba9dcf028042816d55cd270f736d03ccd6bdd0"><code>d8ba9dc</code></a> on branch <code>main</code>, for **opsward 0.0.43** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 18:12 UTC** from commit <a href="https://github.com/addaix/opsward/commit/ef121fa64fade373df5cd30183232c3fbf7528af"><code>ef121fa</code></a> on branch <code>main</code>, for **opsward 0.0.44** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -11,7 +11,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                       |
 |---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/addaix/opsward/commit/d8ba9dcf028042816d55cd270f736d03ccd6bdd0"><code>d8ba9dcf028042816d55cd270f736d03ccd6bdd0</code></a> |
+| Commit              | <a href="https://github.com/addaix/opsward/commit/ef121fa64fade373df5cd30183232c3fbf7528af"><code>ef121fa64fade373df5cd30183232c3fbf7528af</code></a> |
 | Branch              | <code>main</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                  |
 | Working tree        | clean                                                                                                                                                 |
@@ -22,9 +22,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>addaix/opsward</code>                                                                |
-| Run          | <a href="https://github.com/addaix/opsward/actions/runs/45038797561">45038797561</a>       |
+| Run          | <a href="https://github.com/addaix/opsward/actions/runs/45053575324">45053575324</a>       |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>d8ba9dcf028042816d55cd270f736d03ccd6bdd0</code> (in the history of the built commit) |
+| Event commit | <code>ef121fa64fade373df5cd30183232c3fbf7528af</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -49,13 +49,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/opsward/0.0.43/">0.0.43</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/opsward/0.0.44/">0.0.44</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/addaix/opsward && cd opsward
-git checkout d8ba9dcf028042816d55cd270f736d03ccd6bdd0
+git checkout ef121fa64fade373df5cd30183232c3fbf7528af
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

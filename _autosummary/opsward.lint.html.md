@@ -10,10 +10,10 @@ violation with a repo-relative path. A validator is `SkillInfo -> list[str]`:
   always available;
 * `skill` – the `skill` package’s `skill.validate()` (`pip install 'opsward[lint]'`),
   which composes its own registered validators;
-* `agnix` and `skillcheck` – external linters, run as subprocesses
-  (`npm install -g agnix`, `pip install skillcheck`); their JSON diagnostics of level
-  `error` and `warning` become findings. opsward does not depend on either, and they
-  are opt-in by name: their rule sets are wider and noisier than the spec check, so a
+* `agnix`, `skillcheck` and `skillsaw` – external linters, run as subprocesses
+  (`npm install -g agnix`, `pip install skillcheck`, `pip install skillsaw`); their
+  JSON diagnostics of level `error` and `warning` become findings. opsward depends on
+  none of them, and they are opt-in by name: their rule sets are wider and noisier than the spec check, so a
   gate on `"auto"` must not turn red because a machine happens to have one installed.
 
 `"auto"` (the default) is [`AUTO_VALIDATORS`](#opsward.lint.AUTO_VALIDATORS), each when it is available. A host
@@ -42,13 +42,14 @@ can pass any mapping of name to validator instead.
 
 ### Functions
 
-| [`agnix_validator`](#opsward.lint.agnix_validator)(skill)              | [agnix](https://github.com/agent-sh/agnix) over the skill's directory.           |
-|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| [`lint`](#opsward.lint.lint)(scan_result, \*[, validators]) | Every spec/config violation in the scanned project, skills first, then hooks.    |
-| [`opsward_validator`](#opsward.lint.opsward_validator)(skill)            | opsward's own spec check; a skill directory without a SKILL.md is one violation. |
-| [`resolve_validators`](#opsward.lint.resolve_validators)([spec])          | Turn `"auto"`, `"opsward,skill"` or a mapping into a name -> validator dict.     |
-| [`skill_package_validator`](#opsward.lint.skill_package_validator)(skill)      | The `skill` package's `validate()` over the skill's directory.                   |
-| [`skillcheck_validator`](#opsward.lint.skillcheck_validator)(skill)         | [skillcheck](https://pypi.org/project/skillcheck/) over the skill's SKILL.md.    |
+| [`agnix_validator`](#opsward.lint.agnix_validator)(skill)              | [agnix](https://github.com/agent-sh/agnix) over the skill's directory.                    |
+|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| [`lint`](#opsward.lint.lint)(scan_result, \*[, validators]) | Every spec/config violation in the scanned project, skills first, then hooks.             |
+| [`opsward_validator`](#opsward.lint.opsward_validator)(skill)            | opsward's own spec check; a skill directory without a SKILL.md is one violation.          |
+| [`resolve_validators`](#opsward.lint.resolve_validators)([spec])          | Turn `"auto"`, `"opsward,skill"` or a mapping into a name -> validator dict.              |
+| [`skill_package_validator`](#opsward.lint.skill_package_validator)(skill)      | The `skill` package's `validate()` over the skill's directory.                            |
+| [`skillcheck_validator`](#opsward.lint.skillcheck_validator)(skill)         | [skillcheck](https://pypi.org/project/skillcheck/) over the skill's SKILL.md.             |
+| [`skillsaw_validator`](#opsward.lint.skillsaw_validator)(skill)           | [skillsaw](https://github.com/stbenjam/skillsaw) (Apache-2.0) over the skill's directory. |
 
 ### Classes
 
@@ -81,7 +82,7 @@ Diagnostic levels of an external linter that count as findings (`info` does not)
 
 Where Claude Code reads hooks from; a settings file holds hooks only under `hooks`.
 
-### opsward.lint.INSTALL_HINTS *= {'agnix': 'npm install -g agnix', 'skill': "pip install 'opsward[lint]'", 'skillcheck': 'pip install skillcheck'}*
+### opsward.lint.INSTALL_HINTS *= {'agnix': 'npm install -g agnix', 'skill': "pip install 'opsward[lint]'", 'skillcheck': 'pip install skillcheck', 'skillsaw': 'pip install skillsaw'}*
 
 How to install each optional validator (named in the “not installed” error).
 
@@ -91,7 +92,7 @@ Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
 One violation: where (repo-relative), which validator said so, and what.
 
-### opsward.lint.VALIDATORS *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[Callable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[SkillInfo](opsward.base.html.md#opsward.base.SkillInfo)], [list](https://docs.python.org/3/builtins/stdtypes.html#list)], [Callable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[], [bool](https://docs.python.org/3/builtins/functions.html#bool)]]]* *= {'agnix': (<function agnix_validator>, <function \_on_path.<locals>.<lambda>>), 'opsward': (<function opsward_validator>, <function <lambda>>), 'skill': (<function skill_package_validator>, <function \_skill_package_available>), 'skillcheck': (<function skillcheck_validator>, <function \_on_path.<locals>.<lambda>>)}*
+### opsward.lint.VALIDATORS *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[Callable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[SkillInfo](opsward.base.html.md#opsward.base.SkillInfo)], [list](https://docs.python.org/3/builtins/stdtypes.html#list)], [Callable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[], [bool](https://docs.python.org/3/builtins/functions.html#bool)]]]* *= {'agnix': (<function agnix_validator>, <function \_on_path.<locals>.<lambda>>), 'opsward': (<function opsward_validator>, <function <lambda>>), 'skill': (<function skill_package_validator>, <function \_skill_package_available>), 'skillcheck': (<function skillcheck_validator>, <function \_on_path.<locals>.<lambda>>), 'skillsaw': (<function skillsaw_validator>, <function \_on_path.<locals>.<lambda>>)}*
 
 name -> (validator, is-it-available).
 
@@ -137,7 +138,7 @@ Turn `"auto"`, `"opsward,skill"` or a mapping into a name -> validator dict.
 >>> resolve_validators("nope")
 Traceback (most recent call last):
 ...
-ValueError: unknown validator 'nope' (known: opsward, skill, agnix, skillcheck)
+ValueError: unknown validator 'nope' (known: opsward, skill, agnix, skillcheck, skillsaw)
 ```
 
 ### opsward.lint.skill_package_validator(skill)
@@ -153,6 +154,18 @@ report it again, with an absolute path).
 ### opsward.lint.skillcheck_validator(skill)
 
 [skillcheck](https://pypi.org/project/skillcheck/) over the skill’s SKILL.md.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### opsward.lint.skillsaw_validator(skill)
+
+[skillsaw](https://github.com/stbenjam/skillsaw) (Apache-2.0) over the skill’s directory.
+
+Its rule worth having beside the spec check is `context-budget`: a frontmatter
+description too long for the host’s skill listing. Custom rules from a
+`.skillsaw.yaml` and third-party rule plugins are switched off, so linting a
+checkout never runs code that checkout supplies.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]

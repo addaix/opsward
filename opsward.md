@@ -1,4 +1,4 @@
-> built 2026-11-22 15:33 UTC from d8ba9dc (main) · opsward 0.0.43. Details: build_info.json
+> built 2026-11-22 18:12 UTC from ef121fa (main) · opsward 0.0.44. Details: build_info.json
 
 # index.html.md
 
@@ -312,6 +312,7 @@ pip install 'opsward[lint]'             # adds the `skill` package's validate()
 # external linters, opt-in by name (opsward does not install them; `auto` never runs them):
 npm install -g agnix                    # --validators agnix
 pip install skillcheck                  # --validators skillcheck
+pip install skillsaw                    # --validators skillsaw (adds a skill-description token budget)
 ```
 
 One brief for every agent host: `AGENTS.md` is the canonical, and each host’s own file (`CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, …) is a symlink, an `@AGENTS.md` import, or a copy that can drift. `portability` shows which hosts find instructions and every section where a render differs from `AGENTS.md`; `fleet` rolls the same counts up across repos. With `opsward[lint]` installed, `portability` also lists project skills rendered for a host whose format drops some of their fields (`allowed-tools`, `license`, bundled resources): the `lossy` kind, reported and never scored. A `CLAUDE.md` that is `@AGENTS.md` plus Claude-only deltas is scored as Claude reads it, with the import inlined.
@@ -1202,10 +1203,10 @@ violation with a repo-relative path. A validator is `SkillInfo -> list[str]`:
   always available;
 * `skill` – the `skill` package’s `skill.validate()` (`pip install 'opsward[lint]'`),
   which composes its own registered validators;
-* `agnix` and `skillcheck` – external linters, run as subprocesses
-  (`npm install -g agnix`, `pip install skillcheck`); their JSON diagnostics of level
-  `error` and `warning` become findings. opsward does not depend on either, and they
-  are opt-in by name: their rule sets are wider and noisier than the spec check, so a
+* `agnix`, `skillcheck` and `skillsaw` – external linters, run as subprocesses
+  (`npm install -g agnix`, `pip install skillcheck`, `pip install skillsaw`); their
+  JSON diagnostics of level `error` and `warning` become findings. opsward depends on
+  none of them, and they are opt-in by name: their rule sets are wider and noisier than the spec check, so a
   gate on `"auto"` must not turn red because a machine happens to have one installed.
 
 `"auto"` (the default) is [`AUTO_VALIDATORS`](_autosummary/opsward.lint.html.md#opsward.lint.AUTO_VALIDATORS), each when it is available. A host
@@ -1234,13 +1235,14 @@ can pass any mapping of name to validator instead.
 
 ### Functions
 
-| [`agnix_validator`](_autosummary/opsward.lint.html.md#opsward.lint.agnix_validator)(skill)              | [agnix](https://github.com/agent-sh/agnix) over the skill's directory.           |
-|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| [`lint`](_autosummary/opsward.lint.html.md#opsward.lint.lint)(scan_result, \*[, validators]) | Every spec/config violation in the scanned project, skills first, then hooks.    |
-| [`opsward_validator`](_autosummary/opsward.lint.html.md#opsward.lint.opsward_validator)(skill)            | opsward's own spec check; a skill directory without a SKILL.md is one violation. |
-| [`resolve_validators`](_autosummary/opsward.lint.html.md#opsward.lint.resolve_validators)([spec])          | Turn `"auto"`, `"opsward,skill"` or a mapping into a name -> validator dict.     |
-| [`skill_package_validator`](_autosummary/opsward.lint.html.md#opsward.lint.skill_package_validator)(skill)      | The `skill` package's `validate()` over the skill's directory.                   |
-| [`skillcheck_validator`](_autosummary/opsward.lint.html.md#opsward.lint.skillcheck_validator)(skill)         | [skillcheck](https://pypi.org/project/skillcheck/) over the skill's SKILL.md.    |
+| [`agnix_validator`](_autosummary/opsward.lint.html.md#opsward.lint.agnix_validator)(skill)              | [agnix](https://github.com/agent-sh/agnix) over the skill's directory.                    |
+|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| [`lint`](_autosummary/opsward.lint.html.md#opsward.lint.lint)(scan_result, \*[, validators]) | Every spec/config violation in the scanned project, skills first, then hooks.             |
+| [`opsward_validator`](_autosummary/opsward.lint.html.md#opsward.lint.opsward_validator)(skill)            | opsward's own spec check; a skill directory without a SKILL.md is one violation.          |
+| [`resolve_validators`](_autosummary/opsward.lint.html.md#opsward.lint.resolve_validators)([spec])          | Turn `"auto"`, `"opsward,skill"` or a mapping into a name -> validator dict.              |
+| [`skill_package_validator`](_autosummary/opsward.lint.html.md#opsward.lint.skill_package_validator)(skill)      | The `skill` package's `validate()` over the skill's directory.                            |
+| [`skillcheck_validator`](_autosummary/opsward.lint.html.md#opsward.lint.skillcheck_validator)(skill)         | [skillcheck](https://pypi.org/project/skillcheck/) over the skill's SKILL.md.             |
+| [`skillsaw_validator`](_autosummary/opsward.lint.html.md#opsward.lint.skillsaw_validator)(skill)           | [skillsaw](https://github.com/stbenjam/skillsaw) (Apache-2.0) over the skill's directory. |
 
 ### Classes
 
@@ -1273,7 +1275,7 @@ Diagnostic levels of an external linter that count as findings (`info` does not)
 
 Where Claude Code reads hooks from; a settings file holds hooks only under `hooks`.
 
-### opsward.lint.INSTALL_HINTS *= {'agnix': 'npm install -g agnix', 'skill': "pip install 'opsward[lint]'", 'skillcheck': 'pip install skillcheck'}*
+### opsward.lint.INSTALL_HINTS *= {'agnix': 'npm install -g agnix', 'skill': "pip install 'opsward[lint]'", 'skillcheck': 'pip install skillcheck', 'skillsaw': 'pip install skillsaw'}*
 
 How to install each optional validator (named in the “not installed” error).
 
@@ -1283,7 +1285,7 @@ Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
 One violation: where (repo-relative), which validator said so, and what.
 
-### opsward.lint.VALIDATORS *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[Callable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[SkillInfo](_autosummary/opsward.base.html.md#opsward.base.SkillInfo)], [list](https://docs.python.org/3/builtins/stdtypes.html#list)], [Callable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[], [bool](https://docs.python.org/3/builtins/functions.html#bool)]]]* *= {'agnix': (<function agnix_validator>, <function \_on_path.<locals>.<lambda>>), 'opsward': (<function opsward_validator>, <function <lambda>>), 'skill': (<function skill_package_validator>, <function \_skill_package_available>), 'skillcheck': (<function skillcheck_validator>, <function \_on_path.<locals>.<lambda>>)}*
+### opsward.lint.VALIDATORS *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[Callable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[SkillInfo](_autosummary/opsward.base.html.md#opsward.base.SkillInfo)], [list](https://docs.python.org/3/builtins/stdtypes.html#list)], [Callable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[], [bool](https://docs.python.org/3/builtins/functions.html#bool)]]]* *= {'agnix': (<function agnix_validator>, <function \_on_path.<locals>.<lambda>>), 'opsward': (<function opsward_validator>, <function <lambda>>), 'skill': (<function skill_package_validator>, <function \_skill_package_available>), 'skillcheck': (<function skillcheck_validator>, <function \_on_path.<locals>.<lambda>>), 'skillsaw': (<function skillsaw_validator>, <function \_on_path.<locals>.<lambda>>)}*
 
 name -> (validator, is-it-available).
 
@@ -1329,7 +1331,7 @@ Turn `"auto"`, `"opsward,skill"` or a mapping into a name -> validator dict.
 >>> resolve_validators("nope")
 Traceback (most recent call last):
 ...
-ValueError: unknown validator 'nope' (known: opsward, skill, agnix, skillcheck)
+ValueError: unknown validator 'nope' (known: opsward, skill, agnix, skillcheck, skillsaw)
 ```
 
 ### opsward.lint.skill_package_validator(skill)
@@ -1345,6 +1347,18 @@ report it again, with an absolute path).
 ### opsward.lint.skillcheck_validator(skill)
 
 [skillcheck](https://pypi.org/project/skillcheck/) over the skill’s SKILL.md.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### opsward.lint.skillsaw_validator(skill)
+
+[skillsaw](https://github.com/stbenjam/skillsaw) (Apache-2.0) over the skill’s directory.
+
+Its rule worth having beside the spec check is `context-budget`: a frontmatter
+description too long for the host’s skill listing. Custom rules from a
+`.skillsaw.yaml` and third-party rule plugins are switched off, so linting a
+checkout never runs code that checkout supplies.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
@@ -1675,7 +1689,7 @@ Host coverage (host -> relation, `native` or `none`) and drift findings.
 
 Hosts that find project instructions, in `AGENT_HOSTS` order.
 
-### opsward.portability.analyze(canonical, host_files, , hosts={'aider': HostSpec(name='aider', instruction_files=('CONVENTIONS.md',), rule_dirs=(), reads_agents_md=False, compared=False, skill_target=None), 'claude': HostSpec(name='claude', instruction_files=('CLAUDE.md', '.claude/CLAUDE.md'), rule_dirs=('.claude/rules',), reads_agents_md=False, compared=True, skill_target='claude-code'), 'cline': HostSpec(name='cline', instruction_files=('.clinerules',), rule_dirs=('.clinerules',), reads_agents_md=True, compared=True, skill_target='cline'), 'codex': HostSpec(name='codex', instruction_files=(), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None), 'copilot': HostSpec(name='copilot', instruction_files=('.github/copilot-instructions.md',), rule_dirs=('.github/instructions',), reads_agents_md=True, compared=True, skill_target='copilot'), 'cursor': HostSpec(name='cursor', instruction_files=('.cursorrules',), rule_dirs=('.cursor/rules',), reads_agents_md=True, compared=True, skill_target='cursor'), 'gemini': HostSpec(name='gemini', instruction_files=('GEMINI.md',), rule_dirs=(), reads_agents_md=False, compared=True, skill_target='gemini'), 'windsurf': HostSpec(name='windsurf', instruction_files=('.windsurfrules', '.windsurfrules.md'), rule_dirs=('.windsurf/rules',), reads_agents_md=False, compared=True, skill_target='windsurf'), 'zed': HostSpec(name='zed', instruction_files=('.rules',), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None)})
+### opsward.portability.analyze(canonical, host_files, , hosts={'aider': HostSpec(name='aider', instruction_files=('CONVENTIONS.md',), rule_dirs=(), reads_agents_md=False, compared=False, skill_target=None), 'claude': HostSpec(name='claude', instruction_files=('CLAUDE.md', '.claude/CLAUDE.md'), rule_dirs=('.claude/rules',), reads_agents_md=False, compared=True, skill_target='claude-code'), 'cline': HostSpec(name='cline', instruction_files=('.clinerules',), rule_dirs=('.clinerules',), reads_agents_md=True, compared=True, skill_target='cline'), 'codex': HostSpec(name='codex', instruction_files=(), rule_dirs=(), reads_agents_md=True, compared=True, skill_target='codex'), 'copilot': HostSpec(name='copilot', instruction_files=('.github/copilot-instructions.md',), rule_dirs=('.github/instructions',), reads_agents_md=True, compared=True, skill_target='copilot'), 'cursor': HostSpec(name='cursor', instruction_files=('.cursorrules',), rule_dirs=('.cursor/rules',), reads_agents_md=True, compared=True, skill_target='cursor'), 'gemini': HostSpec(name='gemini', instruction_files=('GEMINI.md',), rule_dirs=(), reads_agents_md=False, compared=True, skill_target='gemini'), 'windsurf': HostSpec(name='windsurf', instruction_files=('.windsurfrules', '.windsurfrules.md'), rule_dirs=('.windsurf/rules',), reads_agents_md=False, compared=True, skill_target='windsurf'), 'zed': HostSpec(name='zed', instruction_files=('.rules',), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None)})
 
 Coverage and drift of *host_files* against the *canonical* `AGENTS.md` text. Pure.
 
@@ -1722,7 +1736,7 @@ The `@…` import that names `AGENTS.md` from the file *importer* (root-relative
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
-### opsward.portability.check_portability(root, , hosts={'aider': HostSpec(name='aider', instruction_files=('CONVENTIONS.md',), rule_dirs=(), reads_agents_md=False, compared=False, skill_target=None), 'claude': HostSpec(name='claude', instruction_files=('CLAUDE.md', '.claude/CLAUDE.md'), rule_dirs=('.claude/rules',), reads_agents_md=False, compared=True, skill_target='claude-code'), 'cline': HostSpec(name='cline', instruction_files=('.clinerules',), rule_dirs=('.clinerules',), reads_agents_md=True, compared=True, skill_target='cline'), 'codex': HostSpec(name='codex', instruction_files=(), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None), 'copilot': HostSpec(name='copilot', instruction_files=('.github/copilot-instructions.md',), rule_dirs=('.github/instructions',), reads_agents_md=True, compared=True, skill_target='copilot'), 'cursor': HostSpec(name='cursor', instruction_files=('.cursorrules',), rule_dirs=('.cursor/rules',), reads_agents_md=True, compared=True, skill_target='cursor'), 'gemini': HostSpec(name='gemini', instruction_files=('GEMINI.md',), rule_dirs=(), reads_agents_md=False, compared=True, skill_target='gemini'), 'windsurf': HostSpec(name='windsurf', instruction_files=('.windsurfrules', '.windsurfrules.md'), rule_dirs=('.windsurf/rules',), reads_agents_md=False, compared=True, skill_target='windsurf'), 'zed': HostSpec(name='zed', instruction_files=('.rules',), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None)})
+### opsward.portability.check_portability(root, , hosts={'aider': HostSpec(name='aider', instruction_files=('CONVENTIONS.md',), rule_dirs=(), reads_agents_md=False, compared=False, skill_target=None), 'claude': HostSpec(name='claude', instruction_files=('CLAUDE.md', '.claude/CLAUDE.md'), rule_dirs=('.claude/rules',), reads_agents_md=False, compared=True, skill_target='claude-code'), 'cline': HostSpec(name='cline', instruction_files=('.clinerules',), rule_dirs=('.clinerules',), reads_agents_md=True, compared=True, skill_target='cline'), 'codex': HostSpec(name='codex', instruction_files=(), rule_dirs=(), reads_agents_md=True, compared=True, skill_target='codex'), 'copilot': HostSpec(name='copilot', instruction_files=('.github/copilot-instructions.md',), rule_dirs=('.github/instructions',), reads_agents_md=True, compared=True, skill_target='copilot'), 'cursor': HostSpec(name='cursor', instruction_files=('.cursorrules',), rule_dirs=('.cursor/rules',), reads_agents_md=True, compared=True, skill_target='cursor'), 'gemini': HostSpec(name='gemini', instruction_files=('GEMINI.md',), rule_dirs=(), reads_agents_md=False, compared=True, skill_target='gemini'), 'windsurf': HostSpec(name='windsurf', instruction_files=('.windsurfrules', '.windsurfrules.md'), rule_dirs=('.windsurf/rules',), reads_agents_md=False, compared=True, skill_target='windsurf'), 'zed': HostSpec(name='zed', instruction_files=('.rules',), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None)})
 
 `analyze` over what is on disk under *root*, plus `lossy` skill renders.
 
@@ -1752,7 +1766,7 @@ Whether an `AGENTS.md` text says anything (a BOM or whitespace does not).
 * **Return type:**
   [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
-### opsward.portability.lossy_findings(root, , hosts={'aider': HostSpec(name='aider', instruction_files=('CONVENTIONS.md',), rule_dirs=(), reads_agents_md=False, compared=False, skill_target=None), 'claude': HostSpec(name='claude', instruction_files=('CLAUDE.md', '.claude/CLAUDE.md'), rule_dirs=('.claude/rules',), reads_agents_md=False, compared=True, skill_target='claude-code'), 'cline': HostSpec(name='cline', instruction_files=('.clinerules',), rule_dirs=('.clinerules',), reads_agents_md=True, compared=True, skill_target='cline'), 'codex': HostSpec(name='codex', instruction_files=(), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None), 'copilot': HostSpec(name='copilot', instruction_files=('.github/copilot-instructions.md',), rule_dirs=('.github/instructions',), reads_agents_md=True, compared=True, skill_target='copilot'), 'cursor': HostSpec(name='cursor', instruction_files=('.cursorrules',), rule_dirs=('.cursor/rules',), reads_agents_md=True, compared=True, skill_target='cursor'), 'gemini': HostSpec(name='gemini', instruction_files=('GEMINI.md',), rule_dirs=(), reads_agents_md=False, compared=True, skill_target='gemini'), 'windsurf': HostSpec(name='windsurf', instruction_files=('.windsurfrules', '.windsurfrules.md'), rule_dirs=('.windsurf/rules',), reads_agents_md=False, compared=True, skill_target='windsurf'), 'zed': HostSpec(name='zed', instruction_files=('.rules',), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None)})
+### opsward.portability.lossy_findings(root, , hosts={'aider': HostSpec(name='aider', instruction_files=('CONVENTIONS.md',), rule_dirs=(), reads_agents_md=False, compared=False, skill_target=None), 'claude': HostSpec(name='claude', instruction_files=('CLAUDE.md', '.claude/CLAUDE.md'), rule_dirs=('.claude/rules',), reads_agents_md=False, compared=True, skill_target='claude-code'), 'cline': HostSpec(name='cline', instruction_files=('.clinerules',), rule_dirs=('.clinerules',), reads_agents_md=True, compared=True, skill_target='cline'), 'codex': HostSpec(name='codex', instruction_files=(), rule_dirs=(), reads_agents_md=True, compared=True, skill_target='codex'), 'copilot': HostSpec(name='copilot', instruction_files=('.github/copilot-instructions.md',), rule_dirs=('.github/instructions',), reads_agents_md=True, compared=True, skill_target='copilot'), 'cursor': HostSpec(name='cursor', instruction_files=('.cursorrules',), rule_dirs=('.cursor/rules',), reads_agents_md=True, compared=True, skill_target='cursor'), 'gemini': HostSpec(name='gemini', instruction_files=('GEMINI.md',), rule_dirs=(), reads_agents_md=False, compared=True, skill_target='gemini'), 'windsurf': HostSpec(name='windsurf', instruction_files=('.windsurfrules', '.windsurfrules.md'), rule_dirs=('.windsurf/rules',), reads_agents_md=False, compared=True, skill_target='windsurf'), 'zed': HostSpec(name='zed', instruction_files=('.rules',), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None)})
 
 One `lossy` finding per project skill rendered for a host whose format drops fields.
 
@@ -1764,7 +1778,7 @@ Read-only.
 * **Return type:**
   [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`DriftFinding`](_autosummary/opsward.portability.html.md#opsward.portability.DriftFinding)]
 
-### opsward.portability.read_host_files(root, , hosts={'aider': HostSpec(name='aider', instruction_files=('CONVENTIONS.md',), rule_dirs=(), reads_agents_md=False, compared=False, skill_target=None), 'claude': HostSpec(name='claude', instruction_files=('CLAUDE.md', '.claude/CLAUDE.md'), rule_dirs=('.claude/rules',), reads_agents_md=False, compared=True, skill_target='claude-code'), 'cline': HostSpec(name='cline', instruction_files=('.clinerules',), rule_dirs=('.clinerules',), reads_agents_md=True, compared=True, skill_target='cline'), 'codex': HostSpec(name='codex', instruction_files=(), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None), 'copilot': HostSpec(name='copilot', instruction_files=('.github/copilot-instructions.md',), rule_dirs=('.github/instructions',), reads_agents_md=True, compared=True, skill_target='copilot'), 'cursor': HostSpec(name='cursor', instruction_files=('.cursorrules',), rule_dirs=('.cursor/rules',), reads_agents_md=True, compared=True, skill_target='cursor'), 'gemini': HostSpec(name='gemini', instruction_files=('GEMINI.md',), rule_dirs=(), reads_agents_md=False, compared=True, skill_target='gemini'), 'windsurf': HostSpec(name='windsurf', instruction_files=('.windsurfrules', '.windsurfrules.md'), rule_dirs=('.windsurf/rules',), reads_agents_md=False, compared=True, skill_target='windsurf'), 'zed': HostSpec(name='zed', instruction_files=('.rules',), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None)})
+### opsward.portability.read_host_files(root, , hosts={'aider': HostSpec(name='aider', instruction_files=('CONVENTIONS.md',), rule_dirs=(), reads_agents_md=False, compared=False, skill_target=None), 'claude': HostSpec(name='claude', instruction_files=('CLAUDE.md', '.claude/CLAUDE.md'), rule_dirs=('.claude/rules',), reads_agents_md=False, compared=True, skill_target='claude-code'), 'cline': HostSpec(name='cline', instruction_files=('.clinerules',), rule_dirs=('.clinerules',), reads_agents_md=True, compared=True, skill_target='cline'), 'codex': HostSpec(name='codex', instruction_files=(), rule_dirs=(), reads_agents_md=True, compared=True, skill_target='codex'), 'copilot': HostSpec(name='copilot', instruction_files=('.github/copilot-instructions.md',), rule_dirs=('.github/instructions',), reads_agents_md=True, compared=True, skill_target='copilot'), 'cursor': HostSpec(name='cursor', instruction_files=('.cursorrules',), rule_dirs=('.cursor/rules',), reads_agents_md=True, compared=True, skill_target='cursor'), 'gemini': HostSpec(name='gemini', instruction_files=('GEMINI.md',), rule_dirs=(), reads_agents_md=False, compared=True, skill_target='gemini'), 'windsurf': HostSpec(name='windsurf', instruction_files=('.windsurfrules', '.windsurfrules.md'), rule_dirs=('.windsurf/rules',), reads_agents_md=False, compared=True, skill_target='windsurf'), 'zed': HostSpec(name='zed', instruction_files=('.rules',), rule_dirs=(), reads_agents_md=True, compared=True, skill_target=None)})
 
 Every host instruction file and rule folder present under *root*. Read-only.
 
@@ -2575,7 +2589,7 @@ Saves this run’s numbers to `history` (`$OPSWARD_WEEKLY_DIR`, else
 
 # About this build
 
-This documentation was built on **2026-11-22 15:33 UTC** from commit <a href="https://github.com/addaix/opsward/commit/d8ba9dcf028042816d55cd270f736d03ccd6bdd0"><code>d8ba9dc</code></a> on branch <code>main</code>, for **opsward 0.0.43** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 18:12 UTC** from commit <a href="https://github.com/addaix/opsward/commit/ef121fa64fade373df5cd30183232c3fbf7528af"><code>ef121fa</code></a> on branch <code>main</code>, for **opsward 0.0.44** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -2584,7 +2598,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                       |
 |---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/addaix/opsward/commit/d8ba9dcf028042816d55cd270f736d03ccd6bdd0"><code>d8ba9dcf028042816d55cd270f736d03ccd6bdd0</code></a> |
+| Commit              | <a href="https://github.com/addaix/opsward/commit/ef121fa64fade373df5cd30183232c3fbf7528af"><code>ef121fa64fade373df5cd30183232c3fbf7528af</code></a> |
 | Branch              | <code>main</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                  |
 | Working tree        | clean                                                                                                                                                 |
@@ -2595,9 +2609,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>addaix/opsward</code>                                                                |
-| Run          | <a href="https://github.com/addaix/opsward/actions/runs/45038797561">45038797561</a>       |
+| Run          | <a href="https://github.com/addaix/opsward/actions/runs/45053575324">45053575324</a>       |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>d8ba9dcf028042816d55cd270f736d03ccd6bdd0</code> (in the history of the built commit) |
+| Event commit | <code>ef121fa64fade373df5cd30183232c3fbf7528af</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2622,13 +2636,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/opsward/0.0.43/">0.0.43</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/opsward/0.0.44/">0.0.44</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/addaix/opsward && cd opsward
-git checkout d8ba9dcf028042816d55cd270f736d03ccd6bdd0
+git checkout ef121fa64fade373df5cd30183232c3fbf7528af
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

@@ -26,6 +26,7 @@ opsward.lint
       resolve_validators
       skill_package_validator
       skillcheck_validator
+      skillsaw_validator
    
    .. rubric:: Classes
 
