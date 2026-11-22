@@ -47,7 +47,8 @@ STOPWORDS = frozenset(
     "on at by as or if no do".split()
 )  # fmt: skip
 STUB_PATTERN = re.compile(
-    r"\b(moved to|superseded|now (?:lives )?in|see instead|replaced by|lives in)\b", re.IGNORECASE
+    r"\b(moved to|superseded|now (?:lives )?in|see instead|replaced by|lives in)\b",
+    re.IGNORECASE,
 )
 #: Words that mark a rule as a habit for every project.
 FLEET_CUES = re.compile(
@@ -117,7 +118,9 @@ def project_name(slug: str) -> str:
     return slug.rstrip("-").rsplit("-", 1)[-1] or slug
 
 
-def memories(home: str | os.PathLike | None = None, *, kinds: Iterable[str] = DFLT_KINDS) -> list[Memory]:
+def memories(
+    home: str | os.PathLike | None = None, *, kinds: Iterable[str] = DFLT_KINDS
+) -> list[Memory]:
     """Every memory of ``kinds`` under ``home``'s project folders (``MEMORY.md`` indexes excluded)."""
     base = Path(home or DFLT_CLAUDE_HOME).expanduser() / "projects"
     kinds = set(kinds)
@@ -133,7 +136,11 @@ def memories(home: str | os.PathLike | None = None, *, kinds: Iterable[str] = DF
         kind = _kind_of(fields, path.stem)
         if kinds and kind not in kinds:
             continue
-        modified = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).date().isoformat()
+        modified = (
+            datetime.fromtimestamp(path.stat().st_mtime, timezone.utc)
+            .date()
+            .isoformat()
+        )
         out.append(Memory(
             str(path), path.parent.parent.name, kind, str(fields.get("name") or path.stem),
             str(fields.get("description") or ""), body.strip(), modified,
@@ -146,7 +153,9 @@ def skills(dirs: Iterable[str | os.PathLike]) -> dict[str, str]:
     out = {}
     for d in dirs:
         for path in sorted(Path(d).expanduser().glob("*/SKILL.md")):
-            fields, _ = parse_frontmatter(path.read_text(encoding="utf-8", errors="replace"))
+            fields, _ = parse_frontmatter(
+                path.read_text(encoding="utf-8", errors="replace")
+            )
             name = str(fields.get("name") or path.parent.name)
             out.setdefault(path.parent.name, f"{name} {fields.get('description', '')}")
     return out
@@ -187,14 +196,20 @@ def classify(memory: Memory) -> tuple[str, str]:
     ('project', 'names its own project (priv)')
     """
     own = project_name(memory.project).lower()
-    mentions_own = len(own) >= 3 and re.search(rf"\b{re.escape(own)}\b", memory.text.lower()) is not None
+    mentions_own = (
+        len(own) >= 3
+        and re.search(rf"\b{re.escape(own)}\b", memory.text.lower()) is not None
+    )
     cue = FLEET_CUES.search(memory.text)
     if mentions_own and not cue:
         return "project", f"names its own project ({own})"
     if cue and not mentions_own:
         return "fleet", f"worded as a habit ({cue.group(0)!r}) and does not name {own}"
     if cue:
-        return "fleet", f"worded as a habit ({cue.group(0)!r}), though it names {own}: check"
+        return (
+            "fleet",
+            f"worded as a habit ({cue.group(0)!r}), though it names {own}: check",
+        )
     return "project", "no habit wording; kept with its project unless you say otherwise"
 
 
@@ -207,7 +222,9 @@ def is_stub(memory: Memory, *, short: int = 400, head: int = 200) -> bool:
     False
     """
     opening = f"{memory.name}\n{memory.description}\n{memory.body[:head]}"
-    return bool(STUB_PATTERN.search(opening)) or (len(memory.body) < short and bool(STUB_PATTERN.search(memory.text)))
+    return bool(STUB_PATTERN.search(opening)) or (
+        len(memory.body) < short and bool(STUB_PATTERN.search(memory.text))
+    )
 
 
 def _owner(memory: Memory, owners: Mapping[str, str]) -> tuple[str, float]:
@@ -247,7 +264,9 @@ def audit(
     """
     claude_home = Path(home or DFLT_CLAUDE_HOME).expanduser()
     mems = list(found) if found is not None else memories(claude_home, kinds=kinds)
-    skills_dirs = list(skills_dirs) if skills_dirs is not None else [claude_home / "skills"]
+    skills_dirs = (
+        list(skills_dirs) if skills_dirs is not None else [claude_home / "skills"]
+    )
     owners = skills(skills_dirs)
     claude_md = Path(global_claude_md or claude_home / "CLAUDE.md").expanduser()
 
@@ -266,12 +285,17 @@ def audit(
         m.stub = is_stub(m)
         m.scope, m.reason = classify(m)
         for other in mems[i + 1 :]:
-            if other.project != m.project and similarity(m.text, other.text) >= duplicate_at:
+            if (
+                other.project != m.project
+                and similarity(m.text, other.text) >= duplicate_at
+            ):
                 m.duplicates.append(other.path)
                 other.duplicates.append(m.path)
         if m.scope == "fleet" and not m.stub:
             name, score = _owner(m, owners)
-            m.owner, m.owner_score = (f"skill:{name}", score) if score >= owner_at else ("CLAUDE.md", score)
+            m.owner, m.owner_score = (
+                (f"skill:{name}", score) if score >= owner_at else ("CLAUDE.md", score)
+            )
             m.covered = _covered(m, read_owner(m.owner.removeprefix("skill:")))
     projects = {m.project for m in mems}
     return {
@@ -298,7 +322,10 @@ def render(result: Mapping, *, home: str | os.PathLike | None = None) -> str:
         "|---|---|---|---|---|---|---|",
     ]
     order = {"fleet": 0, "project": 1}
-    for m in sorted(result["memories"], key=lambda m: (m["stub"], order.get(m["scope"], 2), m["project"], m["name"])):
+    for m in sorted(
+        result["memories"],
+        key=lambda m: (m["stub"], order.get(m["scope"], 2), m["project"], m["name"]),
+    ):
         owner = "delete (stub)" if m["stub"] else (m["owner"] or "")
         dups = ", ".join(Path(d).stem for d in m["duplicates"]) or ""
         lines.append(

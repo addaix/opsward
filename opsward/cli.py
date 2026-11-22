@@ -767,6 +767,7 @@ def weekly(
     result = look(days=float(days), save=not no_save)
     print(json.dumps(result, indent=2) if format == "json" else render(result), end="")
 
+
 def memory_audit(
     kinds: str = "feedback",
     format: str = "text",
@@ -792,6 +793,7 @@ def memory_audit(
         sys.exit(2)
     result = audit(kinds=chosen)
     print(json.dumps(result, indent=2) if format == "json" else render(result), end="")
+
 
 # The SSOT of the CLI surface: a name -> command mapping, with one nested group.
 _dispatch_funcs = {
