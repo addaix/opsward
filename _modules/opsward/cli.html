@@ -76,6 +76,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.generate.html">opsward.generate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.lint.html">opsward.lint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.maintain.html">opsward.maintain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.memory_audit.html">opsward.memory_audit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.portability.html">opsward.portability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.recommend.html">opsward.recommend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.scan.html">opsward.scan</a></li>
@@ -942,21 +943,51 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="768">    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">"json"</span> <span class="k">else</span> <span class="n">render</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span></div>
 
 </span><span data-line="769">
-</span><span data-line="770"><span class="c1"># The SSOT of the CLI surface: a name -&gt; command mapping, with one nested group.</span>
-</span><span data-line="771"><span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">{</span>
-</span><span data-line="772">    <span class="s2">"diagnose"</span><span class="p">:</span> <span class="n">diagnose</span><span class="p">,</span>
-</span><span data-line="773">    <span class="s2">"generate"</span><span class="p">:</span> <span class="n">generate</span><span class="p">,</span>
-</span><span data-line="774">    <span class="s2">"maintain"</span><span class="p">:</span> <span class="n">maintain</span><span class="p">,</span>
-</span><span data-line="775">    <span class="s2">"recommend"</span><span class="p">:</span> <span class="n">recommend</span><span class="p">,</span>
-</span><span data-line="776">    <span class="s2">"install-skills"</span><span class="p">:</span> <span class="n">install_skills</span><span class="p">,</span>
-</span><span data-line="777">    <span class="s2">"find"</span><span class="p">:</span> <span class="n">find</span><span class="p">,</span>
-</span><span data-line="778">    <span class="s2">"fleet"</span><span class="p">:</span> <span class="n">fleet</span><span class="p">,</span>
-</span><span data-line="779">    <span class="s2">"lint"</span><span class="p">:</span> <span class="n">lint</span><span class="p">,</span>
-</span><span data-line="780">    <span class="s2">"portability"</span><span class="p">:</span> <span class="n">portability</span><span class="p">,</span>
-</span><span data-line="781">    <span class="s2">"eval"</span><span class="p">:</span> <span class="n">eval_</span><span class="p">,</span>
-</span><span data-line="782">    <span class="s2">"weekly"</span><span class="p">:</span> <span class="n">weekly</span><span class="p">,</span>
-</span><span data-line="783">    <span class="s2">"decision"</span><span class="p">:</span> <span class="p">[</span><span class="n">new</span><span class="p">,</span> <span class="n">note</span><span class="p">],</span>
-</span><span data-line="784"><span class="p">}</span>
+<div class="viewcode-block" id="memory_audit">
+<a class="viewcode-back" href="../../_autosummary/opsward.cli.html#opsward.cli.memory_audit">[docs]</a>
+</span><span data-line="770"><span class="k">def</span><span class="w"> </span><span class="nf">memory_audit</span><span class="p">(</span>
+</span><span data-line="771">    <span class="n">kinds</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"feedback"</span><span class="p">,</span>
+</span><span data-line="772">    <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"text"</span><span class="p">,</span>
+</span><span data-line="773"><span class="p">):</span>
+</span><span data-line="774"><span class="w">    </span><span class="sd">"""List auto-memories that hold fleet-wide rules, and propose who should own each.</span>
+</span><span data-line="775">
+</span><span data-line="776"><span class="sd">    Reads this machine's Claude Code auto-memory (~/.claude/projects/*/memory/*.md). For</span>
+</span><span data-line="777"><span class="sd">    each memory: project or fleet scope (with the reason), near-duplicates in other folders,</span>
+</span><span data-line="778"><span class="sd">    for a fleet-wide one the skill or ~/.claude/CLAUDE.md that should hold it and whether it</span>
+</span><span data-line="779"><span class="sd">    already does, and stubs that only point elsewhere. Report-only: nothing is changed.</span>
+</span><span data-line="780">
+</span><span data-line="781"><span class="sd">    :param kinds: comma-separated memory kinds (user, feedback, project, reference)</span>
+</span><span data-line="782"><span class="sd">    :param format: output format — 'text' (a markdown page) or 'json'</span>
+</span><span data-line="783"><span class="sd">    """</span>
+</span><span data-line="784">    <span class="kn">from</span><span class="w"> </span><span class="nn">opsward.memory_audit</span><span class="w"> </span><span class="kn">import</span> <span class="n">KINDS</span><span class="p">,</span> <span class="n">audit</span><span class="p">,</span> <span class="n">render</span>
+</span><span data-line="785">
+</span><span data-line="786">    <span class="n">chosen</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kinds</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+</span><span data-line="787">    <span class="k">if</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"json"</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">chosen</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">chosen</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">KINDS</span><span class="p">):</span>
+</span><span data-line="788">        <span class="nb">print</span><span class="p">(</span>
+</span><span data-line="789">            <span class="sa">f</span><span class="s2">"Error: format must be 'text' or 'json', kinds among </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">KINDS</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+</span><span data-line="790">            <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+</span><span data-line="791">        <span class="p">)</span>
+</span><span data-line="792">        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span data-line="793">    <span class="n">result</span> <span class="o">=</span> <span class="n">audit</span><span class="p">(</span><span class="n">kinds</span><span class="o">=</span><span class="n">chosen</span><span class="p">)</span>
+</span><span data-line="794">    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">"json"</span> <span class="k">else</span> <span class="n">render</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span></div>
+
+</span><span data-line="795">
+</span><span data-line="796"><span class="c1"># The SSOT of the CLI surface: a name -&gt; command mapping, with one nested group.</span>
+</span><span data-line="797"><span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="798">    <span class="s2">"diagnose"</span><span class="p">:</span> <span class="n">diagnose</span><span class="p">,</span>
+</span><span data-line="799">    <span class="s2">"generate"</span><span class="p">:</span> <span class="n">generate</span><span class="p">,</span>
+</span><span data-line="800">    <span class="s2">"maintain"</span><span class="p">:</span> <span class="n">maintain</span><span class="p">,</span>
+</span><span data-line="801">    <span class="s2">"recommend"</span><span class="p">:</span> <span class="n">recommend</span><span class="p">,</span>
+</span><span data-line="802">    <span class="s2">"install-skills"</span><span class="p">:</span> <span class="n">install_skills</span><span class="p">,</span>
+</span><span data-line="803">    <span class="s2">"find"</span><span class="p">:</span> <span class="n">find</span><span class="p">,</span>
+</span><span data-line="804">    <span class="s2">"fleet"</span><span class="p">:</span> <span class="n">fleet</span><span class="p">,</span>
+</span><span data-line="805">    <span class="s2">"lint"</span><span class="p">:</span> <span class="n">lint</span><span class="p">,</span>
+</span><span data-line="806">    <span class="s2">"portability"</span><span class="p">:</span> <span class="n">portability</span><span class="p">,</span>
+</span><span data-line="807">    <span class="s2">"eval"</span><span class="p">:</span> <span class="n">eval_</span><span class="p">,</span>
+</span><span data-line="808">    <span class="s2">"weekly"</span><span class="p">:</span> <span class="n">weekly</span><span class="p">,</span>
+</span><span data-line="809">    <span class="s2">"memory-audit"</span><span class="p">:</span> <span class="n">memory_audit</span><span class="p">,</span>
+</span><span data-line="810">    <span class="s2">"decision"</span><span class="p">:</span> <span class="p">[</span><span class="n">new</span><span class="p">,</span> <span class="n">note</span><span class="p">],</span>
+</span><span data-line="811"><span class="p">}</span>
 </span></pre></div>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -984,7 +1015,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=173d7b4c"></script>
+      <script src="../../_static/documentation_options.js?v=b345ff55"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

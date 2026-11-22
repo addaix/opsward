@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="crimson" data-content_root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>opsward.memory_audit - opsward</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="opsward.portability" href="opsward.portability.html" /><link rel="prev" title="opsward.maintain" href="opsward.maintain.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d88b86f9" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/><meta property="og:title" content="opsward.memory_audit"/>
+    <meta name="twitter:card" content="summary"/>
+  
+<link rel="alternate" type="text/markdown" href="opsward.memory_audit.html.md">
+<link rel="describedby" href="../llms.txt" type="text/markdown">
+</head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      
+      
+      <strong>opsward</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/addaix/opsward" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="opsward.html">opsward</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="opsward.base.html">opsward.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.cli.html">opsward.cli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.data.html">opsward.data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opsward.data.templates.html">opsward.data.templates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.decisions.html">opsward.decisions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.discover.html">opsward.discover</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.evals.html">opsward.evals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.fleet.html">opsward.fleet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.generate.html">opsward.generate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.lint.html">opsward.lint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.maintain.html">opsward.maintain</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">opsward.memory_audit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.portability.html">opsward.portability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.recommend.html">opsward.recommend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.scan.html">opsward.scan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.score.html">opsward.score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.security.html">opsward.security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.subagents.html">opsward.subagents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.util.html">opsward.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.weekly.html">opsward.weekly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ai-agents.html">For AI agents</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#opsward.memory_audit.COVERED_AT"><code class="docutils literal notranslate"><span class="pre">COVERED_AT</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.DUPLICATE_AT"><code class="docutils literal notranslate"><span class="pre">DUPLICATE_AT</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.FLEET_CUES"><code class="docutils literal notranslate"><span class="pre">FLEET_CUES</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.Memory"><code class="docutils literal notranslate"><span class="pre">Memory</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.OWNER_AT"><code class="docutils literal notranslate"><span class="pre">OWNER_AT</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.audit"><code class="docutils literal notranslate"><span class="pre">audit()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.classify"><code class="docutils literal notranslate"><span class="pre">classify()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.is_stub"><code class="docutils literal notranslate"><span class="pre">is_stub()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.memories"><code class="docutils literal notranslate"><span class="pre">memories()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.parse_frontmatter"><code class="docutils literal notranslate"><span class="pre">parse_frontmatter()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.project_name"><code class="docutils literal notranslate"><span class="pre">project_name()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.render"><code class="docutils literal notranslate"><span class="pre">render()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.similarity"><code class="docutils literal notranslate"><span class="pre">similarity()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.skills"><code class="docutils literal notranslate"><span class="pre">skills()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.words"><code class="docutils literal notranslate"><span class="pre">words()</span></code></a></li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">opsward</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../api.html"><span itemprop="name">API reference</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="opsward.html"><span itemprop="name">opsward</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="3" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">opsward.memory_audit</strong>
+        <meta itemprop="position" content="4" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <article class="yue dark-code" role="main">
+          <section id="module-opsward.memory_audit">
+<span id="opsward-memory-audit"></span><h1>opsward.memory_audit<a class="headerlink" href="#module-opsward.memory_audit" title="Link to this heading">#</a></h1>
+<p>Memory audit: fleet-wide rules stranded in project-local auto-memory, and who should own them.</p>
+<p>Claude Code’s auto-memory is keyed by working directory: a <code class="docutils literal notranslate"><span class="pre">feedback</span></code> memory written in one
+project loads only in sessions started there. A rule that holds for every project is stranded
+in that one. This audit lists every memory of the chosen kinds, then for each one:</p>
+<ul class="simple">
+<li><p><strong>scope</strong>: <code class="docutils literal notranslate"><span class="pre">project</span></code> or <code class="docutils literal notranslate"><span class="pre">fleet</span></code>, with the reason (<a class="reference internal" href="#opsward.memory_audit.classify" title="opsward.memory_audit.classify"><code class="xref py py-func docutils literal notranslate"><span class="pre">classify()</span></code></a>, a heuristic; pass
+<code class="docutils literal notranslate"><span class="pre">classify=</span></code> to use a judge instead);</p></li>
+<li><p><strong>duplicates</strong>: memories in <em>other</em> directories that say nearly the same thing
+(<a class="reference internal" href="#opsward.memory_audit.similarity" title="opsward.memory_audit.similarity"><code class="xref py py-func docutils literal notranslate"><span class="pre">similarity()</span></code></a>, lexical, replaceable);</p></li>
+<li><p><strong>owner</strong>: for a fleet-wide one, the installed skill whose name and description match it
+best, else <code class="docutils literal notranslate"><span class="pre">~/.claude/CLAUDE.md</span></code>, and whether the owner already says it;</p></li>
+<li><p><strong>stub</strong>: a memory that only says it moved elsewhere, listed for deletion.</p></li>
+</ul>
+<p>Report-only: it never writes, moves or deletes a memory. The user curates the table.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_frontmatter</span><span class="p">(</span><span class="s2">"---</span><span class="se">\n</span><span class="s2">name: x</span><span class="se">\n</span><span class="s2">metadata:</span><span class="se">\n</span><span class="s2">  type: feedback</span><span class="se">\n</span><span class="s2">---</span><span class="se">\n</span><span class="s2">body"</span><span class="p">)</span>
+</span><span data-line="2"><span class="go">({'name': 'x', 'type': 'feedback'}, 'body')</span>
+</span></pre></div>
+</div>
+<p class="rubric">Module Attributes</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.DUPLICATE_AT" title="opsward.memory_audit.DUPLICATE_AT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DUPLICATE_AT</span></code></a></p></td>
+<td><p>Two memories in different directories at or above this similarity are reported as duplicates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.OWNER_AT" title="opsward.memory_audit.OWNER_AT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OWNER_AT</span></code></a></p></td>
+<td><p>A skill must match a fleet-wide memory at least this well to be proposed as its owner.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.COVERED_AT" title="opsward.memory_audit.COVERED_AT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">COVERED_AT</span></code></a></p></td>
+<td><p>Share of a memory's distinctive words its owner must already hold to say &quot;already there&quot;.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.FLEET_CUES" title="opsward.memory_audit.FLEET_CUES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FLEET_CUES</span></code></a></p></td>
+<td><p>Words that mark a rule as a habit for every project.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Functions</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.audit" title="opsward.memory_audit.audit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">audit</span></code></a>(*[, home, kinds, found, skills_dirs, ...])</p></td>
+<td><p>Audit the memories (<code class="docutils literal notranslate"><span class="pre">found</span></code>, default: <a class="reference internal" href="#opsward.memory_audit.memories" title="opsward.memory_audit.memories"><code class="xref py py-func docutils literal notranslate"><span class="pre">memories()</span></code></a> of <code class="docutils literal notranslate"><span class="pre">home</span></code> and <code class="docutils literal notranslate"><span class="pre">kinds</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.classify" title="opsward.memory_audit.classify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">classify</span></code></a>(memory)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(scope,</span> <span class="pre">reason)</span></code>: <code class="docutils literal notranslate"><span class="pre">project</span></code> when the memory names its own project (and is not phrased as a habit), else <code class="docutils literal notranslate"><span class="pre">fleet</span></code> or <code class="docutils literal notranslate"><span class="pre">project</span></code> by its wording.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.is_stub" title="opsward.memory_audit.is_stub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_stub</span></code></a>(memory, *[, short, head])</p></td>
+<td><p>A memory that says it moved: the marker in its name or opening, or anywhere in a short one.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.memories" title="opsward.memory_audit.memories"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memories</span></code></a>([home, kinds])</p></td>
+<td><p>Every memory of <code class="docutils literal notranslate"><span class="pre">kinds</span></code> under <code class="docutils literal notranslate"><span class="pre">home</span></code>'s project folders (<code class="docutils literal notranslate"><span class="pre">MEMORY.md</span></code> indexes excluded).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.parse_frontmatter" title="opsward.memory_audit.parse_frontmatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_frontmatter</span></code></a>(text)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(fields,</span> <span class="pre">body)</span></code>: flat <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code> fields of a <code class="docutils literal notranslate"><span class="pre">---</span></code> block, nested <code class="docutils literal notranslate"><span class="pre">metadata</span></code> keys lifted to the top (<code class="docutils literal notranslate"><span class="pre">metadata:</span> <span class="pre">type:</span> <span class="pre">feedback</span></code> gives <code class="docutils literal notranslate"><span class="pre">type</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.project_name" title="opsward.memory_audit.project_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_name</span></code></a>(slug)</p></td>
+<td><p>The project a directory slug names: its last path part.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.render" title="opsward.memory_audit.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a>(result, *[, home])</p></td>
+<td><p>The audit as a markdown page: fleet-wide memories and their proposed owner first.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.similarity" title="opsward.memory_audit.similarity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity</span></code></a>(a, b)</p></td>
+<td><p>Jaccard similarity of two texts' distinctive words.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.skills" title="opsward.memory_audit.skills"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skills</span></code></a>(dirs)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">&quot;name</span> <span class="pre">description&quot;}</span></code> of the skills under <code class="docutils literal notranslate"><span class="pre">dirs</span></code> (<code class="docutils literal notranslate"><span class="pre">*/SKILL.md</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.words" title="opsward.memory_audit.words"><code class="xref py py-obj docutils literal notranslate"><span class="pre">words</span></code></a>(text)</p></td>
+<td><p>The distinctive words of <code class="docutils literal notranslate"><span class="pre">text</span></code>: lowercase, three letters or more, no stopwords.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Classes</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.Memory" title="opsward.memory_audit.Memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Memory</span></code></a>(path, project, kind, name, ...[, ...])</p></td>
+<td><p>One memory file.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="opsward.memory_audit.COVERED_AT">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">COVERED_AT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.6</span></span><a class="headerlink" href="#opsward.memory_audit.COVERED_AT" title="Link to this definition">#</a></dt>
+<dd><p>Share of a memory’s distinctive words its owner must already hold to say “already there”.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="opsward.memory_audit.DUPLICATE_AT">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">DUPLICATE_AT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.45</span></span><a class="headerlink" href="#opsward.memory_audit.DUPLICATE_AT" title="Link to this definition">#</a></dt>
+<dd><p>Two memories in different directories at or above this similarity are reported as duplicates.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="opsward.memory_audit.FLEET_CUES">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">FLEET_CUES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('\\b(always|never|every</span> <span class="pre">(?:project|repo|package|session)|in</span> <span class="pre">general|whenever|by</span> <span class="pre">default|from</span> <span class="pre">now</span> <span class="pre">on|across</span> <span class="pre">(?:the</span> <span class="pre">)?(?:fleet|projects|repos))\\b',</span> <span class="pre">re.IGNORECASE)</span></span><a class="headerlink" href="#opsward.memory_audit.FLEET_CUES" title="Link to this definition">#</a></dt>
+<dd><p>Words that mark a rule as a habit for every project.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="opsward.memory_audit.Memory">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">Memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modified</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">list()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#Memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.Memory" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>One memory file.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="opsward.memory_audit.OWNER_AT">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">OWNER_AT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.08</span></span><a class="headerlink" href="#opsward.memory_audit.OWNER_AT" title="Link to this definition">#</a></dt>
+<dd><p>A skill must match a fleet-wide memory at least this well to be proposed as its owner.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.audit">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">audit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kinds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('feedback'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">found</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills_dirs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_claude_md</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_owner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">classify&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">similarity&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicate_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#audit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.audit" title="Link to this definition">#</a></dt>
+<dd><p>Audit the memories (<code class="docutils literal notranslate"><span class="pre">found</span></code>, default: <a class="reference internal" href="#opsward.memory_audit.memories" title="opsward.memory_audit.memories"><code class="xref py py-func docutils literal notranslate"><span class="pre">memories()</span></code></a> of <code class="docutils literal notranslate"><span class="pre">home</span></code> and <code class="docutils literal notranslate"><span class="pre">kinds</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">read_owner(owner)</span></code> returns an owner’s text, to say whether it already holds the rule
+(default: the skill’s <code class="docutils literal notranslate"><span class="pre">SKILL.md</span></code>, or the global <code class="docutils literal notranslate"><span class="pre">CLAUDE.md</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.classify">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">classify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#classify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.classify" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(scope,</span> <span class="pre">reason)</span></code>: <code class="docutils literal notranslate"><span class="pre">project</span></code> when the memory names its own project (and is not
+phrased as a habit), else <code class="docutils literal notranslate"><span class="pre">fleet</span></code> or <code class="docutils literal notranslate"><span class="pre">project</span></code> by its wording.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">Memory</span><span class="p">(</span><span class="s2">"p"</span><span class="p">,</span> <span class="s2">"-x-t-priv"</span><span class="p">,</span> <span class="s2">"feedback"</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"Always route LLM calls through aix."</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+</span><span data-line="2"><span class="gp">&gt;&gt;&gt; </span><span class="n">classify</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span><span data-line="3"><span class="go">('fleet', "worded as a habit ('Always') and does not name priv")</span>
+</span><span data-line="4"><span class="gp">&gt;&gt;&gt; </span><span class="n">classify</span><span class="p">(</span><span class="n">Memory</span><span class="p">(</span><span class="s2">"p"</span><span class="p">,</span> <span class="s2">"-x-t-priv"</span><span class="p">,</span> <span class="s2">"feedback"</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"In priv, the CLI golden must be re-recorded."</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+</span><span data-line="5"><span class="go">('project', 'names its own project (priv)')</span>
+</span></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.is_stub">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">is_stub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memory</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">short</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">head</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#is_stub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.is_stub" title="Link to this definition">#</a></dt>
+<dd><p>A memory that says it moved: the marker in its name or opening, or anywhere in a short one.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">is_stub</span><span class="p">(</span><span class="n">Memory</span><span class="p">(</span><span class="s2">"p"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="s2">"feedback"</span><span class="p">,</span> <span class="s2">"old-rule-SUPERSEDED"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"x "</span> <span class="o">*</span> <span class="mi">400</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+</span><span data-line="2"><span class="go">True</span>
+</span><span data-line="3"><span class="gp">&gt;&gt;&gt; </span><span class="n">is_stub</span><span class="p">(</span><span class="n">Memory</span><span class="p">(</span><span class="s2">"p"</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="s2">"feedback"</span><span class="p">,</span> <span class="s2">"rule"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"Prefer dol. "</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">+</span> <span class="s2">"It replaced by hand."</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+</span><span data-line="4"><span class="go">False</span>
+</span></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.memories">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">memories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">kinds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('feedback',)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#memories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.memories" title="Link to this definition">#</a></dt>
+<dd><p>Every memory of <code class="docutils literal notranslate"><span class="pre">kinds</span></code> under <code class="docutils literal notranslate"><span class="pre">home</span></code>’s project folders (<code class="docutils literal notranslate"><span class="pre">MEMORY.md</span></code> indexes excluded).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="#opsward.memory_audit.Memory" title="opsward.memory_audit.Memory"><code class="xref py py-class docutils literal notranslate"><span class="pre">Memory</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.parse_frontmatter">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">parse_frontmatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#parse_frontmatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.parse_frontmatter" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(fields,</span> <span class="pre">body)</span></code>: flat <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code> fields of a <code class="docutils literal notranslate"><span class="pre">---</span></code> block, nested <code class="docutils literal notranslate"><span class="pre">metadata</span></code>
+keys lifted to the top (<code class="docutils literal notranslate"><span class="pre">metadata:</span> <span class="pre">type:</span> <span class="pre">feedback</span></code> gives <code class="docutils literal notranslate"><span class="pre">type</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.project_name">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">project_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slug</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#project_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.project_name" title="Link to this definition">#</a></dt>
+<dd><p>The project a directory slug names: its last path part.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">project_name</span><span class="p">(</span><span class="s2">"-Users-me-Dropbox-py-proj-t-priv"</span><span class="p">)</span>
+</span><span data-line="2"><span class="go">'priv'</span>
+</span></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.render">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.render" title="Link to this definition">#</a></dt>
+<dd><p>The audit as a markdown page: fleet-wide memories and their proposed owner first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.similarity">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.similarity" title="Link to this definition">#</a></dt>
+<dd><p>Jaccard similarity of two texts’ distinctive words.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">similarity</span><span class="p">(</span><span class="s2">"prefer the storage facade dol"</span><span class="p">,</span> <span class="s2">"the dol storage facade, always"</span><span class="p">)</span>
+</span><span data-line="2"><span class="go">1.0</span>
+</span><span data-line="3"><span class="gp">&gt;&gt;&gt; </span><span class="n">similarity</span><span class="p">(</span><span class="s2">"route calls through aix"</span><span class="p">,</span> <span class="s2">"route storage through dol"</span><span class="p">)</span>
+</span><span data-line="4"><span class="go">0.333</span>
+</span></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.skills">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">skills</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#skills"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.skills" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">&quot;name</span> <span class="pre">description&quot;}</span></code> of the skills under <code class="docutils literal notranslate"><span class="pre">dirs</span></code> (<code class="docutils literal notranslate"><span class="pre">*/SKILL.md</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.words">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.words" title="Link to this definition">#</a></dt>
+<dd><p>The distinctive words of <code class="docutils literal notranslate"><span class="pre">text</span></code>: lowercase, three letters or more, no stopwords.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">words</span><span class="p">(</span><span class="s2">"Always route LLM calls through aix, never directly."</span><span class="p">))</span>
+</span><span data-line="2"><span class="go">['aix', 'calls', 'directly', 'llm', 'route', 'through']</span>
+</span></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#set" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="opsward.maintain.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">opsward.maintain</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="opsward.portability.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">opsward.portability</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright">
+  <p>
+    Made with
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/addaix/opsward" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../_static/documentation_options.js?v=b345ff55"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=fd10adb8"></script>
+      <script src="../_static/shibuya.js?v=50760d75"></script></body>
+</html>

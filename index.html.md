@@ -110,6 +110,17 @@ opsward weekly --days 7 --format json --no-save
 
 Only metadata is read (tool names, paths, skill names, times), never prompt or file text. In Python, `opsward.weekly.weekly(...)` takes every source as a keyword argument.
 
+### Memory audit
+
+Claude Code’s auto-memory is kept per working directory, so a correction that holds for every project, once saved as a `feedback` memory in one folder, loads only there. `opsward memory-audit` lists those memories and, for each one, says whether it reads as project-specific or fleet-wide (and why), which memories in other folders say nearly the same thing, which skill (or `~/.claude/CLAUDE.md`) should own a fleet-wide one and whether it already says it, and which memories are stubs that only point elsewhere. Report-only: it never moves or deletes a memory.
+
+```bash
+opsward memory-audit                          # feedback memories, as a markdown table
+opsward memory-audit --kinds feedback,user --format json
+```
+
+The scope test is a heuristic (it looks for habit wording and for the project’s own name). In Python, `opsward.memory_audit.audit(classify=...)` takes a judge instead, and `similarity=` takes another duplicate measure.
+
 ### Output Formats
 
 All CLI commands support `--format json` for machine-parseable output:

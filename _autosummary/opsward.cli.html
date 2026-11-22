@@ -79,6 +79,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l3"><a class="reference internal" href="opsward.generate.html">opsward.generate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="opsward.lint.html">opsward.lint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="opsward.maintain.html">opsward.maintain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.memory_audit.html">opsward.memory_audit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="opsward.portability.html">opsward.portability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="opsward.recommend.html">opsward.recommend</a></li>
 <li class="toctree-l3"><a class="reference internal" href="opsward.scan.html">opsward.scan</a></li>
@@ -112,6 +113,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#opsward.cli.install_skills"><code class="docutils literal notranslate"><span class="pre">install_skills()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.cli.lint"><code class="docutils literal notranslate"><span class="pre">lint()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.cli.maintain"><code class="docutils literal notranslate"><span class="pre">maintain()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.cli.memory_audit"><code class="docutils literal notranslate"><span class="pre">memory_audit()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.cli.new"><code class="docutils literal notranslate"><span class="pre">new()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.cli.note"><code class="docutils literal notranslate"><span class="pre">note()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.cli.portability"><code class="docutils literal notranslate"><span class="pre">portability()</span></code></a></li>
@@ -186,19 +188,22 @@ data-aria-dark="Switch to auto color mode">
 <tr class="row-even"><td><p><a class="reference internal" href="#opsward.cli.maintain" title="opsward.cli.maintain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maintain</span></code></a>(*project_roots[, format])</p></td>
 <td><p>Check for stale references, out-of-sync docs, and other drift.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.cli.new" title="opsward.cli.new"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new</span></code></a>(title[, write, project_root, status, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.cli.memory_audit" title="opsward.cli.memory_audit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memory_audit</span></code></a>([kinds, format])</p></td>
+<td><p>List auto-memories that hold fleet-wide rules, and propose who should own each.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.cli.new" title="opsward.cli.new"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new</span></code></a>(title[, write, project_root, status, ...])</p></td>
 <td><p>Allocate the next numbered ADR for TITLE (dry run unless --write; never overwrites).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#opsward.cli.note" title="opsward.cli.note"><code class="xref py py-obj docutils literal notranslate"><span class="pre">note</span></code></a>(text[, write, project_root])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.cli.note" title="opsward.cli.note"><code class="xref py py-obj docutils literal notranslate"><span class="pre">note</span></code></a>(text[, write, project_root])</p></td>
 <td><p>Append TEXT as a dated one-line decision (a Y-statement) to decisions/log.md (dry run unless --write).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.cli.portability" title="opsward.cli.portability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">portability</span></code></a>(*project_roots[, format])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.cli.portability" title="opsward.cli.portability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">portability</span></code></a>(*project_roots[, format])</p></td>
 <td><p>Show which agent hosts find project instructions, and how renders drift from AGENTS.md.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#opsward.cli.recommend" title="opsward.cli.recommend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recommend</span></code></a>(*project_roots[, format])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.cli.recommend" title="opsward.cli.recommend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recommend</span></code></a>(*project_roots[, format])</p></td>
 <td><p>Recommend ecosystem skills based on the project's tech stack.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.cli.weekly" title="opsward.cli.weekly"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weekly</span></code></a>([days, format, no_save])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.cli.weekly" title="opsward.cli.weekly"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weekly</span></code></a>([days, format, no_save])</p></td>
 <td><p>Print the agent setup's five numbers over the last DAYS, and one proposed change.</p></td>
 </tr>
 </tbody>
@@ -360,6 +365,24 @@ volatile reference: put <code class="code docutils literal notranslate"><span cl
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="opsward.cli.memory_audit">
+<span class="sig-prename descclassname"><span class="pre">opsward.cli.</span></span><span class="sig-name descname"><span class="pre">memory_audit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kinds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'feedback'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'text'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/cli.html#memory_audit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.cli.memory_audit" title="Link to this definition">#</a></dt>
+<dd><p>List auto-memories that hold fleet-wide rules, and propose who should own each.</p>
+<p>Reads this machine’s Claude Code auto-memory (~/.claude/projects/<em>/memory/</em>.md). For
+each memory: project or fleet scope (with the reason), near-duplicates in other folders,
+for a fleet-wide one the skill or ~/.claude/CLAUDE.md that should hold it and whether it
+already does, and stubs that only point elsewhere. Report-only: nothing is changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kinds</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – comma-separated memory kinds (user, feedback, project, reference)</p></li>
+<li><p><strong>format</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – output format — ‘text’ (a markdown page) or ‘json’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="opsward.cli.new">
 <span class="sig-prename descclassname"><span class="pre">opsward.cli.</span></span><span class="sig-name descname"><span class="pre">new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Proposed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evidence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/cli.html#new"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.cli.new" title="Link to this definition">#</a></dt>
 <dd><p>Allocate the next numbered ADR for TITLE (dry run unless –write; never overwrites).</p>
@@ -486,7 +509,7 @@ yours to pick.</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=173d7b4c"></script>
+      <script src="../_static/documentation_options.js?v=b345ff55"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

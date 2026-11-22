@@ -13,6 +13,7 @@ CLI dispatch for opsward.
 | [`install_skills`](#opsward.cli.install_skills)([target, global_install, ...])       | Install opsward's Claude Code skills (and agents) into a project or globally.                          |
 | [`lint`](#opsward.cli.lint)(\*project_roots[, validators, format])         | Check skill specs and the hooks config: pass or fail, no score (exit 1 on any finding).                |
 | [`maintain`](#opsward.cli.maintain)(\*project_roots[, format])                 | Check for stale references, out-of-sync docs, and other drift.                                         |
+| [`memory_audit`](#opsward.cli.memory_audit)([kinds, format])                       | List auto-memories that hold fleet-wide rules, and propose who should own each.                        |
 | [`new`](#opsward.cli.new)(title[, write, project_root, status, ...])      | Allocate the next numbered ADR for TITLE (dry run unless --write; never overwrites).                   |
 | [`note`](#opsward.cli.note)(text[, write, project_root])                   | Append TEXT as a dated one-line decision (a Y-statement) to decisions/log.md (dry run unless --write). |
 | [`portability`](#opsward.cli.portability)(\*project_roots[, format])              | Show which agent hosts find project instructions, and how renders drift from AGENTS.md.                |
@@ -132,6 +133,19 @@ volatile reference: put `opsward: ignore-path` on its line).
 * **Parameters:**
   * **project_roots** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – one or more paths to project directories
   * **format** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – output format — ‘text’ or ‘json’
+
+### opsward.cli.memory_audit(kinds='feedback', format='text')
+
+List auto-memories that hold fleet-wide rules, and propose who should own each.
+
+Reads this machine’s Claude Code auto-memory (~/.claude/projects/ */memory/*.md). For
+each memory: project or fleet scope (with the reason), near-duplicates in other folders,
+for a fleet-wide one the skill or ~/.claude/CLAUDE.md that should hold it and whether it
+already does, and stubs that only point elsewhere. Report-only: nothing is changed.
+
+* **Parameters:**
+  * **kinds** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – comma-separated memory kinds (user, feedback, project, reference)
+  * **format** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – output format — ‘text’ (a markdown page) or ‘json’
 
 ### opsward.cli.new(title, write=False, project_root='.', status='Proposed', evidence='')
 

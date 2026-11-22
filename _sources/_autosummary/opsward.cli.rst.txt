@@ -16,6 +16,7 @@ opsward.cli
       install_skills
       lint
       maintain
+      memory_audit
       new
       note
       portability
