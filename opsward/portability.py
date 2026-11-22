@@ -88,7 +88,7 @@ AGENT_HOSTS: Mapping[str, HostSpec] = {
             (".claude/rules",),
             skill_target="claude-code",
         ),
-        HostSpec("codex", reads_agents_md=True),
+        HostSpec("codex", reads_agents_md=True, skill_target="codex"),
         HostSpec(
             "copilot",
             (".github/copilot-instructions.md",),
@@ -297,6 +297,11 @@ def has_canonical(canonical: str) -> bool:
     return bool(canonical.lstrip("\ufeff").strip())
 
 
+def _skill_host(target) -> str:
+    """The host a ``skill`` agent target installs for (``host``, else its ``name``)."""
+    return getattr(target, "host", None) or target.name
+
+
 def check_portability(
     root: Path, *, hosts: Mapping[str, HostSpec] = AGENT_HOSTS
 ) -> PortabilityReport:
@@ -338,11 +343,14 @@ def lossy_findings(
         )
     except OSError:
         return
+    linked = {spec.skill_target for spec in hosts.values() if spec.skill_target}
+    # A host can have several targets: its native SKILL.md folder and a lossy rules-file
+    # translation (``cursor-rules`` serves host ``cursor``). ``skill`` releases before
+    # ``AgentTarget.host`` existed named the translating target after the host itself.
     targets = [
-        agent_targets[spec.skill_target]
-        for spec in hosts.values()
-        if spec.skill_target in agent_targets
-        and agent_targets[spec.skill_target].needs_translation
+        t
+        for t in agent_targets.values()
+        if t.needs_translation and _skill_host(t) in linked
     ]
     for skill_dir in skill_dirs:
         try:
