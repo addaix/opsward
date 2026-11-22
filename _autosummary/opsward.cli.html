@@ -86,6 +86,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l3"><a class="reference internal" href="opsward.security.html">opsward.security</a></li>
 <li class="toctree-l3"><a class="reference internal" href="opsward.subagents.html">opsward.subagents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="opsward.util.html">opsward.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opsward.weekly.html">opsward.weekly</a></li>
 </ul>
 </li>
 </ul>
@@ -115,6 +116,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#opsward.cli.note"><code class="docutils literal notranslate"><span class="pre">note()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.cli.portability"><code class="docutils literal notranslate"><span class="pre">portability()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.cli.recommend"><code class="docutils literal notranslate"><span class="pre">recommend()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.cli.weekly"><code class="docutils literal notranslate"><span class="pre">weekly()</span></code></a></li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
   </aside>
@@ -195,6 +197,9 @@ data-aria-dark="Switch to auto color mode">
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#opsward.cli.recommend" title="opsward.cli.recommend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recommend</span></code></a>(*project_roots[, format])</p></td>
 <td><p>Recommend ecosystem skills based on the project's tech stack.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.cli.weekly" title="opsward.cli.weekly"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weekly</span></code></a>([days, format, no_save])</p></td>
+<td><p>Print the agent setup's five numbers over the last DAYS, and one proposed change.</p></td>
 </tr>
 </tbody>
 </table>
@@ -414,6 +419,26 @@ opsward[lint]) every project skill whose render drops fields. Report-only.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>project_roots</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – one or more paths to project directories</p></li>
 <li><p><strong>format</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – output format — ‘text’ or ‘json’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.cli.weekly">
+<span class="sig-prename descclassname"><span class="pre">opsward.cli.</span></span><span class="sig-name descname"><span class="pre">weekly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'text'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/cli.html#weekly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.cli.weekly" title="Link to this definition">#</a></dt>
+<dd><p>Print the agent setup’s five numbers over the last DAYS, and one proposed change.</p>
+<p>Search before write, skills never invoked, package CLAUDE.md loaded before edit,
+component issues per week, corrections written back: read from this machine’s Claude
+Code transcripts, its skills folder, <code class="docutils literal notranslate"><span class="pre">gh</span></code> and the fix-at-source event log, compared
+with the last run (kept in ~/.local/share/opsward/weekly). Report-only: the change is
+yours to pick.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>days</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – the window, in days</p></li>
+<li><p><strong>format</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – output format — ‘text’ (a markdown page) or ‘json’</p></li>
+<li><p><strong>no_save</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – do not record this run as the next one’s “last time”</p></li>
 </ul>
 </dd>
 </dl>

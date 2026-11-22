@@ -86,6 +86,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/opsward.security.html">opsward.security</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/opsward.subagents.html">opsward.subagents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/opsward.util.html">opsward.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/opsward.weekly.html">opsward.weekly</a></li>
 </ul>
 </li>
 </ul>
@@ -109,6 +110,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#generate">Generate</a></li>
 <li><a class="reference internal" href="#maintain">Maintain</a></li>
 <li><a class="reference internal" href="#fleet">Fleet</a></li>
+<li><a class="reference internal" href="#weekly-look">Weekly look</a></li>
 <li><a class="reference internal" href="#output-formats">Output Formats</a></li>
 </ul>
 </li>
@@ -238,6 +240,15 @@ skill templates, and agents — only what’s missing, never overwrites existing
 </span></pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">--manifest</span></code> remembers the fleet: it writes the roots and the latest name-keyed summary to that JSON file. The roots are this machine’s paths, so keep the manifest out of version control (opsward warns when it sits in a git work tree unignored).</p>
+</section>
+<section id="weekly-look">
+<h3>Weekly look<a class="headerlink" href="#weekly-look" title="Link to this heading">#</a></h3>
+<p>Where <code class="docutils literal notranslate"><span class="pre">diagnose</span></code> scores a package’s static setup, <code class="docutils literal notranslate"><span class="pre">opsward</span> <span class="pre">weekly</span></code> reads how agents actually behaved, from this machine’s Claude Code transcripts, and prints five numbers over the last 30 days with last run’s values beside them: new source files written after a fleet search, skills never invoked, package CLAUDE.md loaded before edit, <code class="docutils literal notranslate"><span class="pre">Component:</span></code> issues filed per week (through <code class="docutils literal notranslate"><span class="pre">gh</span></code>), and corrections written back (the fix-at-source hook’s event log). It ends with one proposed target condition, the number that got worse the most. Report-only: you pick the change.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">opsward<span class="w"> </span>weekly<span class="w">                  </span><span class="c1"># a markdown page; records this run under ~/.local/share/opsward/weekly</span>
+</span><span data-line="2">opsward<span class="w"> </span>weekly<span class="w"> </span>--days<span class="w"> </span><span class="m">7</span><span class="w"> </span>--format<span class="w"> </span>json<span class="w"> </span>--no-save
+</span></pre></div>
+</div>
+<p>Only metadata is read (tool names, paths, skill names, times), never prompt or file text. In Python, <code class="docutils literal notranslate"><span class="pre">opsward.weekly.weekly(...)</span></code> takes every source as a keyword argument.</p>
 </section>
 <section id="output-formats">
 <h3>Output Formats<a class="headerlink" href="#output-formats" title="Link to this heading">#</a></h3>
@@ -500,7 +511,7 @@ known_issues.md, and content quality.</p>
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-21 15:36 UTC from <a href="https://github.com/addaix/opsward/commit/c2559873e5e824802ca72660e826dfd05fa25be6">c255987</a> (main) · opsward 0.0.42 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 15:08 UTC from <a href="https://github.com/addaix/opsward/commit/0be02f286bafbc0740133d21686e7081de1b67b3">0be02f2</a> (main) · opsward 0.0.42 · <a href="about-this-build.html">about this build</a></p>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>

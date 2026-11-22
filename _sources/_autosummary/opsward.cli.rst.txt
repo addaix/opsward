@@ -20,4 +20,5 @@ opsward.cli
       note
       portability
       recommend
+      weekly
    

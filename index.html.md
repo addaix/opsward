@@ -99,6 +99,17 @@ opsward fleet --manifest ~/.local/share/opsward/fleet.json   # re-run the rememb
 
 `--manifest` remembers the fleet: it writes the roots and the latest name-keyed summary to that JSON file. The roots are this machine’s paths, so keep the manifest out of version control (opsward warns when it sits in a git work tree unignored).
 
+### Weekly look
+
+Where `diagnose` scores a package’s static setup, `opsward weekly` reads how agents actually behaved, from this machine’s Claude Code transcripts, and prints five numbers over the last 30 days with last run’s values beside them: new source files written after a fleet search, skills never invoked, package CLAUDE.md loaded before edit, `Component:` issues filed per week (through `gh`), and corrections written back (the fix-at-source hook’s event log). It ends with one proposed target condition, the number that got worse the most. Report-only: you pick the change.
+
+```bash
+opsward weekly                  # a markdown page; records this run under ~/.local/share/opsward/weekly
+opsward weekly --days 7 --format json --no-save
+```
+
+Only metadata is read (tool names, paths, skill names, times), never prompt or file text. In Python, `opsward.weekly.weekly(...)` takes every source as a keyword argument.
+
 ### Output Formats
 
 All CLI commands support `--format json` for machine-parseable output:

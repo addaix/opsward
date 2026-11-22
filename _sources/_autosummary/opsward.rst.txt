@@ -27,3 +27,4 @@
    security
    subagents
    util
+   weekly

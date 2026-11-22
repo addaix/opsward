@@ -1,4 +1,4 @@
-> built 2026-11-21 15:36 UTC from c255987 (main) · opsward 0.0.42. Details: build_info.json
+> built 2026-11-22 15:08 UTC from 0be02f2 (main) · opsward 0.0.42. Details: build_info.json
 
 # index.html.md
 
@@ -102,6 +102,17 @@ opsward fleet --manifest ~/.local/share/opsward/fleet.json   # re-run the rememb
 ```
 
 `--manifest` remembers the fleet: it writes the roots and the latest name-keyed summary to that JSON file. The roots are this machine’s paths, so keep the manifest out of version control (opsward warns when it sits in a git work tree unignored).
+
+### Weekly look
+
+Where `diagnose` scores a package’s static setup, `opsward weekly` reads how agents actually behaved, from this machine’s Claude Code transcripts, and prints five numbers over the last 30 days with last run’s values beside them: new source files written after a fleet search, skills never invoked, package CLAUDE.md loaded before edit, `Component:` issues filed per week (through `gh`), and corrections written back (the fix-at-source hook’s event log). It ends with one proposed target condition, the number that got worse the most. Report-only: you pick the change.
+
+```bash
+opsward weekly                  # a markdown page; records this run under ~/.local/share/opsward/weekly
+opsward weekly --days 7 --format json --no-save
+```
+
+Only metadata is read (tool names, paths, skill names, times), never prompt or file text. In Python, `opsward.weekly.weekly(...)` takes every source as a keyword argument.
 
 ### Output Formats
 
@@ -447,6 +458,7 @@ CLI dispatch for opsward.
 | [`note`](_autosummary/opsward.cli.html.md#opsward.cli.note)(text[, write, project_root])                   | Append TEXT as a dated one-line decision (a Y-statement) to decisions/log.md (dry run unless --write). |
 | [`portability`](_autosummary/opsward.cli.html.md#opsward.cli.portability)(\*project_roots[, format])              | Show which agent hosts find project instructions, and how renders drift from AGENTS.md.                |
 | [`recommend`](_autosummary/opsward.cli.html.md#opsward.cli.recommend)(\*project_roots[, format])                | Recommend ecosystem skills based on the project's tech stack.                                          |
+| [`weekly`](_autosummary/opsward.cli.html.md#opsward.cli.weekly)([days, format, no_save])                     | Print the agent setup's five numbers over the last DAYS, and one proposed change.                      |
 
 ### opsward.cli.diagnose(\*project_roots, format='text', verbose=False, min_score=80)
 
@@ -604,6 +616,21 @@ Analyzes dependencies and suggests skills from the community catalog.
 * **Parameters:**
   * **project_roots** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – one or more paths to project directories
   * **format** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – output format — ‘text’ or ‘json’
+
+### opsward.cli.weekly(days=30, format='text', no_save=False)
+
+Print the agent setup’s five numbers over the last DAYS, and one proposed change.
+
+Search before write, skills never invoked, package CLAUDE.md loaded before edit,
+component issues per week, corrections written back: read from this machine’s Claude
+Code transcripts, its skills folder, `gh` and the fix-at-source event log, compared
+with the last run (kept in ~/.local/share/opsward/weekly). Report-only: the change is
+yours to pick.
+
+* **Parameters:**
+  * **days** ([`float`](https://docs.python.org/3/builtins/functions.html#float)) – the window, in days
+  * **format** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – output format — ‘text’ (a markdown page) or ‘json’
+  * **no_save** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – do not record this run as the next one’s “last time”
 
 
 # _autosummary/opsward.data.html.md
@@ -1132,6 +1159,7 @@ Diagnose, generate, and maintain the AI agent setup of your projects.
 | [`security`](_autosummary/opsward.security.html.md#module-opsward.security)                                   | Security advisories (opsward#17, gap 5): "valid" is not "safe to ship".                          |
 | [`subagents`](_autosummary/opsward.subagents.html.md#module-opsward.subagents)                                 | Reuse a skill as a subagent: declare it in the skill, generate the twin, check the sync.         |
 | [`util`](_autosummary/opsward.util.html.md#module-opsward.util)                                           | Shared helpers for opsward.                                                                      |
+| [`weekly`](_autosummary/opsward.weekly.html.md#module-opsward.weekly)                                       | The weekly look: the agent setup's five numbers, against last week, and one proposed change.     |
 
 
 # _autosummary/opsward.lint.html.md
@@ -2111,22 +2139,246 @@ Read a text file, returning ‘’ if it doesn’t exist or can’t be decoded.
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 
+# _autosummary/opsward.weekly.html.md
+
+# opsward.weekly
+
+The weekly look: the agent setup’s five numbers, against last week, and one proposed change.
+
+The `setup-self-improvement` loop asks for one improvement a week, chosen from five numbers
+and passed through a human gate. This module prints the numbers; the user picks the change.
+It only reads, and the only thing it writes is its own history (one JSON file per run).
+
+The five numbers, over the last `days` (30 by default):
+
+1. **Search before write**: of the new source files an agent wrote, the share written after
+   the session had searched what the fleet already has (an Explore agent, a search skill
+   such as `fleet-protocol`, or `ir`/`projreg`/`priv find`/`gh search` in Bash).
+   Local greps are counted beside it as context: agents run them in nearly every session.
+   A file counts as new when the session writes it without having read or edited it first.
+2. **Skills never invoked**: the share of installed skills no session invoked (with the
+   invocation count per skill). Never-invoked skills are candidates for name-only or
+   deletion, not for a longer description.
+3. **CLAUDE.md before edit**: of the packages a session edited, the share whose nearest
+   `CLAUDE.md` the session had loaded first (its cwd is inside the package, or it read the
+   file before the first edit).
+4. **Component issues per week**: issues titled `Component: ...` the owner filed.
+5. **Corrections written back**: `writeback-seen` events over the triggers (`trigger-prompt`,
+   `trigger-fix-commit`) in the fix-at-source hook’s event log.
+
+Only metadata is read: tool names, file paths, skill names, timestamps. Never prompt or file
+text. Every source is a keyword argument (`sessions`, `skills_dirs`, `search`,
+`events`, `history`), so a caller or a test can point it elsewhere.
+
+```pycon
+>>> NUMBERS[0].key, NUMBERS[1].better
+('search_before_write', 'lower')
+```
+
+### Module Attributes
+
+| [`SEARCH_AGENTS`](_autosummary/opsward.weekly.html.md#opsward.weekly.SEARCH_AGENTS)      | an Explore agent, a search skill, or a fleet search command at the start of a Bash command (not after a pipe).   |
+|---------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| [`LOCAL_SEARCH_TOOLS`](_autosummary/opsward.weekly.html.md#opsward.weekly.LOCAL_SEARCH_TOOLS) | Grep and Glob, or rg/grep/find/fd starting a Bash command.                                                       |
+| [`Session`](_autosummary/opsward.weekly.html.md#opsward.weekly.Session)            | `(session_id, records)`.                                                                                         |
+
+### Functions
+
+| [`claude_md_before_edit`](_autosummary/opsward.weekly.html.md#opsward.weekly.claude_md_before_edit)(sessions, \*[, ...])     | Number 3: (session, package) pairs whose nearest `CLAUDE.md` was loaded before the first edit.                                                                 |
+|-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`component_issues`](_autosummary/opsward.weekly.html.md#opsward.weekly.component_issues)(\*, days, now[, search])      | Number 4: `Component:` issues filed in the window, and per week.                                                                                               |
+| [`corrections`](_autosummary/opsward.weekly.html.md#opsward.weekly.corrections)(events, \*, days, now)             | Number 5: corrections written back (`writeback-seen`) over triggers, in the window.                                                                            |
+| [`gh_component_issues`](_autosummary/opsward.weekly.html.md#opsward.weekly.gh_component_issues)(\*, since[, title, limit]) | How many issues the `gh` user filed since `since` (a date) whose title has `title`.                                                                            |
+| [`installed_skills`](_autosummary/opsward.weekly.html.md#opsward.weekly.installed_skills)(dirs)                         | Skill names: the folders holding a `SKILL.md` directly under each of `dirs`.                                                                                   |
+| [`propose`](_autosummary/opsward.weekly.html.md#opsward.weekly.propose)(result, previous)                      | One target condition: the number that got worse the most since last time; with no history, the weakest of the shares (a share's distance from its best value). |
+| [`read_events`](_autosummary/opsward.weekly.html.md#opsward.weekly.read_events)([path])                            | The fix-at-source hook's events (`$FIX_AT_SOURCE_LOG`, else its default path).                                                                                 |
+| [`render`](_autosummary/opsward.weekly.html.md#opsward.weekly.render)(result)                                 | The weekly look as a markdown page: the numbers, the change since last time, one proposal.                                                                     |
+| [`search_before_write`](_autosummary/opsward.weekly.html.md#opsward.weekly.search_before_write)(sessions, \*[, suffixes])  | Number 1: new source files written after a fleet search, over all new source files.                                                                            |
+| [`skill_use`](_autosummary/opsward.weekly.html.md#opsward.weekly.skill_use)(sessions, \*, installed)             | Number 2: invocations per skill, and the installed skills no session invoked.                                                                                  |
+| [`tool_uses`](_autosummary/opsward.weekly.html.md#opsward.weekly.tool_uses)(records)                             | `(cwd, tool name, input)` for every tool call in a transcript, in order.                                                                                       |
+| [`transcripts`](_autosummary/opsward.weekly.html.md#opsward.weekly.transcripts)([home, days])                      | Top-level Claude Code transcripts under `home` (default `~/.claude`) modified within `days`, as `(session_id, records)`; a session found twice is read once.   |
+| [`weekly`](_autosummary/opsward.weekly.html.md#opsward.weekly.weekly)(\*[, days, home, sessions, ...])        | The five numbers over the last `days`, last time's values, and one proposed change.                                                                            |
+
+### Classes
+
+| [`Number`](_autosummary/opsward.weekly.html.md#opsward.weekly.Number)(key, label, field, better, target)   | One of the five: where its value is in the result, which way is better, and the change it suggests.   |
+|----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+
+### opsward.weekly.LOCAL_SEARCH_TOOLS *= ('Grep', 'Glob')*
+
+Grep and Glob, or rg/grep/find/fd starting a Bash command. Agents do this
+in nearly every session, so it is reported as context, not as the number.
+
+* **Type:**
+  A local search
+
+### *class* opsward.weekly.Number(key, label, field, better, target)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+One of the five: where its value is in the result, which way is better, and the change it suggests.
+
+### opsward.weekly.SEARCH_AGENTS *= ('Explore',)*
+
+an Explore agent, a
+search skill, or a fleet search command at the start of a Bash command (not after a pipe).
+
+* **Type:**
+  A search of what the fleet already has (the fleet-protocol meaning)
+
+### opsward.weekly.Session
+
+`(session_id, records)`.
+
+* **Type:**
+  One transcript
+
+alias of [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)]
+
+### opsward.weekly.claude_md_before_edit(sessions, , is_file=None, stop='~')
+
+Number 3: (session, package) pairs whose nearest `CLAUDE.md` was loaded before the first edit.
+
+Loaded means the session’s cwd is inside the package (Claude Code loads it), or the session
+read the file. `stop` is where the search for a `CLAUDE.md` ends (default: home).
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### opsward.weekly.component_issues(\*, days, now, search=<function gh_component_issues>)
+
+Number 4: `Component:` issues filed in the window, and per week.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### opsward.weekly.corrections(events, , days, now)
+
+Number 5: corrections written back (`writeback-seen`) over triggers, in the window.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### opsward.weekly.gh_component_issues(, since, title='Component:', limit=500)
+
+How many issues the `gh` user filed since `since` (a date) whose title has `title`.
+
+* **Return type:**
+  [`int`](https://docs.python.org/3/builtins/functions.html#int)
+
+### opsward.weekly.installed_skills(dirs)
+
+Skill names: the folders holding a `SKILL.md` directly under each of `dirs`.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### opsward.weekly.propose(result, previous)
+
+One target condition: the number that got worse the most since last time; with no
+history, the weakest of the shares (a share’s distance from its best value).
+
+```pycon
+>>> r = {"search_before_write": {"ratio": 0.9}, "corrections": {"ratio": 0.4}}
+>>> propose(r, None)["key"]
+'corrections'
+>>> propose(r, {"numbers": {"search_before_write": 1.0, "corrections": 0.4}})["key"]
+'search_before_write'
+```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### opsward.weekly.read_events(path=None)
+
+The fix-at-source hook’s events (`$FIX_AT_SOURCE_LOG`, else its default path).
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+### opsward.weekly.render(result)
+
+The weekly look as a markdown page: the numbers, the change since last time, one proposal.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### opsward.weekly.search_before_write(sessions, , suffixes=('.py', '.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs', '.rs', '.swift', '.go', '.kt', '.java', '.rb', '.sh', '.c', '.cc', '.cpp', '.h'))
+
+Number 1: new source files written after a fleet search, over all new source files.
+
+`local_first` (after at least a Grep, a Glob or an `rg`) is context.
+
+```pycon
+>>> def use(name, **args):
+...     return {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": name, "input": args}]}}
+>>> s = [use("Write", file_path="/a.py"), use("Grep", pattern="x"), use("Write", file_path="/b.py"),
+...      use("Bash", command="projreg find x"), use("Write", file_path="/c.py"), use("Write", file_path="/c.py")]
+>>> search_before_write([("s", s)])
+{'new_source_files': 3, 'searched_first': 1, 'ratio': 0.333, 'local_first': 2}
+```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### opsward.weekly.skill_use(sessions, , installed)
+
+Number 2: invocations per skill, and the installed skills no session invoked.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### opsward.weekly.tool_uses(records)
+
+`(cwd, tool name, input)` for every tool call in a transcript, in order.
+
+```pycon
+>>> rec = {"type": "assistant", "cwd": "/w", "message": {"content": [
+...     {"type": "tool_use", "name": "Grep", "input": {"pattern": "x"}}]}}
+>>> list(tool_uses([rec]))
+[('/w', 'Grep', {'pattern': 'x'})]
+```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)]]
+
+### opsward.weekly.transcripts(home=None, , days=30)
+
+Top-level Claude Code transcripts under `home` (default `~/.claude`) modified within
+`days`, as `(session_id, records)`; a session found twice is read once.
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator)[[`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)]]
+
+### opsward.weekly.weekly(\*, days=30, home=None, sessions=None, skills_dirs=None, search=<function gh_component_issues>, events=None, history=None, save=True, now=None)
+
+The five numbers over the last `days`, last time’s values, and one proposed change.
+
+Saves this run’s numbers to `history` (`$OPSWARD_WEEKLY_DIR`, else
+`~/.local/share/opsward/weekly`) as `YYYY-MM-DD.json` unless `save=False`.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+
 # about-this-build.html.md
 
 <!-- generated by epythet -->
 
 # About this build
 
-This documentation was built on **2026-11-21 15:36 UTC** from commit <a href="https://github.com/addaix/opsward/commit/c2559873e5e824802ca72660e826dfd05fa25be6"><code>c255987</code></a> on branch <code>main</code>, for **opsward 0.0.42** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 15:08 UTC** from commit <a href="https://github.com/addaix/opsward/commit/0be02f286bafbc0740133d21686e7081de1b67b3"><code>0be02f2</code></a> on branch <code>main</code>, for **opsward 0.0.42** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.0.42) is behind the latest release on PyPI (0.0.43): `pip install opsward` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                       |
 |---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/addaix/opsward/commit/c2559873e5e824802ca72660e826dfd05fa25be6"><code>c2559873e5e824802ca72660e826dfd05fa25be6</code></a> |
+| Commit              | <a href="https://github.com/addaix/opsward/commit/0be02f286bafbc0740133d21686e7081de1b67b3"><code>0be02f286bafbc0740133d21686e7081de1b67b3</code></a> |
 | Branch              | <code>main</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                  |
 | Working tree        | clean                                                                                                                                                 |
@@ -2137,15 +2389,15 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>addaix/opsward</code>                                                                |
-| Run          | <a href="https://github.com/addaix/opsward/actions/runs/44919981189">44919981189</a>       |
+| Run          | <a href="https://github.com/addaix/opsward/actions/runs/45036546556">45036546556</a>       |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>c2559873e5e824802ca72660e826dfd05fa25be6</code> (in the history of the built commit) |
+| Event commit | <code>0be02f286bafbc0740133d21686e7081de1b67b3</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.22  |
+| epythet  | 0.2.23  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -2164,14 +2416,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/opsward/0.0.42/">0.0.42</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/opsward/0.0.43/">0.0.43</a>, newer than the documented version (0.0.42).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/addaix/opsward && cd opsward
-git checkout c2559873e5e824802ca72660e826dfd05fa25be6
-pip install "epythet==0.2.22"
+git checkout 0be02f286bafbc0740133d21686e7081de1b67b3
+pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

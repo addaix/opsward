@@ -17,6 +17,7 @@ CLI dispatch for opsward.
 | [`note`](#opsward.cli.note)(text[, write, project_root])                   | Append TEXT as a dated one-line decision (a Y-statement) to decisions/log.md (dry run unless --write). |
 | [`portability`](#opsward.cli.portability)(\*project_roots[, format])              | Show which agent hosts find project instructions, and how renders drift from AGENTS.md.                |
 | [`recommend`](#opsward.cli.recommend)(\*project_roots[, format])                | Recommend ecosystem skills based on the project's tech stack.                                          |
+| [`weekly`](#opsward.cli.weekly)([days, format, no_save])                     | Print the agent setup's five numbers over the last DAYS, and one proposed change.                      |
 
 ### opsward.cli.diagnose(\*project_roots, format='text', verbose=False, min_score=80)
 
@@ -174,3 +175,18 @@ Analyzes dependencies and suggests skills from the community catalog.
 * **Parameters:**
   * **project_roots** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – one or more paths to project directories
   * **format** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – output format — ‘text’ or ‘json’
+
+### opsward.cli.weekly(days=30, format='text', no_save=False)
+
+Print the agent setup’s five numbers over the last DAYS, and one proposed change.
+
+Search before write, skills never invoked, package CLAUDE.md loaded before edit,
+component issues per week, corrections written back: read from this machine’s Claude
+Code transcripts, its skills folder, `gh` and the fix-at-source event log, compared
+with the last run (kept in ~/.local/share/opsward/weekly). Report-only: the change is
+yours to pick.
+
+* **Parameters:**
+  * **days** ([`float`](https://docs.python.org/3/builtins/functions.html#float)) – the window, in days
+  * **format** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – output format — ‘text’ (a markdown page) or ‘json’
+  * **no_save** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – do not record this run as the next one’s “last time”

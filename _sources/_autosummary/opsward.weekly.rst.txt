@@ -1,0 +1,38 @@
+opsward.weekly
+==============
+
+.. automodule:: opsward.weekly
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      SEARCH_AGENTS
+      LOCAL_SEARCH_TOOLS
+      Session
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      claude_md_before_edit
+      component_issues
+      corrections
+      gh_component_issues
+      installed_skills
+      propose
+      read_events
+      render
+      search_before_write
+      skill_use
+      tool_uses
+      transcripts
+      weekly
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Number
+   

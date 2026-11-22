@@ -22,3 +22,4 @@ Diagnose, generate, and maintain the AI agent setup of your projects.
 | [`security`](opsward.security.html.md#module-opsward.security)                                   | Security advisories (opsward#17, gap 5): "valid" is not "safe to ship".                          |
 | [`subagents`](opsward.subagents.html.md#module-opsward.subagents)                                 | Reuse a skill as a subagent: declare it in the skill, generate the twin, check the sync.         |
 | [`util`](opsward.util.html.md#module-opsward.util)                                           | Shared helpers for opsward.                                                                      |
+| [`weekly`](opsward.weekly.html.md#module-opsward.weekly)                                       | The weekly look: the agent setup's five numbers, against last week, and one proposed change.     |

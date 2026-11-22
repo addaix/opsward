@@ -24,6 +24,7 @@
 - [opsward.security](opsward.security.html.md): Security advisories (opsward#17, gap 5): “valid” is not “safe to ship”.
 - [opsward.subagents](opsward.subagents.html.md): Reuse a skill as a subagent: declare it in the skill, generate the twin, check the sync.
 - [opsward.util](opsward.util.html.md): Shared helpers for opsward.
+- [opsward.weekly](opsward.weekly.html.md): The weekly look: the agent setup’s five numbers, against last week, and one proposed change.
 
 ## Optional
 

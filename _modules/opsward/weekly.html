@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en" data-accent-color="crimson" data-content_root="../../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>opsward.weekly - opsward</title><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d88b86f9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link media="print" rel="stylesheet" type="text/css" href="../../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/><meta property="og:title" content="opsward.weekly"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../../index.html">
+      
+      
+      <strong>opsward</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/addaix/opsward" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/opsward.html">opsward</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.base.html">opsward.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.cli.html">opsward.cli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.data.html">opsward.data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/opsward.data.templates.html">opsward.data.templates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.decisions.html">opsward.decisions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.discover.html">opsward.discover</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.evals.html">opsward.evals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.fleet.html">opsward.fleet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.generate.html">opsward.generate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.lint.html">opsward.lint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.maintain.html">opsward.maintain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.portability.html">opsward.portability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.recommend.html">opsward.recommend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.scan.html">opsward.scan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.score.html">opsward.score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.security.html">opsward.security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.subagents.html">opsward.subagents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.util.html">opsward.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.weekly.html">opsward.weekly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-agents.html">For AI agents</a></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../index.html"><span itemprop="name">opsward</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">Module code</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">opsward.weekly</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <article class="yue dark-code" role="main">
+          <h1>Source code for opsward.weekly</h1><div class="highlight"><pre>
+<span></span><span data-line="1"><span class="sd">"""The weekly look: the agent setup's five numbers, against last week, and one proposed change.</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="sd">The ``setup-self-improvement`` loop asks for one improvement a week, chosen from five numbers</span>
+</span><span data-line="4"><span class="sd">and passed through a human gate. This module prints the numbers; the user picks the change.</span>
+</span><span data-line="5"><span class="sd">It only reads, and the only thing it writes is its own history (one JSON file per run).</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="sd">The five numbers, over the last ``days`` (30 by default):</span>
+</span><span data-line="8">
+</span><span data-line="9"><span class="sd">1. **Search before write**: of the new source files an agent wrote, the share written after</span>
+</span><span data-line="10"><span class="sd">   the session had searched what the fleet already has (an Explore agent, a search skill</span>
+</span><span data-line="11"><span class="sd">   such as ``fleet-protocol``, or ``ir``/``projreg``/``priv find``/``gh search`` in Bash).</span>
+</span><span data-line="12"><span class="sd">   Local greps are counted beside it as context: agents run them in nearly every session.</span>
+</span><span data-line="13"><span class="sd">   A file counts as new when the session writes it without having read or edited it first.</span>
+</span><span data-line="14"><span class="sd">2. **Skills never invoked**: the share of installed skills no session invoked (with the</span>
+</span><span data-line="15"><span class="sd">   invocation count per skill). Never-invoked skills are candidates for name-only or</span>
+</span><span data-line="16"><span class="sd">   deletion, not for a longer description.</span>
+</span><span data-line="17"><span class="sd">3. **CLAUDE.md before edit**: of the packages a session edited, the share whose nearest</span>
+</span><span data-line="18"><span class="sd">   ``CLAUDE.md`` the session had loaded first (its cwd is inside the package, or it read the</span>
+</span><span data-line="19"><span class="sd">   file before the first edit).</span>
+</span><span data-line="20"><span class="sd">4. **Component issues per week**: issues titled ``Component: ...`` the owner filed.</span>
+</span><span data-line="21"><span class="sd">5. **Corrections written back**: ``writeback-seen`` events over the triggers (``trigger-prompt``,</span>
+</span><span data-line="22"><span class="sd">   ``trigger-fix-commit``) in the fix-at-source hook's event log.</span>
+</span><span data-line="23">
+</span><span data-line="24"><span class="sd">Only metadata is read: tool names, file paths, skill names, timestamps. Never prompt or file</span>
+</span><span data-line="25"><span class="sd">text. Every source is a keyword argument (``sessions``, ``skills_dirs``, ``search``,</span>
+</span><span data-line="26"><span class="sd">``events``, ``history``), so a caller or a test can point it elsewhere.</span>
+</span><span data-line="27">
+</span><span data-line="28"><span class="sd">&gt;&gt;&gt; NUMBERS[0].key, NUMBERS[1].better</span>
+</span><span data-line="29"><span class="sd">('search_before_write', 'lower')</span>
+</span><span data-line="30"><span class="sd">"""</span>
+</span><span data-line="31">
+</span><span data-line="32"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span data-line="33">
+</span><span data-line="34"><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span data-line="35"><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</span><span data-line="36"><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+</span><span data-line="37"><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+</span><span data-line="38"><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+</span><span data-line="39"><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span>
+</span><span data-line="40"><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+</span><span data-line="41"><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span data-line="42"><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">PurePath</span>
+</span><span data-line="43">
+</span><span data-line="44"><span class="n">DFLT_DAYS</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span data-line="45"><span class="n">DFLT_CLAUDE_HOME</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"~/.claude"</span><span class="p">)</span>
+</span><span data-line="46"><span class="n">DFLT_EVENTS</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"~/.local/state/fix-at-source/events.jsonl"</span><span class="p">)</span>
+</span><span data-line="47"><span class="n">EVENTS_ENVVAR</span> <span class="o">=</span> <span class="s2">"FIX_AT_SOURCE_LOG"</span>
+</span><span data-line="48"><span class="n">HISTORY_ENVVAR</span> <span class="o">=</span> <span class="s2">"OPSWARD_WEEKLY_DIR"</span>
+</span><span data-line="49"><span class="n">DFLT_HISTORY</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"~/.local/share/opsward/weekly"</span><span class="p">)</span>
+</span><span data-line="50"><span class="n">SOURCE_SUFFIXES</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="51">    <span class="s2">".py"</span><span class="p">,</span> <span class="s2">".ts"</span><span class="p">,</span> <span class="s2">".tsx"</span><span class="p">,</span> <span class="s2">".js"</span><span class="p">,</span> <span class="s2">".jsx"</span><span class="p">,</span> <span class="s2">".mjs"</span><span class="p">,</span> <span class="s2">".cjs"</span><span class="p">,</span> <span class="s2">".rs"</span><span class="p">,</span> <span class="s2">".swift"</span><span class="p">,</span> <span class="s2">".go"</span><span class="p">,</span>
+</span><span data-line="52">    <span class="s2">".kt"</span><span class="p">,</span> <span class="s2">".java"</span><span class="p">,</span> <span class="s2">".rb"</span><span class="p">,</span> <span class="s2">".sh"</span><span class="p">,</span> <span class="s2">".c"</span><span class="p">,</span> <span class="s2">".cc"</span><span class="p">,</span> <span class="s2">".cpp"</span><span class="p">,</span> <span class="s2">".h"</span><span class="p">,</span>
+</span><span data-line="53"><span class="p">)</span>  <span class="c1"># fmt: skip</span>
+</span><span data-line="54"><span class="c1">#: A search of what the fleet already has (the fleet-protocol meaning): an Explore agent, a</span>
+</span><span data-line="55"><span class="c1">#: search skill, or a fleet search command at the start of a Bash command (not after a pipe).</span>
+</span><span data-line="56"><span class="n">SEARCH_AGENTS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Explore"</span><span class="p">,)</span>
+</span><span data-line="57"><span class="n">SEARCH_SKILLS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"fleet-protocol"</span><span class="p">,</span> <span class="s2">"do-research"</span><span class="p">,</span> <span class="s2">"components-and-combinators"</span><span class="p">,</span> <span class="s2">"my-packages"</span><span class="p">,</span> <span class="s2">"projreg"</span><span class="p">)</span>
+</span><span data-line="58"><span class="n">FLEET_SEARCH_COMMAND</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+</span><span data-line="59">    <span class="sa">r</span><span class="s2">"(?:^|[;&amp;(]|&amp;&amp;)\s*(?:ir|projreg|gh\s+search|priv\s+(?:find|where|show-dependents))(?:\s|$)"</span>
+</span><span data-line="60"><span class="p">)</span>
+</span><span data-line="61"><span class="c1">#: A local search: Grep and Glob, or rg/grep/find/fd starting a Bash command. Agents do this</span>
+</span><span data-line="62"><span class="c1">#: in nearly every session, so it is reported as context, not as the number.</span>
+</span><span data-line="63"><span class="n">LOCAL_SEARCH_TOOLS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Grep"</span><span class="p">,</span> <span class="s2">"Glob"</span><span class="p">)</span>
+</span><span data-line="64"><span class="n">LOCAL_SEARCH_COMMAND</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"(?:^|[;&amp;(]|&amp;&amp;)\s*(?:rg|grep|find|fd)(?:\s|$)"</span><span class="p">)</span>
+</span><span data-line="65"><span class="n">EDIT_TOOLS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"Edit"</span><span class="p">,</span> <span class="s2">"Write"</span><span class="p">,</span> <span class="s2">"MultiEdit"</span><span class="p">,</span> <span class="s2">"NotebookEdit"</span><span class="p">)</span>
+</span><span data-line="66"><span class="n">TRIGGERS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"trigger-prompt"</span><span class="p">,</span> <span class="s2">"trigger-fix-commit"</span><span class="p">)</span>
+</span><span data-line="67"><span class="n">COMPONENT_TITLE</span> <span class="o">=</span> <span class="s2">"Component:"</span>
+</span><span data-line="68">
+</span><span data-line="69"><span class="c1">#: One transcript: ``(session_id, records)``.</span>
+</span><span data-line="70"><span class="n">Session</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]</span>
+</span><span data-line="71">
+</span><span data-line="72">
+</span><span data-line="73"><span class="c1"># --- sources ----------------------------------------------------------------------------------</span>
+</span><span data-line="74">
+</span><span data-line="75">
+<div class="viewcode-block" id="transcripts">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.transcripts">[docs]</a>
+</span><span data-line="76"><span class="k">def</span><span class="w"> </span><span class="nf">transcripts</span><span class="p">(</span><span class="n">home</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DFLT_DAYS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Session</span><span class="p">]:</span>
+</span><span data-line="77"><span class="w">    </span><span class="sd">"""Top-level Claude Code transcripts under ``home`` (default ``~/.claude``) modified within</span>
+</span><span data-line="78"><span class="sd">    ``days``, as ``(session_id, records)``; a session found twice is read once."""</span>
+</span><span data-line="79">    <span class="n">base</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">home</span> <span class="ow">or</span> <span class="n">DFLT_CLAUDE_HOME</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span> <span class="o">/</span> <span class="s2">"projects"</span>
+</span><span data-line="80">    <span class="k">if</span> <span class="ow">not</span> <span class="n">base</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+</span><span data-line="81">        <span class="k">return</span>
+</span><span data-line="82">    <span class="n">cutoff</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span> <span class="o">-</span> <span class="n">days</span> <span class="o">*</span> <span class="mi">86400</span>
+</span><span data-line="83">    <span class="n">seen</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+</span><span data-line="84">    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*/*.jsonl"</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+</span><span data-line="85">        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span> <span class="o">&lt;</span> <span class="n">cutoff</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">stem</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+</span><span data-line="86">            <span class="k">continue</span>
+</span><span data-line="87">        <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
+</span><span data-line="88">        <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="89">        <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"replace"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+</span><span data-line="90">            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fh</span><span class="p">:</span>
+</span><span data-line="91">                <span class="k">try</span><span class="p">:</span>
+</span><span data-line="92">                    <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span data-line="93">                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span><span data-line="94">                    <span class="k">continue</span>
+</span><span data-line="95">                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span data-line="96">                    <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span data-line="97">        <span class="k">yield</span> <span class="n">path</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">records</span></div>
+
+</span><span data-line="98">
+</span><span data-line="99">
+<div class="viewcode-block" id="tool_uses">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.tool_uses">[docs]</a>
+</span><span data-line="100"><span class="k">def</span><span class="w"> </span><span class="nf">tool_uses</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Mapping</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">]]:</span>
+</span><span data-line="101"><span class="w">    </span><span class="sd">"""``(cwd, tool name, input)`` for every tool call in a transcript, in order.</span>
+</span><span data-line="102">
+</span><span data-line="103"><span class="sd">    &gt;&gt;&gt; rec = {"type": "assistant", "cwd": "/w", "message": {"content": [</span>
+</span><span data-line="104"><span class="sd">    ...     {"type": "tool_use", "name": "Grep", "input": {"pattern": "x"}}]}}</span>
+</span><span data-line="105"><span class="sd">    &gt;&gt;&gt; list(tool_uses([rec]))</span>
+</span><span data-line="106"><span class="sd">    [('/w', 'Grep', {'pattern': 'x'})]</span>
+</span><span data-line="107"><span class="sd">    """</span>
+</span><span data-line="108">    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+</span><span data-line="109">        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"assistant"</span><span class="p">:</span>
+</span><span data-line="110">            <span class="k">continue</span>
+</span><span data-line="111">        <span class="n">content</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"message"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">)</span>
+</span><span data-line="112">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+</span><span data-line="113">            <span class="k">continue</span>
+</span><span data-line="114">        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+</span><span data-line="115">            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"tool_use"</span><span class="p">:</span>
+</span><span data-line="116">                <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cwd"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span></div>
+
+</span><span data-line="117">
+</span><span data-line="118">
+<div class="viewcode-block" id="installed_skills">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.installed_skills">[docs]</a>
+</span><span data-line="119"><span class="k">def</span><span class="w"> </span><span class="nf">installed_skills</span><span class="p">(</span><span class="n">dirs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span data-line="120"><span class="w">    </span><span class="sd">"""Skill names: the folders holding a ``SKILL.md`` directly under each of ``dirs``."""</span>
+</span><span data-line="121">    <span class="n">names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+</span><span data-line="122">    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+</span><span data-line="123">        <span class="n">base</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+</span><span data-line="124">        <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+</span><span data-line="125">            <span class="n">names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">base</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*/SKILL.md"</span><span class="p">))</span>
+</span><span data-line="126">    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">names</span><span class="p">)</span></div>
+
+</span><span data-line="127">
+</span><span data-line="128">
+<div class="viewcode-block" id="gh_component_issues">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.gh_component_issues">[docs]</a>
+</span><span data-line="129"><span class="k">def</span><span class="w"> </span><span class="nf">gh_component_issues</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">since</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">COMPONENT_TITLE</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span data-line="130"><span class="w">    </span><span class="sd">"""How many issues the ``gh`` user filed since ``since`` (a date) whose title has ``title``."""</span>
+</span><span data-line="131">    <span class="n">done</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+</span><span data-line="132">        <span class="p">[</span><span class="s2">"gh"</span><span class="p">,</span> <span class="s2">"search"</span><span class="p">,</span> <span class="s2">"issues"</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'"</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1">" in:title'</span><span class="p">,</span> <span class="s2">"--author"</span><span class="p">,</span> <span class="s2">"@me"</span><span class="p">,</span> <span class="s2">"--created"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"&gt;=</span><span class="si">{</span><span class="n">since</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+</span><span data-line="133">         <span class="s2">"--limit"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">limit</span><span class="p">),</span> <span class="s2">"--json"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">],</span>
+</span><span data-line="134">        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span data-line="135">    <span class="p">)</span>  <span class="c1"># fmt: skip</span>
+</span><span data-line="136">    <span class="k">if</span> <span class="n">done</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
+</span><span data-line="137">        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"gh search failed: </span><span class="si">{</span><span class="p">(</span><span class="n">done</span><span class="o">.</span><span class="n">stderr</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">done</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="o">-</span><span class="mi">300</span><span class="p">:]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="138">    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">done</span><span class="o">.</span><span class="n">stdout</span> <span class="ow">or</span> <span class="s2">"[]"</span><span class="p">)</span> <span class="k">if</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)))</span></div>
+
+</span><span data-line="139">
+</span><span data-line="140">
+<div class="viewcode-block" id="read_events">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.read_events">[docs]</a>
+</span><span data-line="141"><span class="k">def</span><span class="w"> </span><span class="nf">read_events</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+</span><span data-line="142"><span class="w">    </span><span class="sd">"""The fix-at-source hook's events (``$FIX_AT_SOURCE_LOG``, else its default path)."""</span>
+</span><span data-line="143">    <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">EVENTS_ENVVAR</span><span class="p">)</span> <span class="ow">or</span> <span class="n">DFLT_EVENTS</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+</span><span data-line="144">    <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+</span><span data-line="145">        <span class="k">return</span> <span class="p">[]</span>
+</span><span data-line="146">    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="147">    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"replace"</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+</span><span data-line="148">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="149">            <span class="n">obj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span data-line="150">        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span><span data-line="151">            <span class="k">continue</span>
+</span><span data-line="152">        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span data-line="153">            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span data-line="154">    <span class="k">return</span> <span class="n">out</span></div>
+
+</span><span data-line="155">
+</span><span data-line="156">
+</span><span data-line="157"><span class="c1"># --- the five numbers ---------------------------------------------------------------------------</span>
+</span><span data-line="158">
+</span><span data-line="159">
+</span><span data-line="160"><span class="k">def</span><span class="w"> </span><span class="nf">_ratio</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="161">    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">k</span> <span class="o">/</span> <span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span data-line="162">
+</span><span data-line="163">
+</span><span data-line="164"><span class="k">def</span><span class="w"> </span><span class="nf">_search_kind</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="165"><span class="w">    </span><span class="sd">"""``'fleet'``, ``'local'`` or ``None``.</span>
+</span><span data-line="166">
+</span><span data-line="167"><span class="sd">    &gt;&gt;&gt; _search_kind("Bash", {"command": "cd x &amp;&amp; projreg find dol"}), _search_kind("Bash", {"command": "rg foo"})</span>
+</span><span data-line="168"><span class="sd">    ('fleet', 'local')</span>
+</span><span data-line="169"><span class="sd">    &gt;&gt;&gt; _search_kind("Bash", {"command": "git log | grep x"}) is None</span>
+</span><span data-line="170"><span class="sd">    True</span>
+</span><span data-line="171"><span class="sd">    """</span>
+</span><span data-line="172">    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"Agent"</span><span class="p">,</span> <span class="s2">"Task"</span><span class="p">):</span>
+</span><span data-line="173">        <span class="k">return</span> <span class="s2">"fleet"</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subagent_type"</span><span class="p">)</span> <span class="ow">in</span> <span class="n">SEARCH_AGENTS</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span data-line="174">    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"Skill"</span><span class="p">:</span>
+</span><span data-line="175">        <span class="k">return</span> <span class="s2">"fleet"</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"skill"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">SEARCH_SKILLS</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span data-line="176">    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">LOCAL_SEARCH_TOOLS</span><span class="p">:</span>
+</span><span data-line="177">        <span class="k">return</span> <span class="s2">"local"</span>
+</span><span data-line="178">    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"Bash"</span><span class="p">:</span>
+</span><span data-line="179">        <span class="n">command</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"command"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+</span><span data-line="180">        <span class="k">if</span> <span class="n">FLEET_SEARCH_COMMAND</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+</span><span data-line="181">            <span class="k">return</span> <span class="s2">"fleet"</span>
+</span><span data-line="182">        <span class="k">if</span> <span class="n">LOCAL_SEARCH_COMMAND</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+</span><span data-line="183">            <span class="k">return</span> <span class="s2">"local"</span>
+</span><span data-line="184">    <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="185">
+</span><span data-line="186">
+<div class="viewcode-block" id="search_before_write">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.search_before_write">[docs]</a>
+</span><span data-line="187"><span class="k">def</span><span class="w"> </span><span class="nf">search_before_write</span><span class="p">(</span><span class="n">sessions</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Session</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffixes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">SOURCE_SUFFIXES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="188"><span class="w">    </span><span class="sd">"""Number 1: new source files written after a fleet search, over all new source files.</span>
+</span><span data-line="189">
+</span><span data-line="190"><span class="sd">    ``local_first`` (after at least a Grep, a Glob or an ``rg``) is context.</span>
+</span><span data-line="191">
+</span><span data-line="192"><span class="sd">    &gt;&gt;&gt; def use(name, **args):</span>
+</span><span data-line="193"><span class="sd">    ...     return {"type": "assistant", "message": {"content": [{"type": "tool_use", "name": name, "input": args}]}}</span>
+</span><span data-line="194"><span class="sd">    &gt;&gt;&gt; s = [use("Write", file_path="/a.py"), use("Grep", pattern="x"), use("Write", file_path="/b.py"),</span>
+</span><span data-line="195"><span class="sd">    ...      use("Bash", command="projreg find x"), use("Write", file_path="/c.py"), use("Write", file_path="/c.py")]</span>
+</span><span data-line="196"><span class="sd">    &gt;&gt;&gt; search_before_write([("s", s)])</span>
+</span><span data-line="197"><span class="sd">    {'new_source_files': 3, 'searched_first': 1, 'ratio': 0.333, 'local_first': 2}</span>
+</span><span data-line="198"><span class="sd">    """</span>
+</span><span data-line="199">    <span class="n">n</span> <span class="o">=</span> <span class="n">k</span> <span class="o">=</span> <span class="n">local</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span data-line="200">    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">records</span> <span class="ow">in</span> <span class="n">sessions</span><span class="p">:</span>
+</span><span data-line="201">        <span class="n">fleet</span> <span class="o">=</span> <span class="n">near</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span data-line="202">        <span class="n">touched</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+</span><span data-line="203">        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">tool_uses</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+</span><span data-line="204">            <span class="n">kind</span> <span class="o">=</span> <span class="n">_search_kind</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+</span><span data-line="205">            <span class="n">fleet</span> <span class="o">=</span> <span class="n">fleet</span> <span class="ow">or</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"fleet"</span>
+</span><span data-line="206">            <span class="n">near</span> <span class="o">=</span> <span class="n">near</span> <span class="ow">or</span> <span class="n">kind</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span><span data-line="207">            <span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"file_path"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"notebook_path"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+</span><span data-line="208">            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"Write"</span> <span class="ow">and</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span> <span class="ow">and</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">touched</span><span class="p">:</span>
+</span><span data-line="209">                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span data-line="210">                <span class="n">k</span> <span class="o">+=</span> <span class="n">fleet</span>
+</span><span data-line="211">                <span class="n">local</span> <span class="o">+=</span> <span class="n">near</span>
+</span><span data-line="212">            <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"Read"</span><span class="p">,</span> <span class="o">*</span><span class="n">EDIT_TOOLS</span><span class="p">):</span>
+</span><span data-line="213">                <span class="n">touched</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span><span data-line="214">    <span class="k">return</span> <span class="p">{</span><span class="s2">"new_source_files"</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span> <span class="s2">"searched_first"</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span> <span class="s2">"ratio"</span><span class="p">:</span> <span class="n">_ratio</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="s2">"local_first"</span><span class="p">:</span> <span class="n">local</span><span class="p">}</span></div>
+
+</span><span data-line="215">
+</span><span data-line="216">
+<div class="viewcode-block" id="skill_use">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.skill_use">[docs]</a>
+</span><span data-line="217"><span class="k">def</span><span class="w"> </span><span class="nf">skill_use</span><span class="p">(</span><span class="n">sessions</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Session</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">installed</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="218"><span class="w">    </span><span class="sd">"""Number 2: invocations per skill, and the installed skills no session invoked."""</span>
+</span><span data-line="219">    <span class="n">counts</span><span class="p">:</span> <span class="n">Counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+</span><span data-line="220">    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">records</span> <span class="ow">in</span> <span class="n">sessions</span><span class="p">:</span>
+</span><span data-line="221">        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">tool_uses</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+</span><span data-line="222">            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"Skill"</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"skill"</span><span class="p">):</span>
+</span><span data-line="223">                <span class="n">counts</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">"skill"</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span data-line="224">    <span class="n">installed</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">installed</span><span class="p">))</span>
+</span><span data-line="225">    <span class="n">never</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">installed</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">counts</span><span class="p">[</span><span class="n">s</span><span class="p">]]</span>
+</span><span data-line="226">    <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="227">        <span class="s2">"installed"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">installed</span><span class="p">),</span> <span class="s2">"invoked"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">most_common</span><span class="p">()),</span> <span class="s2">"never_invoked"</span><span class="p">:</span> <span class="n">never</span><span class="p">,</span>
+</span><span data-line="228">        <span class="s2">"never_share"</span><span class="p">:</span> <span class="n">_ratio</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">never</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">installed</span><span class="p">)),</span>
+</span><span data-line="229">    <span class="p">}</span>  <span class="c1"># fmt: skip</span></div>
+
+</span><span data-line="230">
+</span><span data-line="231">
+</span><span data-line="232"><span class="k">def</span><span class="w"> </span><span class="nf">_nearest_claude_md</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_file</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Path</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">stop</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="233">    <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">:</span>
+</span><span data-line="234">        <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">stop</span> <span class="ow">or</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+</span><span data-line="235">            <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="236">        <span class="k">if</span> <span class="n">is_file</span><span class="p">(</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"CLAUDE.md"</span><span class="p">):</span>
+</span><span data-line="237">            <span class="k">return</span> <span class="n">parent</span>
+</span><span data-line="238">    <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="239">
+</span><span data-line="240">
+<div class="viewcode-block" id="claude_md_before_edit">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.claude_md_before_edit">[docs]</a>
+</span><span data-line="241"><span class="k">def</span><span class="w"> </span><span class="nf">claude_md_before_edit</span><span class="p">(</span>
+</span><span data-line="242">    <span class="n">sessions</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Session</span><span class="p">],</span>
+</span><span data-line="243">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="244">    <span class="n">is_file</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Path</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="245">    <span class="n">stop</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">=</span> <span class="s2">"~"</span><span class="p">,</span>
+</span><span data-line="246"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="247"><span class="w">    </span><span class="sd">"""Number 3: (session, package) pairs whose nearest ``CLAUDE.md`` was loaded before the first edit.</span>
+</span><span data-line="248">
+</span><span data-line="249"><span class="sd">    Loaded means the session's cwd is inside the package (Claude Code loads it), or the session</span>
+</span><span data-line="250"><span class="sd">    read the file. ``stop`` is where the search for a ``CLAUDE.md`` ends (default: home).</span>
+</span><span data-line="251"><span class="sd">    """</span>
+</span><span data-line="252">    <span class="n">stop</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">stop</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+</span><span data-line="253">    <span class="n">is_file</span> <span class="o">=</span> <span class="n">is_file</span> <span class="ow">or</span> <span class="n">Path</span><span class="o">.</span><span class="n">is_file</span>
+</span><span data-line="254">    <span class="n">roots</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span data-line="255">    <span class="n">n</span> <span class="o">=</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span data-line="256">    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">records</span> <span class="ow">in</span> <span class="n">sessions</span><span class="p">:</span>
+</span><span data-line="257">        <span class="n">read</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span> <span class="nb">set</span><span class="p">()</span>
+</span><span data-line="258">        <span class="k">for</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">tool_uses</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+</span><span data-line="259">            <span class="n">path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"file_path"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"notebook_path"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+</span><span data-line="260">            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+</span><span data-line="261">                <span class="k">continue</span>
+</span><span data-line="262">            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"Read"</span><span class="p">:</span>
+</span><span data-line="263">                <span class="n">read</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">PurePath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+</span><span data-line="264">                <span class="k">continue</span>
+</span><span data-line="265">            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EDIT_TOOLS</span><span class="p">:</span>
+</span><span data-line="266">                <span class="k">continue</span>
+</span><span data-line="267">            <span class="k">if</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">roots</span><span class="p">:</span>
+</span><span data-line="268">                <span class="n">roots</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">_nearest_claude_md</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">is_file</span><span class="o">=</span><span class="n">is_file</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">)</span>
+</span><span data-line="269">            <span class="n">root</span> <span class="o">=</span> <span class="n">roots</span><span class="p">[</span><span class="n">path</span><span class="p">]</span>
+</span><span data-line="270">            <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
+</span><span data-line="271">                <span class="k">continue</span>
+</span><span data-line="272">            <span class="n">done</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+</span><span data-line="273">            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span data-line="274">            <span class="n">inside</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span> <span class="o">==</span> <span class="n">root</span> <span class="ow">or</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">)</span>
+</span><span data-line="275">            <span class="n">k</span> <span class="o">+=</span> <span class="n">inside</span> <span class="ow">or</span> <span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="s2">"CLAUDE.md"</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span> <span class="ow">in</span> <span class="n">read</span>
+</span><span data-line="276">    <span class="k">return</span> <span class="p">{</span><span class="s2">"packages_edited"</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span> <span class="s2">"claude_md_first"</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span> <span class="s2">"ratio"</span><span class="p">:</span> <span class="n">_ratio</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">)}</span></div>
+
+</span><span data-line="277">
+</span><span data-line="278">
+<div class="viewcode-block" id="component_issues">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.component_issues">[docs]</a>
+</span><span data-line="279"><span class="k">def</span><span class="w"> </span><span class="nf">component_issues</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">now</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">gh_component_issues</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="280"><span class="w">    </span><span class="sd">"""Number 4: ``Component:`` issues filed in the window, and per week."""</span>
+</span><span data-line="281">    <span class="n">since</span> <span class="o">=</span> <span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">))</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+</span><span data-line="282">    <span class="n">filed</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="n">since</span><span class="o">=</span><span class="n">since</span><span class="p">)</span>
+</span><span data-line="283">    <span class="k">return</span> <span class="p">{</span><span class="s2">"filed"</span><span class="p">:</span> <span class="n">filed</span><span class="p">,</span> <span class="s2">"per_week"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">filed</span> <span class="o">/</span> <span class="p">(</span><span class="n">days</span> <span class="o">/</span> <span class="mi">7</span><span class="p">),</span> <span class="mi">2</span><span class="p">)}</span></div>
+
+</span><span data-line="284">
+</span><span data-line="285">
+<div class="viewcode-block" id="corrections">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.corrections">[docs]</a>
+</span><span data-line="286"><span class="k">def</span><span class="w"> </span><span class="nf">corrections</span><span class="p">(</span><span class="n">events</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Mapping</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">now</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="287"><span class="w">    </span><span class="sd">"""Number 5: corrections written back (``writeback-seen``) over triggers, in the window."""</span>
+</span><span data-line="288">    <span class="n">since</span> <span class="o">=</span> <span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">"seconds"</span><span class="p">)</span>
+</span><span data-line="289">    <span class="n">kinds</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"event"</span><span class="p">))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">events</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ts"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">since</span><span class="p">)</span>
+</span><span data-line="290">    <span class="n">triggers</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">kinds</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">TRIGGERS</span><span class="p">)</span>
+</span><span data-line="291">    <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="292">        <span class="s2">"triggers"</span><span class="p">:</span> <span class="n">triggers</span><span class="p">,</span> <span class="s2">"writebacks"</span><span class="p">:</span> <span class="n">kinds</span><span class="p">[</span><span class="s2">"writeback-seen"</span><span class="p">],</span> <span class="s2">"stop_blocks"</span><span class="p">:</span> <span class="n">kinds</span><span class="p">[</span><span class="s2">"stop-block"</span><span class="p">],</span>
+</span><span data-line="293">        <span class="s2">"ratio"</span><span class="p">:</span> <span class="n">_ratio</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">kinds</span><span class="p">[</span><span class="s2">"writeback-seen"</span><span class="p">],</span> <span class="n">triggers</span><span class="p">),</span> <span class="n">triggers</span><span class="p">),</span>
+</span><span data-line="294">    <span class="p">}</span>  <span class="c1"># fmt: skip</span></div>
+
+</span><span data-line="295">
+</span><span data-line="296">
+</span><span data-line="297"><span class="c1"># --- the look -----------------------------------------------------------------------------------</span>
+</span><span data-line="298">
+</span><span data-line="299">
+<div class="viewcode-block" id="Number">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.Number">[docs]</a>
+</span><span data-line="300"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span data-line="301"><span class="k">class</span><span class="w"> </span><span class="nc">Number</span><span class="p">:</span>
+</span><span data-line="302"><span class="w">    </span><span class="sd">"""One of the five: where its value is in the result, which way is better, and the change it suggests."""</span>
+</span><span data-line="303">
+</span><span data-line="304">    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span>
+</span><span data-line="305">    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span>
+</span><span data-line="306">    <span class="n">field</span><span class="p">:</span> <span class="nb">str</span>
+</span><span data-line="307">    <span class="n">better</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># 'higher' or 'lower'</span>
+</span><span data-line="308">    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># one target condition, as a sentence with {value}</span></div>
+
+</span><span data-line="309">
+</span><span data-line="310">
+</span><span data-line="311"><span class="n">NUMBERS</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="312">    <span class="n">Number</span><span class="p">(</span><span class="s2">"search_before_write"</span><span class="p">,</span> <span class="s2">"Search before write (new source files)"</span><span class="p">,</span> <span class="s2">"ratio"</span><span class="p">,</span> <span class="s2">"higher"</span><span class="p">,</span>
+</span><span data-line="313">           <span class="s2">"Raise the share of new source files written after a search from </span><span class="si">{value}</span><span class="s2"> (a rung-2 hook line at the first Write of a new source file, per setup-self-improvement section 1)."</span><span class="p">),</span>
+</span><span data-line="314">    <span class="n">Number</span><span class="p">(</span><span class="s2">"skill_use"</span><span class="p">,</span> <span class="s2">"Skills never invoked"</span><span class="p">,</span> <span class="s2">"never_share"</span><span class="p">,</span> <span class="s2">"lower"</span><span class="p">,</span>
+</span><span data-line="315">           <span class="s2">"Cut the never-invoked skills from </span><span class="si">{value}</span><span class="s2"> of those installed: make the unused ones name-only or retire them, rather than lengthen their descriptions."</span><span class="p">),</span>
+</span><span data-line="316">    <span class="n">Number</span><span class="p">(</span><span class="s2">"claude_md_before_edit"</span><span class="p">,</span> <span class="s2">"Package CLAUDE.md loaded before edit"</span><span class="p">,</span> <span class="s2">"ratio"</span><span class="p">,</span> <span class="s2">"higher"</span><span class="p">,</span>
+</span><span data-line="317">           <span class="s2">"Raise the share of edited packages whose CLAUDE.md was loaded first from </span><span class="si">{value}</span><span class="s2"> (a hook line naming the package's CLAUDE.md at the first edit outside the cwd)."</span><span class="p">),</span>
+</span><span data-line="318">    <span class="n">Number</span><span class="p">(</span><span class="s2">"component_issues"</span><span class="p">,</span> <span class="s2">"Component issues per week"</span><span class="p">,</span> <span class="s2">"per_week"</span><span class="p">,</span> <span class="s2">"higher"</span><span class="p">,</span>
+</span><span data-line="319">           <span class="s2">"Component issues are at </span><span class="si">{value}</span><span class="s2"> a week: check that new ad hoc code is turned into a component issue (gap-to-issue) before the session ends."</span><span class="p">),</span>
+</span><span data-line="320">    <span class="n">Number</span><span class="p">(</span><span class="s2">"corrections"</span><span class="p">,</span> <span class="s2">"Corrections written back"</span><span class="p">,</span> <span class="s2">"ratio"</span><span class="p">,</span> <span class="s2">"higher"</span><span class="p">,</span>
+</span><span data-line="321">           <span class="s2">"Raise the corrections written back from </span><span class="si">{value}</span><span class="s2"> of the triggers (fix-at-source: the Stop hook's reminder, or the skill's line in the always-loaded CLAUDE.md)."</span><span class="p">),</span>
+</span><span data-line="322"><span class="p">)</span>  <span class="c1"># fmt: skip</span>
+</span><span data-line="323">
+</span><span data-line="324">
+</span><span data-line="325"><span class="k">def</span><span class="w"> </span><span class="nf">_value</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="n">Number</span><span class="p">):</span>
+</span><span data-line="326">    <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">number</span><span class="o">.</span><span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">number</span><span class="o">.</span><span class="n">field</span><span class="p">)</span>
+</span><span data-line="327">
+</span><span data-line="328">
+</span><span data-line="329"><span class="k">def</span><span class="w"> </span><span class="nf">_previous</span><span class="p">(</span><span class="n">history</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">today</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="330">    <span class="k">if</span> <span class="ow">not</span> <span class="n">history</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+</span><span data-line="331">        <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="332">    <span class="n">earlier</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">history</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.json"</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">stem</span> <span class="o">&lt;</span> <span class="n">today</span><span class="p">)</span>
+</span><span data-line="333">    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">earlier</span><span class="p">):</span>
+</span><span data-line="334">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="335">            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">))</span>
+</span><span data-line="336">        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+</span><span data-line="337">            <span class="k">continue</span>
+</span><span data-line="338">    <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="339">
+</span><span data-line="340">
+<div class="viewcode-block" id="propose">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.propose">[docs]</a>
+</span><span data-line="341"><span class="k">def</span><span class="w"> </span><span class="nf">propose</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">previous</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="342"><span class="w">    </span><span class="sd">"""One target condition: the number that got worse the most since last time; with no</span>
+</span><span data-line="343"><span class="sd">    history, the weakest of the shares (a share's distance from its best value).</span>
+</span><span data-line="344">
+</span><span data-line="345"><span class="sd">    &gt;&gt;&gt; r = {"search_before_write": {"ratio": 0.9}, "corrections": {"ratio": 0.4}}</span>
+</span><span data-line="346"><span class="sd">    &gt;&gt;&gt; propose(r, None)["key"]</span>
+</span><span data-line="347"><span class="sd">    'corrections'</span>
+</span><span data-line="348"><span class="sd">    &gt;&gt;&gt; propose(r, {"numbers": {"search_before_write": 1.0, "corrections": 0.4}})["key"]</span>
+</span><span data-line="349"><span class="sd">    'search_before_write'</span>
+</span><span data-line="350"><span class="sd">    """</span>
+</span><span data-line="351">    <span class="n">scored</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="352">    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">NUMBERS</span><span class="p">:</span>
+</span><span data-line="353">        <span class="n">value</span> <span class="o">=</span> <span class="n">_value</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+</span><span data-line="354">        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="355">            <span class="k">continue</span>
+</span><span data-line="356">        <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">num</span><span class="o">.</span><span class="n">better</span> <span class="o">==</span> <span class="s2">"higher"</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+</span><span data-line="357">        <span class="k">if</span> <span class="n">previous</span><span class="p">:</span>
+</span><span data-line="358">            <span class="n">before</span> <span class="o">=</span> <span class="p">(</span><span class="n">previous</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"numbers"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+</span><span data-line="359">            <span class="k">if</span> <span class="n">before</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="360">                <span class="k">continue</span>
+</span><span data-line="361">            <span class="n">worse</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="p">(</span><span class="n">before</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span>
+</span><span data-line="362">            <span class="n">scale</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">before</span><span class="p">),</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span><span class="o">.</span><span class="n">field</span> <span class="o">==</span> <span class="s2">"per_week"</span> <span class="k">else</span> <span class="mf">1.0</span>
+</span><span data-line="363">            <span class="n">scored</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">worse</span> <span class="o">/</span> <span class="n">scale</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</span><span data-line="364">        <span class="k">elif</span> <span class="n">num</span><span class="o">.</span><span class="n">field</span> <span class="o">!=</span> <span class="s2">"per_week"</span><span class="p">:</span>
+</span><span data-line="365">            <span class="n">scored</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">sign</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">value</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</span><span data-line="366">    <span class="k">if</span> <span class="ow">not</span> <span class="n">scored</span><span class="p">:</span>
+</span><span data-line="367">        <span class="k">return</span> <span class="p">{</span><span class="s2">"key"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Nothing to compare yet: no number has a value."</span><span class="p">}</span>
+</span><span data-line="368">    <span class="n">score</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">scored</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span><span data-line="369">    <span class="k">if</span> <span class="n">previous</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</span><span data-line="370">        <span class="k">return</span> <span class="p">{</span><span class="s2">"key"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"No number got worse since the last look: keep last week's change, or pick one yourself."</span><span class="p">}</span>
+</span><span data-line="371">    <span class="k">return</span> <span class="p">{</span><span class="s2">"key"</span><span class="p">:</span> <span class="n">num</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="s2">"label"</span><span class="p">:</span> <span class="n">num</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">num</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)}</span></div>
+
+</span><span data-line="372">
+</span><span data-line="373">
+<div class="viewcode-block" id="weekly">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.weekly">[docs]</a>
+</span><span data-line="374"><span class="k">def</span><span class="w"> </span><span class="nf">weekly</span><span class="p">(</span>
+</span><span data-line="375">    <span class="o">*</span><span class="p">,</span>
+</span><span data-line="376">    <span class="n">days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DFLT_DAYS</span><span class="p">,</span>
+</span><span data-line="377">    <span class="n">home</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="378">    <span class="n">sessions</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Session</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="379">    <span class="n">skills_dirs</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="380">    <span class="n">search</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">gh_component_issues</span><span class="p">,</span>
+</span><span data-line="381">    <span class="n">events</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Mapping</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="382">    <span class="n">history</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="383">    <span class="n">save</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span data-line="384">    <span class="n">now</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="385"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="386"><span class="w">    </span><span class="sd">"""The five numbers over the last ``days``, last time's values, and one proposed change.</span>
+</span><span data-line="387">
+</span><span data-line="388"><span class="sd">    Saves this run's numbers to ``history`` (``$OPSWARD_WEEKLY_DIR``, else</span>
+</span><span data-line="389"><span class="sd">    ``~/.local/share/opsward/weekly``) as ``YYYY-MM-DD.json`` unless ``save=False``.</span>
+</span><span data-line="390"><span class="sd">    """</span>
+</span><span data-line="391">    <span class="n">now</span> <span class="o">=</span> <span class="n">now</span> <span class="ow">or</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span><span data-line="392">    <span class="n">claude_home</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">home</span> <span class="ow">or</span> <span class="n">DFLT_CLAUDE_HOME</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+</span><span data-line="393">    <span class="n">sessions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sessions</span> <span class="k">if</span> <span class="n">sessions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">transcripts</span><span class="p">(</span><span class="n">claude_home</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">))</span>
+</span><span data-line="394">    <span class="n">skills_dirs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">skills_dirs</span><span class="p">)</span> <span class="k">if</span> <span class="n">skills_dirs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">claude_home</span> <span class="o">/</span> <span class="s2">"skills"</span><span class="p">]</span>
+</span><span data-line="395">    <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="396">        <span class="s2">"window_days"</span><span class="p">:</span> <span class="n">days</span><span class="p">,</span>
+</span><span data-line="397">        <span class="s2">"at"</span><span class="p">:</span> <span class="n">now</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">"seconds"</span><span class="p">),</span>
+</span><span data-line="398">        <span class="s2">"sessions"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">sessions</span><span class="p">),</span>
+</span><span data-line="399">        <span class="s2">"search_before_write"</span><span class="p">:</span> <span class="n">search_before_write</span><span class="p">(</span><span class="n">sessions</span><span class="p">),</span>
+</span><span data-line="400">        <span class="s2">"skill_use"</span><span class="p">:</span> <span class="n">skill_use</span><span class="p">(</span><span class="n">sessions</span><span class="p">,</span> <span class="n">installed</span><span class="o">=</span><span class="n">installed_skills</span><span class="p">(</span><span class="n">skills_dirs</span><span class="p">)),</span>
+</span><span data-line="401">        <span class="s2">"claude_md_before_edit"</span><span class="p">:</span> <span class="n">claude_md_before_edit</span><span class="p">(</span><span class="n">sessions</span><span class="p">),</span>
+</span><span data-line="402">        <span class="s2">"corrections"</span><span class="p">:</span> <span class="n">corrections</span><span class="p">(</span><span class="n">read_events</span><span class="p">()</span> <span class="k">if</span> <span class="n">events</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">events</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">,</span> <span class="n">now</span><span class="o">=</span><span class="n">now</span><span class="p">),</span>
+</span><span data-line="403">    <span class="p">}</span>
+</span><span data-line="404">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="405">        <span class="n">result</span><span class="p">[</span><span class="s2">"component_issues"</span><span class="p">]</span> <span class="o">=</span> <span class="n">component_issues</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">,</span> <span class="n">now</span><span class="o">=</span><span class="n">now</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="n">search</span><span class="p">)</span>
+</span><span data-line="406">    <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">,</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">SubprocessError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="407">        <span class="n">result</span><span class="p">[</span><span class="s2">"component_issues"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)[:</span><span class="mi">300</span><span class="p">]}</span>
+</span><span data-line="408">    <span class="n">result</span><span class="p">[</span><span class="s2">"numbers"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span><span class="o">.</span><span class="n">key</span><span class="p">:</span> <span class="n">_value</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">NUMBERS</span><span class="p">}</span>
+</span><span data-line="409">    <span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">history</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">HISTORY_ENVVAR</span><span class="p">)</span> <span class="ow">or</span> <span class="n">DFLT_HISTORY</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+</span><span data-line="410">    <span class="n">today</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+</span><span data-line="411">    <span class="n">previous</span> <span class="o">=</span> <span class="n">_previous</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span>
+</span><span data-line="412">    <span class="n">result</span><span class="p">[</span><span class="s2">"previous"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"at"</span><span class="p">:</span> <span class="n">previous</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"at"</span><span class="p">),</span> <span class="s2">"numbers"</span><span class="p">:</span> <span class="n">previous</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"numbers"</span><span class="p">)}</span> <span class="k">if</span> <span class="n">previous</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span data-line="413">    <span class="n">result</span><span class="p">[</span><span class="s2">"proposal"</span><span class="p">]</span> <span class="o">=</span> <span class="n">propose</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">previous</span><span class="p">)</span>
+</span><span data-line="414">    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+</span><span data-line="415">        <span class="n">folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span data-line="416">        <span class="p">(</span><span class="n">folder</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">.json"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+</span><span data-line="417">    <span class="k">return</span> <span class="n">result</span></div>
+
+</span><span data-line="418">
+</span><span data-line="419">
+<div class="viewcode-block" id="render">
+<a class="viewcode-back" href="../../_autosummary/opsward.weekly.html#opsward.weekly.render">[docs]</a>
+</span><span data-line="420"><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span data-line="421"><span class="w">    </span><span class="sd">"""The weekly look as a markdown page: the numbers, the change since last time, one proposal."""</span>
+</span><span data-line="422">    <span class="n">prev</span> <span class="o">=</span> <span class="p">((</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"previous"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"numbers"</span><span class="p">))</span> <span class="ow">or</span> <span class="p">{}</span>
+</span><span data-line="423">    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"# Weekly look: the setup's five numbers (last </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'window_days'</span><span class="p">]</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> days, </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'sessions'</span><span class="p">]</span><span class="si">}</span><span class="s2"> sessions)"</span><span class="p">,</span> <span class="s2">""</span><span class="p">]</span>
+</span><span data-line="424">    <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"| # | Number | Now | Last time | Better |"</span><span class="p">,</span> <span class="s2">"|---|---|---|---|---|"</span><span class="p">]</span>
+</span><span data-line="425">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">NUMBERS</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+</span><span data-line="426">        <span class="n">now_v</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"numbers"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+</span><span data-line="427">        <span class="n">shown</span> <span class="o">=</span> <span class="s2">"n/a"</span> <span class="k">if</span> <span class="n">now_v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">now_v</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="428">        <span class="n">before</span> <span class="o">=</span> <span class="n">prev</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+</span><span data-line="429">        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"| </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">num</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">shown</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="s1">''</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">before</span><span class="si">:</span><span class="s1">g</span><span class="si">}</span><span class="s1">'</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">num</span><span class="o">.</span><span class="n">better</span><span class="si">}</span><span class="s2"> |"</span><span class="p">)</span>
+</span><span data-line="430">    <span class="n">skills</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"skill_use"</span><span class="p">]</span>
+</span><span data-line="431">    <span class="k">if</span> <span class="n">skills</span><span class="p">[</span><span class="s2">"never_invoked"</span><span class="p">]:</span>
+</span><span data-line="432">        <span class="n">listed</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">skills</span><span class="p">[</span><span class="s2">"never_invoked"</span><span class="p">][:</span><span class="mi">20</span><span class="p">])</span>
+</span><span data-line="433">        <span class="n">more</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">" and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">skills</span><span class="p">[</span><span class="s1">'never_invoked'</span><span class="p">])</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">20</span><span class="si">}</span><span class="s2"> more"</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">skills</span><span class="p">[</span><span class="s2">"never_invoked"</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="k">else</span> <span class="s2">""</span>
+</span><span data-line="434">        <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Never invoked (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">skills</span><span class="p">[</span><span class="s1">'never_invoked'</span><span class="p">])</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">skills</span><span class="p">[</span><span class="s1">'installed'</span><span class="p">]</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">listed</span><span class="si">}{</span><span class="n">more</span><span class="si">}</span><span class="s2">."</span><span class="p">]</span>
+</span><span data-line="435">    <span class="k">if</span> <span class="s2">"error"</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">"component_issues"</span><span class="p">]:</span>
+</span><span data-line="436">        <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Component issues: not counted (</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'component_issues'</span><span class="p">][</span><span class="s1">'error'</span><span class="p">]</span><span class="si">}</span><span class="s2">)."</span><span class="p">]</span>
+</span><span data-line="437">    <span class="n">c</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"corrections"</span><span class="p">]</span>
+</span><span data-line="438">    <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Corrections: </span><span class="si">{</span><span class="n">c</span><span class="p">[</span><span class="s1">'triggers'</span><span class="p">]</span><span class="si">}</span><span class="s2"> triggers, </span><span class="si">{</span><span class="n">c</span><span class="p">[</span><span class="s1">'writebacks'</span><span class="p">]</span><span class="si">}</span><span class="s2"> written back, </span><span class="si">{</span><span class="n">c</span><span class="p">[</span><span class="s1">'stop_blocks'</span><span class="p">]</span><span class="si">}</span><span class="s2"> stop blocks."</span><span class="p">]</span>
+</span><span data-line="439">    <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"## One proposed target condition"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s2">"proposal"</span><span class="p">][</span><span class="s2">"text"</span><span class="p">],</span> <span class="s2">""</span><span class="p">,</span>
+</span><span data-line="440">              <span class="s2">"The change is yours to pick: make one, at the highest rung of the mechanism ladder that fits, and measure it next week."</span><span class="p">]</span>  <span class="c1"># fmt: skip</span>
+</span><span data-line="441">    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span></div>
+
+</span></pre></div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright">
+  <p>
+    Made with
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/addaix/opsward" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
+  </div>
+</footer>
+      <script src="../../_static/documentation_options.js?v=173d7b4c"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+      <script src="../../_static/shibuya.js?v=50760d75"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script></body>
+</html>

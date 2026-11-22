@@ -83,6 +83,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.security.html">opsward.security</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.subagents.html">opsward.subagents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.util.html">opsward.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/opsward.weekly.html">opsward.weekly</a></li>
 </ul>
 </li>
 </ul>
@@ -912,20 +913,50 @@ data-aria-dark="Switch to auto color mode">
 
 </span><span data-line="742">
 </span><span data-line="743">
-</span><span data-line="744"><span class="c1"># The SSOT of the CLI surface: a name -&gt; command mapping, with one nested group.</span>
-</span><span data-line="745"><span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">{</span>
-</span><span data-line="746">    <span class="s2">"diagnose"</span><span class="p">:</span> <span class="n">diagnose</span><span class="p">,</span>
-</span><span data-line="747">    <span class="s2">"generate"</span><span class="p">:</span> <span class="n">generate</span><span class="p">,</span>
-</span><span data-line="748">    <span class="s2">"maintain"</span><span class="p">:</span> <span class="n">maintain</span><span class="p">,</span>
-</span><span data-line="749">    <span class="s2">"recommend"</span><span class="p">:</span> <span class="n">recommend</span><span class="p">,</span>
-</span><span data-line="750">    <span class="s2">"install-skills"</span><span class="p">:</span> <span class="n">install_skills</span><span class="p">,</span>
-</span><span data-line="751">    <span class="s2">"find"</span><span class="p">:</span> <span class="n">find</span><span class="p">,</span>
-</span><span data-line="752">    <span class="s2">"fleet"</span><span class="p">:</span> <span class="n">fleet</span><span class="p">,</span>
-</span><span data-line="753">    <span class="s2">"lint"</span><span class="p">:</span> <span class="n">lint</span><span class="p">,</span>
-</span><span data-line="754">    <span class="s2">"portability"</span><span class="p">:</span> <span class="n">portability</span><span class="p">,</span>
-</span><span data-line="755">    <span class="s2">"eval"</span><span class="p">:</span> <span class="n">eval_</span><span class="p">,</span>
-</span><span data-line="756">    <span class="s2">"decision"</span><span class="p">:</span> <span class="p">[</span><span class="n">new</span><span class="p">,</span> <span class="n">note</span><span class="p">],</span>
-</span><span data-line="757"><span class="p">}</span>
+<div class="viewcode-block" id="weekly">
+<a class="viewcode-back" href="../../_autosummary/opsward.cli.html#opsward.cli.weekly">[docs]</a>
+</span><span data-line="744"><span class="k">def</span><span class="w"> </span><span class="nf">weekly</span><span class="p">(</span>
+</span><span data-line="745">    <span class="n">days</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+</span><span data-line="746">    <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"text"</span><span class="p">,</span>
+</span><span data-line="747">    <span class="n">no_save</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span data-line="748"><span class="p">):</span>
+</span><span data-line="749"><span class="w">    </span><span class="sd">"""Print the agent setup's five numbers over the last DAYS, and one proposed change.</span>
+</span><span data-line="750">
+</span><span data-line="751"><span class="sd">    Search before write, skills never invoked, package CLAUDE.md loaded before edit,</span>
+</span><span data-line="752"><span class="sd">    component issues per week, corrections written back: read from this machine's Claude</span>
+</span><span data-line="753"><span class="sd">    Code transcripts, its skills folder, ``gh`` and the fix-at-source event log, compared</span>
+</span><span data-line="754"><span class="sd">    with the last run (kept in ~/.local/share/opsward/weekly). Report-only: the change is</span>
+</span><span data-line="755"><span class="sd">    yours to pick.</span>
+</span><span data-line="756">
+</span><span data-line="757"><span class="sd">    :param days: the window, in days</span>
+</span><span data-line="758"><span class="sd">    :param format: output format — 'text' (a markdown page) or 'json'</span>
+</span><span data-line="759"><span class="sd">    :param no_save: do not record this run as the next one's "last time"</span>
+</span><span data-line="760"><span class="sd">    """</span>
+</span><span data-line="761">    <span class="kn">from</span><span class="w"> </span><span class="nn">opsward.weekly</span><span class="w"> </span><span class="kn">import</span> <span class="n">render</span>
+</span><span data-line="762">    <span class="kn">from</span><span class="w"> </span><span class="nn">opsward.weekly</span><span class="w"> </span><span class="kn">import</span> <span class="n">weekly</span> <span class="k">as</span> <span class="n">look</span>
+</span><span data-line="763">
+</span><span data-line="764">    <span class="k">if</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"json"</span><span class="p">):</span>
+</span><span data-line="765">        <span class="nb">print</span><span class="p">(</span><span class="s2">"Error: format must be 'text' or 'json'"</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+</span><span data-line="766">        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span data-line="767">    <span class="n">result</span> <span class="o">=</span> <span class="n">look</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">days</span><span class="p">),</span> <span class="n">save</span><span class="o">=</span><span class="ow">not</span> <span class="n">no_save</span><span class="p">)</span>
+</span><span data-line="768">    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">"json"</span> <span class="k">else</span> <span class="n">render</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span></div>
+
+</span><span data-line="769">
+</span><span data-line="770"><span class="c1"># The SSOT of the CLI surface: a name -&gt; command mapping, with one nested group.</span>
+</span><span data-line="771"><span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">{</span>
+</span><span data-line="772">    <span class="s2">"diagnose"</span><span class="p">:</span> <span class="n">diagnose</span><span class="p">,</span>
+</span><span data-line="773">    <span class="s2">"generate"</span><span class="p">:</span> <span class="n">generate</span><span class="p">,</span>
+</span><span data-line="774">    <span class="s2">"maintain"</span><span class="p">:</span> <span class="n">maintain</span><span class="p">,</span>
+</span><span data-line="775">    <span class="s2">"recommend"</span><span class="p">:</span> <span class="n">recommend</span><span class="p">,</span>
+</span><span data-line="776">    <span class="s2">"install-skills"</span><span class="p">:</span> <span class="n">install_skills</span><span class="p">,</span>
+</span><span data-line="777">    <span class="s2">"find"</span><span class="p">:</span> <span class="n">find</span><span class="p">,</span>
+</span><span data-line="778">    <span class="s2">"fleet"</span><span class="p">:</span> <span class="n">fleet</span><span class="p">,</span>
+</span><span data-line="779">    <span class="s2">"lint"</span><span class="p">:</span> <span class="n">lint</span><span class="p">,</span>
+</span><span data-line="780">    <span class="s2">"portability"</span><span class="p">:</span> <span class="n">portability</span><span class="p">,</span>
+</span><span data-line="781">    <span class="s2">"eval"</span><span class="p">:</span> <span class="n">eval_</span><span class="p">,</span>
+</span><span data-line="782">    <span class="s2">"weekly"</span><span class="p">:</span> <span class="n">weekly</span><span class="p">,</span>
+</span><span data-line="783">    <span class="s2">"decision"</span><span class="p">:</span> <span class="p">[</span><span class="n">new</span><span class="p">,</span> <span class="n">note</span><span class="p">],</span>
+</span><span data-line="784"><span class="p">}</span>
 </span></pre></div>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
