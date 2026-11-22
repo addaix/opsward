@@ -54,7 +54,13 @@ SOURCE_SUFFIXES = (
 #: A search of what the fleet already has (the fleet-protocol meaning): an Explore agent, a
 #: search skill, or a fleet search command at the start of a Bash command (not after a pipe).
 SEARCH_AGENTS = ("Explore",)
-SEARCH_SKILLS = ("fleet-protocol", "do-research", "components-and-combinators", "my-packages", "projreg")
+SEARCH_SKILLS = (
+    "fleet-protocol",
+    "do-research",
+    "components-and-combinators",
+    "my-packages",
+    "projreg",
+)
 FLEET_SEARCH_COMMAND = re.compile(
     r"(?:^|[;&(]|&&)\s*(?:ir|projreg|gh\s+search|priv\s+(?:find|where|show-dependents))(?:\s|$)"
 )
@@ -73,7 +79,9 @@ Session = tuple[str, list]
 # --- sources ----------------------------------------------------------------------------------
 
 
-def transcripts(home: str | os.PathLike | None = None, *, days: float = DFLT_DAYS) -> Iterator[Session]:
+def transcripts(
+    home: str | os.PathLike | None = None, *, days: float = DFLT_DAYS
+) -> Iterator[Session]:
     """Top-level Claude Code transcripts under ``home`` (default ``~/.claude``) modified within
     ``days``, as ``(session_id, records)``; a session found twice is read once."""
     base = Path(home or DFLT_CLAUDE_HOME).expanduser() / "projects"
@@ -81,7 +89,9 @@ def transcripts(home: str | os.PathLike | None = None, *, days: float = DFLT_DAY
         return
     cutoff = datetime.now().timestamp() - days * 86400
     seen: set[str] = set()
-    for path in sorted(base.glob("*/*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True):
+    for path in sorted(
+        base.glob("*/*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True
+    ):
         if path.stat().st_mtime < cutoff or path.stem in seen:
             continue
         seen.add(path.stem)
@@ -113,7 +123,11 @@ def tool_uses(records: Iterable[Mapping]) -> Iterator[tuple[str, str, Mapping]]:
             continue
         for block in content:
             if isinstance(block, dict) and block.get("type") == "tool_use":
-                yield str(r.get("cwd") or ""), str(block.get("name") or ""), block.get("input") or {}
+                yield (
+                    str(r.get("cwd") or ""),
+                    str(block.get("name") or ""),
+                    block.get("input") or {},
+                )
 
 
 def installed_skills(dirs: Iterable[str | os.PathLike]) -> list[str]:
@@ -126,7 +140,9 @@ def installed_skills(dirs: Iterable[str | os.PathLike]) -> list[str]:
     return sorted(names)
 
 
-def gh_component_issues(*, since: str, title: str = COMPONENT_TITLE, limit: int = 500) -> int:
+def gh_component_issues(
+    *, since: str, title: str = COMPONENT_TITLE, limit: int = 500
+) -> int:
     """How many issues the ``gh`` user filed since ``since`` (a date) whose title has ``title``."""
     done = subprocess.run(
         ["gh", "search", "issues", f'"{title}" in:title', "--author", "@me", "--created", f">={since}",
@@ -134,8 +150,12 @@ def gh_component_issues(*, since: str, title: str = COMPONENT_TITLE, limit: int 
         capture_output=True, text=True, timeout=120, check=False,
     )  # fmt: skip
     if done.returncode:
-        raise RuntimeError(f"gh search failed: {(done.stderr or done.stdout).strip()[-300:]}")
-    return sum(1 for i in json.loads(done.stdout or "[]") if title in str(i.get("title", "")))
+        raise RuntimeError(
+            f"gh search failed: {(done.stderr or done.stdout).strip()[-300:]}"
+        )
+    return sum(
+        1 for i in json.loads(done.stdout or "[]") if title in str(i.get("title", ""))
+    )
 
 
 def read_events(path: str | os.PathLike | None = None) -> list[dict]:
@@ -172,7 +192,11 @@ def _search_kind(name: str, args: Mapping) -> str | None:
     if name in ("Agent", "Task"):
         return "fleet" if args.get("subagent_type") in SEARCH_AGENTS else None
     if name == "Skill":
-        return "fleet" if str(args.get("skill", "")).split(":")[-1] in SEARCH_SKILLS else None
+        return (
+            "fleet"
+            if str(args.get("skill", "")).split(":")[-1] in SEARCH_SKILLS
+            else None
+        )
     if name in LOCAL_SEARCH_TOOLS:
         return "local"
     if name == "Bash":
@@ -184,7 +208,9 @@ def _search_kind(name: str, args: Mapping) -> str | None:
     return None
 
 
-def search_before_write(sessions: Iterable[Session], *, suffixes: tuple[str, ...] = SOURCE_SUFFIXES) -> dict:
+def search_before_write(
+    sessions: Iterable[Session], *, suffixes: tuple[str, ...] = SOURCE_SUFFIXES
+) -> dict:
     """Number 1: new source files written after a fleet search, over all new source files.
 
     ``local_first`` (after at least a Grep, a Glob or an ``rg``) is context.
@@ -211,7 +237,12 @@ def search_before_write(sessions: Iterable[Session], *, suffixes: tuple[str, ...
                 local += near
             if path and name in ("Read", *EDIT_TOOLS):
                 touched.add(path)
-    return {"new_source_files": n, "searched_first": k, "ratio": _ratio(k, n), "local_first": local}
+    return {
+        "new_source_files": n,
+        "searched_first": k,
+        "ratio": _ratio(k, n),
+        "local_first": local,
+    }
 
 
 def skill_use(sessions: Iterable[Session], *, installed: Iterable[str]) -> dict:
@@ -229,7 +260,9 @@ def skill_use(sessions: Iterable[Session], *, installed: Iterable[str]) -> dict:
     }  # fmt: skip
 
 
-def _nearest_claude_md(path: str, *, is_file: Callable[[Path], bool], stop: Path) -> Path | None:
+def _nearest_claude_md(
+    path: str, *, is_file: Callable[[Path], bool], stop: Path
+) -> Path | None:
     for parent in Path(path).parents:
         if parent == stop or parent == parent.parent:
             return None
@@ -276,7 +309,9 @@ def claude_md_before_edit(
     return {"packages_edited": n, "claude_md_first": k, "ratio": _ratio(k, n)}
 
 
-def component_issues(*, days: float, now: datetime, search: Callable[..., int] = gh_component_issues) -> dict:
+def component_issues(
+    *, days: float, now: datetime, search: Callable[..., int] = gh_component_issues
+) -> dict:
     """Number 4: ``Component:`` issues filed in the window, and per week."""
     since = (now - timedelta(days=days)).date().isoformat()
     filed = search(since=since)
@@ -285,8 +320,12 @@ def component_issues(*, days: float, now: datetime, search: Callable[..., int] =
 
 def corrections(events: Iterable[Mapping], *, days: float, now: datetime) -> dict:
     """Number 5: corrections written back (``writeback-seen``) over triggers, in the window."""
-    since = (now - timedelta(days=days)).replace(tzinfo=None).isoformat(timespec="seconds")
-    kinds = Counter(str(e.get("event")) for e in events if str(e.get("ts", "")) >= since)
+    since = (
+        (now - timedelta(days=days)).replace(tzinfo=None).isoformat(timespec="seconds")
+    )
+    kinds = Counter(
+        str(e.get("event")) for e in events if str(e.get("ts", "")) >= since
+    )
     triggers = sum(kinds[t] for t in TRIGGERS)
     return {
         "triggers": triggers, "writebacks": kinds["writeback-seen"], "stop_blocks": kinds["stop-block"],
@@ -367,8 +406,16 @@ def propose(result: Mapping, previous: Mapping | None) -> dict:
         return {"key": None, "text": "Nothing to compare yet: no number has a value."}
     score, num, value = max(scored, key=lambda t: t[0])
     if previous and score <= 0:
-        return {"key": None, "text": "No number got worse since the last look: keep last week's change, or pick one yourself."}
-    return {"key": num.key, "label": num.label, "value": value, "text": num.target.format(value=value)}
+        return {
+            "key": None,
+            "text": "No number got worse since the last look: keep last week's change, or pick one yourself.",
+        }
+    return {
+        "key": num.key,
+        "label": num.label,
+        "value": value,
+        "text": num.target.format(value=value),
+    }
 
 
 def weekly(
@@ -390,8 +437,12 @@ def weekly(
     """
     now = now or datetime.now(timezone.utc)
     claude_home = Path(home or DFLT_CLAUDE_HOME).expanduser()
-    sessions = list(sessions if sessions is not None else transcripts(claude_home, days=days))
-    skills_dirs = list(skills_dirs) if skills_dirs is not None else [claude_home / "skills"]
+    sessions = list(
+        sessions if sessions is not None else transcripts(claude_home, days=days)
+    )
+    skills_dirs = (
+        list(skills_dirs) if skills_dirs is not None else [claude_home / "skills"]
+    )
     result: dict = {
         "window_days": days,
         "at": now.isoformat(timespec="seconds"),
@@ -399,43 +450,71 @@ def weekly(
         "search_before_write": search_before_write(sessions),
         "skill_use": skill_use(sessions, installed=installed_skills(skills_dirs)),
         "claude_md_before_edit": claude_md_before_edit(sessions),
-        "corrections": corrections(read_events() if events is None else events, days=days, now=now),
+        "corrections": corrections(
+            read_events() if events is None else events, days=days, now=now
+        ),
     }
     try:
         result["component_issues"] = component_issues(days=days, now=now, search=search)
     except (RuntimeError, OSError, subprocess.SubprocessError, ValueError) as e:
         result["component_issues"] = {"error": str(e)[:300]}
     result["numbers"] = {num.key: _value(result, num) for num in NUMBERS}
-    folder = Path(history or os.environ.get(HISTORY_ENVVAR) or DFLT_HISTORY).expanduser()
+    folder = Path(
+        history or os.environ.get(HISTORY_ENVVAR) or DFLT_HISTORY
+    ).expanduser()
     today = now.date().isoformat()
     previous = _previous(folder, today)
-    result["previous"] = {"at": previous.get("at"), "numbers": previous.get("numbers")} if previous else None
+    result["previous"] = (
+        {"at": previous.get("at"), "numbers": previous.get("numbers")}
+        if previous
+        else None
+    )
     result["proposal"] = propose(result, previous)
     if save:
         folder.mkdir(parents=True, exist_ok=True)
-        (folder / f"{today}.json").write_text(json.dumps(result, indent=1), encoding="utf-8")
+        (folder / f"{today}.json").write_text(
+            json.dumps(result, indent=1), encoding="utf-8"
+        )
     return result
 
 
 def render(result: Mapping) -> str:
     """The weekly look as a markdown page: the numbers, the change since last time, one proposal."""
     prev = ((result.get("previous") or {}).get("numbers")) or {}
-    lines = [f"# Weekly look: the setup's five numbers (last {result['window_days']:g} days, {result['sessions']} sessions)", ""]
+    lines = [
+        f"# Weekly look: the setup's five numbers (last {result['window_days']:g} days, {result['sessions']} sessions)",
+        "",
+    ]
     lines += ["| # | Number | Now | Last time | Better |", "|---|---|---|---|---|"]
     for i, num in enumerate(NUMBERS, 1):
         now_v = result["numbers"].get(num.key)
         shown = "n/a" if now_v is None else f"{now_v:g}"
         before = prev.get(num.key)
-        lines.append(f"| {i} | {num.label} | {shown} | {'' if before is None else f'{before:g}'} | {num.better} |")
+        lines.append(
+            f"| {i} | {num.label} | {shown} | {'' if before is None else f'{before:g}'} | {num.better} |"
+        )
     skills = result["skill_use"]
     if skills["never_invoked"]:
         listed = ", ".join(skills["never_invoked"][:20])
-        more = f" and {len(skills['never_invoked']) - 20} more" if len(skills["never_invoked"]) > 20 else ""
-        lines += ["", f"Never invoked ({len(skills['never_invoked'])} of {skills['installed']}): {listed}{more}."]
+        more = (
+            f" and {len(skills['never_invoked']) - 20} more"
+            if len(skills["never_invoked"]) > 20
+            else ""
+        )
+        lines += [
+            "",
+            f"Never invoked ({len(skills['never_invoked'])} of {skills['installed']}): {listed}{more}.",
+        ]
     if "error" in result["component_issues"]:
-        lines += ["", f"Component issues: not counted ({result['component_issues']['error']})."]
+        lines += [
+            "",
+            f"Component issues: not counted ({result['component_issues']['error']}).",
+        ]
     c = result["corrections"]
-    lines += ["", f"Corrections: {c['triggers']} triggers, {c['writebacks']} written back, {c['stop_blocks']} stop blocks."]
+    lines += [
+        "",
+        f"Corrections: {c['triggers']} triggers, {c['writebacks']} written back, {c['stop_blocks']} stop blocks.",
+    ]
     lines += ["", "## One proposed target condition", "", result["proposal"]["text"], "",
               "The change is yours to pick: make one, at the highest rung of the mechanism ladder that fits, and measure it next week."]  # fmt: skip
     return "\n".join(lines) + "\n"

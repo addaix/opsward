@@ -767,6 +767,7 @@ def weekly(
     result = look(days=float(days), save=not no_save)
     print(json.dumps(result, indent=2) if format == "json" else render(result), end="")
 
+
 # The SSOT of the CLI surface: a name -> command mapping, with one nested group.
 _dispatch_funcs = {
     "diagnose": diagnose,
