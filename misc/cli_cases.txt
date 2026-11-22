@@ -23,6 +23,7 @@ fleet --help
 lint --help
 portability --help
 eval --help
+weekly --help
 decision --help
 decision new --help
 decision note --help

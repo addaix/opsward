@@ -741,6 +741,32 @@ def eval_(
         )
 
 
+def weekly(
+    days: float = 30,
+    format: str = "text",
+    no_save: bool = False,
+):
+    """Print the agent setup's five numbers over the last DAYS, and one proposed change.
+
+    Search before write, skills never invoked, package CLAUDE.md loaded before edit,
+    component issues per week, corrections written back: read from this machine's Claude
+    Code transcripts, its skills folder, ``gh`` and the fix-at-source event log, compared
+    with the last run (kept in ~/.local/share/opsward/weekly). Report-only: the change is
+    yours to pick.
+
+    :param days: the window, in days
+    :param format: output format — 'text' (a markdown page) or 'json'
+    :param no_save: do not record this run as the next one's "last time"
+    """
+    from opsward.weekly import render
+    from opsward.weekly import weekly as look
+
+    if format not in ("text", "json"):
+        print("Error: format must be 'text' or 'json'", file=sys.stderr)
+        sys.exit(2)
+    result = look(days=float(days), save=not no_save)
+    print(json.dumps(result, indent=2) if format == "json" else render(result), end="")
+
 # The SSOT of the CLI surface: a name -> command mapping, with one nested group.
 _dispatch_funcs = {
     "diagnose": diagnose,
@@ -753,5 +779,6 @@ _dispatch_funcs = {
     "lint": lint,
     "portability": portability,
     "eval": eval_,
+    "weekly": weekly,
     "decision": [new, note],
 }
