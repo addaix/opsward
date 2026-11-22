@@ -767,6 +767,31 @@ def weekly(
     result = look(days=float(days), save=not no_save)
     print(json.dumps(result, indent=2) if format == "json" else render(result), end="")
 
+def memory_audit(
+    kinds: str = "feedback",
+    format: str = "text",
+):
+    """List auto-memories that hold fleet-wide rules, and propose who should own each.
+
+    Reads this machine's Claude Code auto-memory (~/.claude/projects/*/memory/*.md). For
+    each memory: project or fleet scope (with the reason), near-duplicates in other folders,
+    for a fleet-wide one the skill or ~/.claude/CLAUDE.md that should hold it and whether it
+    already does, and stubs that only point elsewhere. Report-only: nothing is changed.
+
+    :param kinds: comma-separated memory kinds (user, feedback, project, reference)
+    :param format: output format — 'text' (a markdown page) or 'json'
+    """
+    from opsward.memory_audit import KINDS, audit, render
+
+    chosen = tuple(k.strip() for k in kinds.split(",") if k.strip())
+    if format not in ("text", "json") or not chosen or set(chosen) - set(KINDS):
+        print(
+            f"Error: format must be 'text' or 'json', kinds among {', '.join(KINDS)}",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+    result = audit(kinds=chosen)
+    print(json.dumps(result, indent=2) if format == "json" else render(result), end="")
 
 # The SSOT of the CLI surface: a name -> command mapping, with one nested group.
 _dispatch_funcs = {
@@ -781,5 +806,6 @@ _dispatch_funcs = {
     "portability": portability,
     "eval": eval_,
     "weekly": weekly,
+    "memory-audit": memory_audit,
     "decision": [new, note],
 }
