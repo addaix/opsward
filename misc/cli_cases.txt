@@ -24,6 +24,7 @@ lint --help
 portability --help
 eval --help
 weekly --help
+memory-audit --help
 decision --help
 decision new --help
 decision note --help
