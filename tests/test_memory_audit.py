@@ -49,3 +49,30 @@ def test_the_page_names_no_home_path_and_puts_fleet_rules_first(tmp_path):
     rows = [line for line in page.splitlines() if line.startswith("| ") and "Memory" not in line]
     assert rows[0].split(" | ")[2] == "fleet" and "delete (stub)" in rows[-1]
     assert str(home) not in page
+
+
+def test_a_memory_naming_its_own_project_is_kept_with_it_despite_the_lossy_slug(tmp_path):
+    """tw_platform's slug is ``...-tw-platform``; the real cwd comes from its transcripts (addaix/opsward#90)."""
+    import json
+
+    home = tmp_path / ".claude"
+    cwd = "/w/tt/tw_platform"
+    slug = ma.project_slug(cwd)
+    _mem(home, slug, "deploys", "In tw_platform, deploys go through deploy.py; never rsync by hand.")
+    _mem(home, slug, "naming", "The tw-platform CLI golden is re-recorded after each surface change.")
+    folder = home / "projects" / slug
+    records = [{"type": "mode"}, {"type": "system", "cwd": "/elsewhere"}, {"type": "system", "cwd": cwd}]
+    (folder / "s1.jsonl").write_text("\n".join(json.dumps(r) for r in records) + "\n")
+
+    assert ma.project_dir(folder) == cwd
+    found = ma.memories(home)
+    assert {m.project_dir for m in found} == {cwd}
+    by = {m.name: ma.classify(m) for m in found}
+    assert by["naming"] == ("project", "names its own project (tw_platform)")
+    assert by["deploys"][0] == "fleet" and "though it names tw_platform" in by["deploys"][1]
+
+
+def test_without_transcripts_the_slug_name_still_matches_inside_an_underscored_name(tmp_path):
+    m = ma.Memory("p", "-w-tt-tw-platform", "feedback", "n", "", "The tw_platform golden is re-recorded.", "")
+    assert ma.project_dir(tmp_path / "missing") == ""
+    assert ma.classify(m) == ("project", "names its own project (platform)")
