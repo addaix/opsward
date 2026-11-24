@@ -1,4 +1,4 @@
-> built 2026-11-22 18:12 UTC from ef121fa (main) · opsward 0.0.44. Details: build_info.json
+> built 2026-11-24 01:19 UTC from e9c82cd (main) · opsward 0.0.46. Details: build_info.json
 
 # index.html.md
 
@@ -1410,25 +1410,29 @@ Report-only: it never writes, moves or deletes a memory. The user curates the ta
 
 ### Module Attributes
 
-| [`DUPLICATE_AT`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.DUPLICATE_AT)   | Two memories in different directories at or above this similarity are reported as duplicates.   |
-|-----------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| [`OWNER_AT`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.OWNER_AT)       | A skill must match a fleet-wide memory at least this well to be proposed as its owner.          |
-| [`COVERED_AT`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.COVERED_AT)     | Share of a memory's distinctive words its owner must already hold to say "already there".       |
-| [`FLEET_CUES`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.FLEET_CUES)     | Words that mark a rule as a habit for every project.                                            |
+| [`DUPLICATE_AT`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.DUPLICATE_AT)   | Two memories in different directories at or above this similarity are reported as duplicates.                               |
+|-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| [`OWNER_AT`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.OWNER_AT)       | A skill must match a fleet-wide memory at least this well to be proposed as its owner.                                      |
+| [`COVERED_AT`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.COVERED_AT)     | Share of a memory's distinctive words its owner must already hold to say "already there".                                   |
+| [`FLEET_CUES`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.FLEET_CUES)     | Words that mark a rule as a habit for every project.                                                                        |
+| [`CWD_SCAN_LINES`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.CWD_SCAN_LINES) | How many lines of each transcript [`project_dir()`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.project_dir) reads looking for a `cwd`. |
 
 ### Functions
 
-| [`audit`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.audit)(\*[, home, kinds, found, skills_dirs, ...])   | Audit the memories (`found`, default: [`memories()`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.memories) of `home` and `kinds`).                        |
-|------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`classify`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.classify)(memory)                                    | `(scope, reason)`: `project` when the memory names its own project (and is not phrased as a habit), else `fleet` or `project` by its wording.    |
-| [`is_stub`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.is_stub)(memory, \*[, short, head])                  | A memory that says it moved: the marker in its name or opening, or anywhere in a short one.                                                      |
-| [`memories`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.memories)([home, kinds])                             | Every memory of `kinds` under `home`'s project folders (`MEMORY.md` indexes excluded).                                                           |
-| [`parse_frontmatter`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.parse_frontmatter)(text)                             | `(fields, body)`: flat `key: value` fields of a `---` block, nested `metadata` keys lifted to the top (`metadata: type: feedback` gives `type`). |
-| [`project_name`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.project_name)(slug)                                  | The project a directory slug names: its last path part.                                                                                          |
-| [`render`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.render)(result, \*[, home])                          | The audit as a markdown page: fleet-wide memories and their proposed owner first.                                                                |
-| [`similarity`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.similarity)(a, b)                                    | Jaccard similarity of two texts' distinctive words.                                                                                              |
-| [`skills`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.skills)(dirs)                                        | `{name: "name description"}` of the skills under `dirs` (`*/SKILL.md`).                                                                          |
-| [`words`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.words)(text)                                         | The distinctive words of `text`: lowercase, three letters or more, no stopwords.                                                                 |
+| [`audit`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.audit)(\*[, home, kinds, found, skills_dirs, ...])   | Audit the memories (`found`, default: [`memories()`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.memories) of `home` and `kinds`).                                  |
+|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`classify`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.classify)(memory)                                    | `(scope, reason)`: `project` when the memory names its own project (and is not phrased as a habit), else `fleet` or `project` by its wording.              |
+| [`is_stub`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.is_stub)(memory, \*[, short, head])                  | A memory that says it moved: the marker in its name or opening, or anywhere in a short one.                                                                |
+| [`memories`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.memories)([home, kinds])                             | Every memory of `kinds` under `home`'s project folders (`MEMORY.md` indexes excluded).                                                                     |
+| [`names_project`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.names_project)(text, name)                           | Whether `text` names the project `name`, with `-`, `_` and space equivalent and no letter or digit on either side.                                         |
+| [`parse_frontmatter`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.parse_frontmatter)(text)                             | `(fields, body)`: flat `key: value` fields of a `---` block, nested `metadata` keys lifted to the top (`metadata: type: feedback` gives `type`).           |
+| [`project_dir`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.project_dir)(folder, \*[, scan_lines])               | The working directory a project folder is for, read from its transcripts, else `""`.                                                                       |
+| [`project_name`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.project_name)(slug[, cwd])                           | The project a directory names: the last part of its real `cwd` when known, else the last part of the slug (lossy: `tw_platform` comes back as `platform`). |
+| [`project_slug`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.project_slug)(path)                                  | Claude Code's folder name for a working directory: every non-alphanumeric is `-`.                                                                          |
+| [`render`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.render)(result, \*[, home])                          | The audit as a markdown page: fleet-wide memories and their proposed owner first.                                                                          |
+| [`similarity`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.similarity)(a, b)                                    | Jaccard similarity of two texts' distinctive words.                                                                                                        |
+| [`skills`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.skills)(dirs)                                        | `{name: "name description"}` of the skills under `dirs` (`*/SKILL.md`).                                                                                    |
+| [`words`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.words)(text)                                         | The distinctive words of `text`: lowercase, three letters or more, no stopwords.                                                                           |
 
 ### Classes
 
@@ -1439,6 +1443,10 @@ Report-only: it never writes, moves or deletes a memory. The user curates the ta
 
 Share of a memory’s distinctive words its owner must already hold to say “already there”.
 
+### opsward.memory_audit.CWD_SCAN_LINES *= 200*
+
+How many lines of each transcript [`project_dir()`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.project_dir) reads looking for a `cwd`.
+
 ### opsward.memory_audit.DUPLICATE_AT *= 0.45*
 
 Two memories in different directories at or above this similarity are reported as duplicates.
@@ -1447,7 +1455,7 @@ Two memories in different directories at or above this similarity are reported a
 
 Words that mark a rule as a habit for every project.
 
-### *class* opsward.memory_audit.Memory(path, project, kind, name, description, body, modified, scope='', reason='', duplicates=list(), owner='', owner_score=0.0, covered=False, stub=False)
+### *class* opsward.memory_audit.Memory(path, project, kind, name, description, body, modified, project_dir='', scope='', reason='', duplicates=list(), owner='', owner_score=0.0, covered=False, stub=False)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -1504,6 +1512,23 @@ Every memory of `kinds` under `home`’s project folders (`MEMORY.md` indexes ex
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Memory`](_autosummary/opsward.memory_audit.html.md#opsward.memory_audit.Memory)]
 
+### opsward.memory_audit.names_project(text, name)
+
+Whether `text` names the project `name`, with `-`, `_` and space equivalent
+and no letter or digit on either side.
+
+```pycon
+>>> names_project("Deploys of tw-platform go through deploy.py.", "tw_platform")
+True
+>>> names_project("In tw_platform, never rsync.", "platform")
+True
+>>> names_project("the iq_platformer tool", "iq_platform")
+False
+```
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 ### opsward.memory_audit.parse_frontmatter(text)
 
 `(fields, body)`: flat `key: value` fields of a `---` block, nested `metadata`
@@ -1512,13 +1537,39 @@ keys lifted to the top (`metadata: type: feedback` gives `type`).
 * **Return type:**
   [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
-### opsward.memory_audit.project_name(slug)
+### opsward.memory_audit.project_dir(folder, , scan_lines=200)
 
-The project a directory slug names: its last path part.
+The working directory a project folder is for, read from its transcripts, else `""`.
+
+The folder’s name is a lossy slug (`tw_platform` and `tw-platform` both give
+`tw-platform`), but each transcript records the real `cwd`. The first one whose
+slug is the folder’s name wins, newest transcript first.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### opsward.memory_audit.project_name(slug, cwd='')
+
+The project a directory names: the last part of its real `cwd` when known, else
+the last part of the slug (lossy: `tw_platform` comes back as `platform`).
 
 ```pycon
 >>> project_name("-Users-me-Dropbox-py-proj-t-priv")
 'priv'
+>>> project_name("-Users-me-proj-tt-tw-platform", "/Users/me/proj/tt/tw_platform")
+'tw_platform'
+```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### opsward.memory_audit.project_slug(path)
+
+Claude Code’s folder name for a working directory: every non-alphanumeric is `-`.
+
+```pycon
+>>> project_slug("/Users/me/proj/tt/tw_platform")
+'-Users-me-proj-tt-tw-platform'
 ```
 
 * **Return type:**
@@ -2589,16 +2640,18 @@ Saves this run’s numbers to `history` (`$OPSWARD_WEEKLY_DIR`, else
 
 # About this build
 
-This documentation was built on **2026-11-22 18:12 UTC** from commit <a href="https://github.com/addaix/opsward/commit/ef121fa64fade373df5cd30183232c3fbf7528af"><code>ef121fa</code></a> on branch <code>main</code>, for **opsward 0.0.44** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-24 01:19 UTC** from commit <a href="https://github.com/addaix/opsward/commit/e9c82cd74ccbfe727cc79659f6eb6bf5f90db225"><code>e9c82cd</code></a> on branch <code>main</code>, for **opsward 0.0.46** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.0.46) is behind the latest release on PyPI (0.0.47): `pip install opsward` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                       |
 |---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/addaix/opsward/commit/ef121fa64fade373df5cd30183232c3fbf7528af"><code>ef121fa64fade373df5cd30183232c3fbf7528af</code></a> |
+| Commit              | <a href="https://github.com/addaix/opsward/commit/e9c82cd74ccbfe727cc79659f6eb6bf5f90db225"><code>e9c82cd74ccbfe727cc79659f6eb6bf5f90db225</code></a> |
 | Branch              | <code>main</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                  |
 | Working tree        | clean                                                                                                                                                 |
@@ -2609,15 +2662,15 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>addaix/opsward</code>                                                                |
-| Run          | <a href="https://github.com/addaix/opsward/actions/runs/45053575324">45053575324</a>       |
+| Run          | <a href="https://github.com/addaix/opsward/actions/runs/45303990172">45303990172</a>       |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>ef121fa64fade373df5cd30183232c3fbf7528af</code> (in the history of the built commit) |
+| Event commit | <code>e9c82cd74ccbfe727cc79659f6eb6bf5f90db225</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.23  |
+| epythet  | 0.2.25  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -2636,14 +2689,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/opsward/0.0.44/">0.0.44</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/opsward/0.0.47/">0.0.47</a>, newer than the documented version (0.0.46).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/addaix/opsward && cd opsward
-git checkout ef121fa64fade373df5cd30183232c3fbf7528af
-pip install "epythet==0.2.23"
+git checkout e9c82cd74ccbfe727cc79659f6eb6bf5f90db225
+pip install "epythet==0.2.25"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

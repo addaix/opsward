@@ -1,36 +1,36 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T18:12:17Z",
+  "built_at": "2026-11-24T01:19:31Z",
   "package": {
     "name": "opsward",
-    "version": "0.0.44",
+    "version": "0.0.46",
     "display_name": "opsward",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "ef121fa64fade373df5cd30183232c3fbf7528af",
-    "short_commit": "ef121fa",
+    "commit": "e9c82cd74ccbfe727cc79659f6eb6bf5f90db225",
+    "short_commit": "e9c82cd",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/addaix/opsward",
-    "commit_url": "https://github.com/addaix/opsward/commit/ef121fa64fade373df5cd30183232c3fbf7528af",
+    "commit_url": "https://github.com/addaix/opsward/commit/e9c82cd74ccbfe727cc79659f6eb6bf5f90db225",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "addaix/opsward",
-    "sha": "ef121fa64fade373df5cd30183232c3fbf7528af",
+    "sha": "e9c82cd74ccbfe727cc79659f6eb6bf5f90db225",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "45053575324",
-    "run_url": "https://github.com/addaix/opsward/actions/runs/45053575324",
+    "run_id": "45303990172",
+    "run_url": "https://github.com/addaix/opsward/actions/runs/45303990172",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.23",
+    "epythet": "0.2.25",
     "sphinx": "9.1.1",
     "docutils": "0.22.4",
     "python": "3.12.16"
@@ -56,18 +56,20 @@
   },
   "site": {
     "modules_documented": 21,
-    "objects_documented": 160
+    "objects_documented": 164
   },
   "pypi": {
     "checked": true,
-    "latest": "0.0.44",
-    "relation": "same",
+    "latest": "0.0.47",
+    "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/addaix/opsward && cd opsward\ngit checkout ef121fa64fade373df5cd30183232c3fbf7528af\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/addaix/opsward && cd opsward\ngit checkout e9c82cd74ccbfe727cc79659f6eb6bf5f90db225\npip install \"epythet==0.2.25\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": true,
-    "notes": []
+    "aligned": false,
+    "notes": [
+      "The documented version (0.0.46) is behind the latest release on PyPI (0.0.47): `pip install opsward` gives newer code than these docs describe."
+    ]
   }
 }

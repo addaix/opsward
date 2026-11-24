@@ -106,6 +106,7 @@ data-aria-dark="Switch to auto color mode">
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
 <li><a class="reference internal" href="#opsward.memory_audit.COVERED_AT"><code class="docutils literal notranslate"><span class="pre">COVERED_AT</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.CWD_SCAN_LINES"><code class="docutils literal notranslate"><span class="pre">CWD_SCAN_LINES</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.DUPLICATE_AT"><code class="docutils literal notranslate"><span class="pre">DUPLICATE_AT</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.FLEET_CUES"><code class="docutils literal notranslate"><span class="pre">FLEET_CUES</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.Memory"><code class="docutils literal notranslate"><span class="pre">Memory</span></code></a></li>
@@ -114,8 +115,11 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#opsward.memory_audit.classify"><code class="docutils literal notranslate"><span class="pre">classify()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.is_stub"><code class="docutils literal notranslate"><span class="pre">is_stub()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.memories"><code class="docutils literal notranslate"><span class="pre">memories()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.names_project"><code class="docutils literal notranslate"><span class="pre">names_project()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.parse_frontmatter"><code class="docutils literal notranslate"><span class="pre">parse_frontmatter()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.project_dir"><code class="docutils literal notranslate"><span class="pre">project_dir()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.project_name"><code class="docutils literal notranslate"><span class="pre">project_name()</span></code></a></li>
+<li><a class="reference internal" href="#opsward.memory_audit.project_slug"><code class="docutils literal notranslate"><span class="pre">project_slug()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.render"><code class="docutils literal notranslate"><span class="pre">render()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.similarity"><code class="docutils literal notranslate"><span class="pre">similarity()</span></code></a></li>
 <li><a class="reference internal" href="#opsward.memory_audit.skills"><code class="docutils literal notranslate"><span class="pre">skills()</span></code></a></li>
@@ -194,6 +198,9 @@ best, else <code class="docutils literal notranslate"><span class="pre">~/.claud
 <tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.FLEET_CUES" title="opsward.memory_audit.FLEET_CUES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FLEET_CUES</span></code></a></p></td>
 <td><p>Words that mark a rule as a habit for every project.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.CWD_SCAN_LINES" title="opsward.memory_audit.CWD_SCAN_LINES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CWD_SCAN_LINES</span></code></a></p></td>
+<td><p>How many lines of each transcript <a class="reference internal" href="#opsward.memory_audit.project_dir" title="opsward.memory_audit.project_dir"><code class="xref py py-func docutils literal notranslate"><span class="pre">project_dir()</span></code></a> reads looking for a <code class="docutils literal notranslate"><span class="pre">cwd</span></code>.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -213,22 +220,31 @@ best, else <code class="docutils literal notranslate"><span class="pre">~/.claud
 <tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.memories" title="opsward.memory_audit.memories"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memories</span></code></a>([home, kinds])</p></td>
 <td><p>Every memory of <code class="docutils literal notranslate"><span class="pre">kinds</span></code> under <code class="docutils literal notranslate"><span class="pre">home</span></code>'s project folders (<code class="docutils literal notranslate"><span class="pre">MEMORY.md</span></code> indexes excluded).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.parse_frontmatter" title="opsward.memory_audit.parse_frontmatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_frontmatter</span></code></a>(text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.names_project" title="opsward.memory_audit.names_project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">names_project</span></code></a>(text, name)</p></td>
+<td><p>Whether <code class="docutils literal notranslate"><span class="pre">text</span></code> names the project <code class="docutils literal notranslate"><span class="pre">name</span></code>, with <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">_</span></code> and space equivalent and no letter or digit on either side.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.parse_frontmatter" title="opsward.memory_audit.parse_frontmatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_frontmatter</span></code></a>(text)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">(fields,</span> <span class="pre">body)</span></code>: flat <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code> fields of a <code class="docutils literal notranslate"><span class="pre">---</span></code> block, nested <code class="docutils literal notranslate"><span class="pre">metadata</span></code> keys lifted to the top (<code class="docutils literal notranslate"><span class="pre">metadata:</span> <span class="pre">type:</span> <span class="pre">feedback</span></code> gives <code class="docutils literal notranslate"><span class="pre">type</span></code>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.project_name" title="opsward.memory_audit.project_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_name</span></code></a>(slug)</p></td>
-<td><p>The project a directory slug names: its last path part.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.project_dir" title="opsward.memory_audit.project_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_dir</span></code></a>(folder, *[, scan_lines])</p></td>
+<td><p>The working directory a project folder is for, read from its transcripts, else <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.render" title="opsward.memory_audit.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a>(result, *[, home])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.project_name" title="opsward.memory_audit.project_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_name</span></code></a>(slug[, cwd])</p></td>
+<td><p>The project a directory names: the last part of its real <code class="docutils literal notranslate"><span class="pre">cwd</span></code> when known, else the last part of the slug (lossy: <code class="docutils literal notranslate"><span class="pre">tw_platform</span></code> comes back as <code class="docutils literal notranslate"><span class="pre">platform</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.project_slug" title="opsward.memory_audit.project_slug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_slug</span></code></a>(path)</p></td>
+<td><p>Claude Code's folder name for a working directory: every non-alphanumeric is <code class="docutils literal notranslate"><span class="pre">-</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.render" title="opsward.memory_audit.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a>(result, *[, home])</p></td>
 <td><p>The audit as a markdown page: fleet-wide memories and their proposed owner first.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.similarity" title="opsward.memory_audit.similarity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity</span></code></a>(a, b)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.similarity" title="opsward.memory_audit.similarity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity</span></code></a>(a, b)</p></td>
 <td><p>Jaccard similarity of two texts' distinctive words.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.skills" title="opsward.memory_audit.skills"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skills</span></code></a>(dirs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.skills" title="opsward.memory_audit.skills"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skills</span></code></a>(dirs)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">&quot;name</span> <span class="pre">description&quot;}</span></code> of the skills under <code class="docutils literal notranslate"><span class="pre">dirs</span></code> (<code class="docutils literal notranslate"><span class="pre">*/SKILL.md</span></code>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#opsward.memory_audit.words" title="opsward.memory_audit.words"><code class="xref py py-obj docutils literal notranslate"><span class="pre">words</span></code></a>(text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#opsward.memory_audit.words" title="opsward.memory_audit.words"><code class="xref py py-obj docutils literal notranslate"><span class="pre">words</span></code></a>(text)</p></td>
 <td><p>The distinctive words of <code class="docutils literal notranslate"><span class="pre">text</span></code>: lowercase, three letters or more, no stopwords.</p></td>
 </tr>
 </tbody>
@@ -251,6 +267,12 @@ best, else <code class="docutils literal notranslate"><span class="pre">~/.claud
 </dd></dl>
 
 <dl class="py data">
+<dt class="sig sig-object py" id="opsward.memory_audit.CWD_SCAN_LINES">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">CWD_SCAN_LINES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">200</span></span><a class="headerlink" href="#opsward.memory_audit.CWD_SCAN_LINES" title="Link to this definition">#</a></dt>
+<dd><p>How many lines of each transcript <a class="reference internal" href="#opsward.memory_audit.project_dir" title="opsward.memory_audit.project_dir"><code class="xref py py-func docutils literal notranslate"><span class="pre">project_dir()</span></code></a> reads looking for a <code class="docutils literal notranslate"><span class="pre">cwd</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
 <dt class="sig sig-object py" id="opsward.memory_audit.DUPLICATE_AT">
 <span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">DUPLICATE_AT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.45</span></span><a class="headerlink" href="#opsward.memory_audit.DUPLICATE_AT" title="Link to this definition">#</a></dt>
 <dd><p>Two memories in different directories at or above this similarity are reported as duplicates.</p>
@@ -264,7 +286,7 @@ best, else <code class="docutils literal notranslate"><span class="pre">~/.claud
 
 <dl class="py class">
 <dt class="sig sig-object py" id="opsward.memory_audit.Memory">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">Memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modified</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">list()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#Memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.Memory" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">Memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modified</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duplicates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">list()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">owner_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#Memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.Memory" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>One memory file.</p>
 <dl class="field-list simple">
@@ -338,6 +360,26 @@ phrased as a habit), else <code class="docutils literal notranslate"><span class
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.names_project">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">names_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#names_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.names_project" title="Link to this definition">#</a></dt>
+<dd><p>Whether <code class="docutils literal notranslate"><span class="pre">text</span></code> names the project <code class="docutils literal notranslate"><span class="pre">name</span></code>, with <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">_</span></code> and space equivalent
+and no letter or digit on either side.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">names_project</span><span class="p">(</span><span class="s2">"Deploys of tw-platform go through deploy.py."</span><span class="p">,</span> <span class="s2">"tw_platform"</span><span class="p">)</span>
+</span><span data-line="2"><span class="go">True</span>
+</span><span data-line="3"><span class="gp">&gt;&gt;&gt; </span><span class="n">names_project</span><span class="p">(</span><span class="s2">"In tw_platform, never rsync."</span><span class="p">,</span> <span class="s2">"platform"</span><span class="p">)</span>
+</span><span data-line="4"><span class="go">True</span>
+</span><span data-line="5"><span class="gp">&gt;&gt;&gt; </span><span class="n">names_project</span><span class="p">(</span><span class="s2">"the iq_platformer tool"</span><span class="p">,</span> <span class="s2">"iq_platform"</span><span class="p">)</span>
+</span><span data-line="6"><span class="go">False</span>
+</span></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="opsward.memory_audit.parse_frontmatter">
 <span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">parse_frontmatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#parse_frontmatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.parse_frontmatter" title="Link to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">(fields,</span> <span class="pre">body)</span></code>: flat <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code> fields of a <code class="docutils literal notranslate"><span class="pre">---</span></code> block, nested <code class="docutils literal notranslate"><span class="pre">metadata</span></code>
@@ -350,11 +392,43 @@ keys lifted to the top (<code class="docutils literal notranslate"><span class="
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.project_dir">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">project_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#project_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.project_dir" title="Link to this definition">#</a></dt>
+<dd><p>The working directory a project folder is for, read from its transcripts, else <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p>
+<p>The folder’s name is a lossy slug (<code class="docutils literal notranslate"><span class="pre">tw_platform</span></code> and <code class="docutils literal notranslate"><span class="pre">tw-platform</span></code> both give
+<code class="docutils literal notranslate"><span class="pre">tw-platform</span></code>), but each transcript records the real <code class="docutils literal notranslate"><span class="pre">cwd</span></code>. The first one whose
+slug is the folder’s name wins, newest transcript first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="opsward.memory_audit.project_name">
-<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">project_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slug</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#project_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.project_name" title="Link to this definition">#</a></dt>
-<dd><p>The project a directory slug names: its last path part.</p>
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">project_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slug</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#project_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.project_name" title="Link to this definition">#</a></dt>
+<dd><p>The project a directory names: the last part of its real <code class="docutils literal notranslate"><span class="pre">cwd</span></code> when known, else
+the last part of the slug (lossy: <code class="docutils literal notranslate"><span class="pre">tw_platform</span></code> comes back as <code class="docutils literal notranslate"><span class="pre">platform</span></code>).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">project_name</span><span class="p">(</span><span class="s2">"-Users-me-Dropbox-py-proj-t-priv"</span><span class="p">)</span>
 </span><span data-line="2"><span class="go">'priv'</span>
+</span><span data-line="3"><span class="gp">&gt;&gt;&gt; </span><span class="n">project_name</span><span class="p">(</span><span class="s2">"-Users-me-proj-tt-tw-platform"</span><span class="p">,</span> <span class="s2">"/Users/me/proj/tt/tw_platform"</span><span class="p">)</span>
+</span><span data-line="4"><span class="go">'tw_platform'</span>
+</span></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opsward.memory_audit.project_slug">
+<span class="sig-prename descclassname"><span class="pre">opsward.memory_audit.</span></span><span class="sig-name descname"><span class="pre">project_slug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/opsward/memory_audit.html#project_slug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opsward.memory_audit.project_slug" title="Link to this definition">#</a></dt>
+<dd><p>Claude Code’s folder name for a working directory: every non-alphanumeric is <code class="docutils literal notranslate"><span class="pre">-</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">project_slug</span><span class="p">(</span><span class="s2">"/Users/me/proj/tt/tw_platform"</span><span class="p">)</span>
+</span><span data-line="2"><span class="go">'-Users-me-proj-tt-tw-platform'</span>
 </span></pre></div>
 </div>
 <dl class="field-list simple">
@@ -460,7 +534,7 @@ keys lifted to the top (<code class="docutils literal notranslate"><span class="
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=78cc6f98"></script>
+      <script src="../_static/documentation_options.js?v=eb4c61eb"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

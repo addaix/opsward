@@ -12,6 +12,7 @@ opsward.memory\_audit
       OWNER_AT
       COVERED_AT
       FLEET_CUES
+      CWD_SCAN_LINES
    
    .. rubric:: Functions
 
@@ -21,8 +22,11 @@ opsward.memory\_audit
       classify
       is_stub
       memories
+      names_project
       parse_frontmatter
+      project_dir
       project_name
+      project_slug
       render
       similarity
       skills

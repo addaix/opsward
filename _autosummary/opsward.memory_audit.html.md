@@ -23,25 +23,29 @@ Report-only: it never writes, moves or deletes a memory. The user curates the ta
 
 ### Module Attributes
 
-| [`DUPLICATE_AT`](#opsward.memory_audit.DUPLICATE_AT)   | Two memories in different directories at or above this similarity are reported as duplicates.   |
-|-----------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| [`OWNER_AT`](#opsward.memory_audit.OWNER_AT)       | A skill must match a fleet-wide memory at least this well to be proposed as its owner.          |
-| [`COVERED_AT`](#opsward.memory_audit.COVERED_AT)     | Share of a memory's distinctive words its owner must already hold to say "already there".       |
-| [`FLEET_CUES`](#opsward.memory_audit.FLEET_CUES)     | Words that mark a rule as a habit for every project.                                            |
+| [`DUPLICATE_AT`](#opsward.memory_audit.DUPLICATE_AT)   | Two memories in different directories at or above this similarity are reported as duplicates.                               |
+|-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| [`OWNER_AT`](#opsward.memory_audit.OWNER_AT)       | A skill must match a fleet-wide memory at least this well to be proposed as its owner.                                      |
+| [`COVERED_AT`](#opsward.memory_audit.COVERED_AT)     | Share of a memory's distinctive words its owner must already hold to say "already there".                                   |
+| [`FLEET_CUES`](#opsward.memory_audit.FLEET_CUES)     | Words that mark a rule as a habit for every project.                                                                        |
+| [`CWD_SCAN_LINES`](#opsward.memory_audit.CWD_SCAN_LINES) | How many lines of each transcript [`project_dir()`](#opsward.memory_audit.project_dir) reads looking for a `cwd`. |
 
 ### Functions
 
-| [`audit`](#opsward.memory_audit.audit)(\*[, home, kinds, found, skills_dirs, ...])   | Audit the memories (`found`, default: [`memories()`](#opsward.memory_audit.memories) of `home` and `kinds`).                        |
-|------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`classify`](#opsward.memory_audit.classify)(memory)                                    | `(scope, reason)`: `project` when the memory names its own project (and is not phrased as a habit), else `fleet` or `project` by its wording.    |
-| [`is_stub`](#opsward.memory_audit.is_stub)(memory, \*[, short, head])                  | A memory that says it moved: the marker in its name or opening, or anywhere in a short one.                                                      |
-| [`memories`](#opsward.memory_audit.memories)([home, kinds])                             | Every memory of `kinds` under `home`'s project folders (`MEMORY.md` indexes excluded).                                                           |
-| [`parse_frontmatter`](#opsward.memory_audit.parse_frontmatter)(text)                             | `(fields, body)`: flat `key: value` fields of a `---` block, nested `metadata` keys lifted to the top (`metadata: type: feedback` gives `type`). |
-| [`project_name`](#opsward.memory_audit.project_name)(slug)                                  | The project a directory slug names: its last path part.                                                                                          |
-| [`render`](#opsward.memory_audit.render)(result, \*[, home])                          | The audit as a markdown page: fleet-wide memories and their proposed owner first.                                                                |
-| [`similarity`](#opsward.memory_audit.similarity)(a, b)                                    | Jaccard similarity of two texts' distinctive words.                                                                                              |
-| [`skills`](#opsward.memory_audit.skills)(dirs)                                        | `{name: "name description"}` of the skills under `dirs` (`*/SKILL.md`).                                                                          |
-| [`words`](#opsward.memory_audit.words)(text)                                         | The distinctive words of `text`: lowercase, three letters or more, no stopwords.                                                                 |
+| [`audit`](#opsward.memory_audit.audit)(\*[, home, kinds, found, skills_dirs, ...])   | Audit the memories (`found`, default: [`memories()`](#opsward.memory_audit.memories) of `home` and `kinds`).                                  |
+|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`classify`](#opsward.memory_audit.classify)(memory)                                    | `(scope, reason)`: `project` when the memory names its own project (and is not phrased as a habit), else `fleet` or `project` by its wording.              |
+| [`is_stub`](#opsward.memory_audit.is_stub)(memory, \*[, short, head])                  | A memory that says it moved: the marker in its name or opening, or anywhere in a short one.                                                                |
+| [`memories`](#opsward.memory_audit.memories)([home, kinds])                             | Every memory of `kinds` under `home`'s project folders (`MEMORY.md` indexes excluded).                                                                     |
+| [`names_project`](#opsward.memory_audit.names_project)(text, name)                           | Whether `text` names the project `name`, with `-`, `_` and space equivalent and no letter or digit on either side.                                         |
+| [`parse_frontmatter`](#opsward.memory_audit.parse_frontmatter)(text)                             | `(fields, body)`: flat `key: value` fields of a `---` block, nested `metadata` keys lifted to the top (`metadata: type: feedback` gives `type`).           |
+| [`project_dir`](#opsward.memory_audit.project_dir)(folder, \*[, scan_lines])               | The working directory a project folder is for, read from its transcripts, else `""`.                                                                       |
+| [`project_name`](#opsward.memory_audit.project_name)(slug[, cwd])                           | The project a directory names: the last part of its real `cwd` when known, else the last part of the slug (lossy: `tw_platform` comes back as `platform`). |
+| [`project_slug`](#opsward.memory_audit.project_slug)(path)                                  | Claude Code's folder name for a working directory: every non-alphanumeric is `-`.                                                                          |
+| [`render`](#opsward.memory_audit.render)(result, \*[, home])                          | The audit as a markdown page: fleet-wide memories and their proposed owner first.                                                                          |
+| [`similarity`](#opsward.memory_audit.similarity)(a, b)                                    | Jaccard similarity of two texts' distinctive words.                                                                                                        |
+| [`skills`](#opsward.memory_audit.skills)(dirs)                                        | `{name: "name description"}` of the skills under `dirs` (`*/SKILL.md`).                                                                                    |
+| [`words`](#opsward.memory_audit.words)(text)                                         | The distinctive words of `text`: lowercase, three letters or more, no stopwords.                                                                           |
 
 ### Classes
 
@@ -52,6 +56,10 @@ Report-only: it never writes, moves or deletes a memory. The user curates the ta
 
 Share of a memory’s distinctive words its owner must already hold to say “already there”.
 
+### opsward.memory_audit.CWD_SCAN_LINES *= 200*
+
+How many lines of each transcript [`project_dir()`](#opsward.memory_audit.project_dir) reads looking for a `cwd`.
+
 ### opsward.memory_audit.DUPLICATE_AT *= 0.45*
 
 Two memories in different directories at or above this similarity are reported as duplicates.
@@ -60,7 +68,7 @@ Two memories in different directories at or above this similarity are reported a
 
 Words that mark a rule as a habit for every project.
 
-### *class* opsward.memory_audit.Memory(path, project, kind, name, description, body, modified, scope='', reason='', duplicates=list(), owner='', owner_score=0.0, covered=False, stub=False)
+### *class* opsward.memory_audit.Memory(path, project, kind, name, description, body, modified, project_dir='', scope='', reason='', duplicates=list(), owner='', owner_score=0.0, covered=False, stub=False)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -117,6 +125,23 @@ Every memory of `kinds` under `home`’s project folders (`MEMORY.md` indexes ex
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`Memory`](#opsward.memory_audit.Memory)]
 
+### opsward.memory_audit.names_project(text, name)
+
+Whether `text` names the project `name`, with `-`, `_` and space equivalent
+and no letter or digit on either side.
+
+```pycon
+>>> names_project("Deploys of tw-platform go through deploy.py.", "tw_platform")
+True
+>>> names_project("In tw_platform, never rsync.", "platform")
+True
+>>> names_project("the iq_platformer tool", "iq_platform")
+False
+```
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 ### opsward.memory_audit.parse_frontmatter(text)
 
 `(fields, body)`: flat `key: value` fields of a `---` block, nested `metadata`
@@ -125,13 +150,39 @@ keys lifted to the top (`metadata: type: feedback` gives `type`).
 * **Return type:**
   [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
-### opsward.memory_audit.project_name(slug)
+### opsward.memory_audit.project_dir(folder, , scan_lines=200)
 
-The project a directory slug names: its last path part.
+The working directory a project folder is for, read from its transcripts, else `""`.
+
+The folder’s name is a lossy slug (`tw_platform` and `tw-platform` both give
+`tw-platform`), but each transcript records the real `cwd`. The first one whose
+slug is the folder’s name wins, newest transcript first.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### opsward.memory_audit.project_name(slug, cwd='')
+
+The project a directory names: the last part of its real `cwd` when known, else
+the last part of the slug (lossy: `tw_platform` comes back as `platform`).
 
 ```pycon
 >>> project_name("-Users-me-Dropbox-py-proj-t-priv")
 'priv'
+>>> project_name("-Users-me-proj-tt-tw-platform", "/Users/me/proj/tt/tw_platform")
+'tw_platform'
+```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### opsward.memory_audit.project_slug(path)
+
+Claude Code’s folder name for a working directory: every non-alphanumeric is `-`.
+
+```pycon
+>>> project_slug("/Users/me/proj/tt/tw_platform")
+'-Users-me-proj-tt-tw-platform'
 ```
 
 * **Return type:**
