@@ -20,6 +20,7 @@ Report-only: it never writes, moves or deletes a memory. The user curates the ta
 
 from __future__ import annotations
 
+import json
 import os
 import re
 from collections.abc import Callable, Iterable, Mapping
@@ -69,6 +70,7 @@ class Memory:
     description: str
     body: str
     modified: str
+    project_dir: str = ""  # the real working directory, from the folder's transcripts
     scope: str = ""
     reason: str = ""
     duplicates: list = field(default_factory=list)
@@ -109,13 +111,82 @@ def _kind_of(fields: Mapping, filename: str) -> str:
     return prefix if prefix in KINDS else "unknown"
 
 
-def project_name(slug: str) -> str:
-    """The project a directory slug names: its last path part.
+def project_slug(path: str) -> str:
+    """Claude Code's folder name for a working directory: every non-alphanumeric is ``-``.
+
+    >>> project_slug("/Users/me/proj/tt/tw_platform")
+    '-Users-me-proj-tt-tw-platform'
+    """
+    return re.sub(r"[^A-Za-z0-9]", "-", path)
+
+
+#: How many lines of each transcript :func:`project_dir` reads looking for a ``cwd``.
+CWD_SCAN_LINES = 200
+
+
+def project_dir(folder: str | os.PathLike, *, scan_lines: int = CWD_SCAN_LINES) -> str:
+    """The working directory a project folder is for, read from its transcripts, else ``""``.
+
+    The folder's name is a lossy slug (``tw_platform`` and ``tw-platform`` both give
+    ``tw-platform``), but each transcript records the real ``cwd``. The first one whose
+    slug is the folder's name wins, newest transcript first.
+    """
+    folder = Path(folder)
+    try:
+        transcripts = sorted(
+            folder.glob("*.jsonl"), key=lambda p: p.stat().st_mtime, reverse=True
+        )
+    except OSError:
+        return ""
+    for path in transcripts:
+        try:
+            with path.open(encoding="utf-8", errors="replace") as lines:
+                for _, line in zip(range(scan_lines), lines):
+                    if '"cwd"' not in line:
+                        continue
+                    try:
+                        cwd = json.loads(line).get("cwd")
+                    except (ValueError, AttributeError):
+                        continue
+                    if isinstance(cwd, str) and project_slug(cwd) == folder.name:
+                        return cwd
+        except OSError:
+            continue
+    return ""
+
+
+def project_name(slug: str, cwd: str = "") -> str:
+    """The project a directory names: the last part of its real ``cwd`` when known, else
+    the last part of the slug (lossy: ``tw_platform`` comes back as ``platform``).
 
     >>> project_name("-Users-me-Dropbox-py-proj-t-priv")
     'priv'
+    >>> project_name("-Users-me-proj-tt-tw-platform", "/Users/me/proj/tt/tw_platform")
+    'tw_platform'
     """
+    if cwd:
+        name = os.path.basename(cwd.rstrip("/\\"))
+        if name:
+            return name
     return slug.rstrip("-").rsplit("-", 1)[-1] or slug
+
+
+def names_project(text: str, name: str) -> bool:
+    """Whether ``text`` names the project ``name``, with ``-``, ``_`` and space equivalent
+    and no letter or digit on either side.
+
+    >>> names_project("Deploys of tw-platform go through deploy.py.", "tw_platform")
+    True
+    >>> names_project("In tw_platform, never rsync.", "platform")
+    True
+    >>> names_project("the iq_platformer tool", "iq_platform")
+    False
+    """
+    parts = [re.escape(p) for p in re.split(r"[-_ ]+", name.lower()) if p]
+    if not parts:
+        return False
+    pattern = r"(?<![a-z0-9])" + r"[-_ ]".join(parts) + r"(?![a-z0-9])"
+    return re.search(pattern, text.lower()) is not None
 
 
 def memories(
@@ -125,6 +196,7 @@ def memories(
     base = Path(home or DFLT_CLAUDE_HOME).expanduser() / "projects"
     kinds = set(kinds)
     out = []
+    dirs: dict = {}  # project folder -> its real working directory, read once
     for path in sorted(base.glob("*/memory/*.md")):
         if path.name == INDEX_FILE:
             continue
@@ -141,9 +213,13 @@ def memories(
             .date()
             .isoformat()
         )
+        folder = path.parent.parent
+        if folder not in dirs:
+            dirs[folder] = project_dir(folder)
         out.append(Memory(
-            str(path), path.parent.parent.name, kind, str(fields.get("name") or path.stem),
+            str(path), folder.name, kind, str(fields.get("name") or path.stem),
             str(fields.get("description") or ""), body.strip(), modified,
+            project_dir=dirs[folder],
         ))  # fmt: skip
     return out
 
@@ -195,11 +271,8 @@ def classify(memory: Memory) -> tuple[str, str]:
     >>> classify(Memory("p", "-x-t-priv", "feedback", "n", "", "In priv, the CLI golden must be re-recorded.", ""))
     ('project', 'names its own project (priv)')
     """
-    own = project_name(memory.project).lower()
-    mentions_own = (
-        len(own) >= 3
-        and re.search(rf"\b{re.escape(own)}\b", memory.text.lower()) is not None
-    )
+    own = project_name(memory.project, memory.project_dir).lower()
+    mentions_own = len(own) >= 3 and names_project(memory.text, own)
     cue = FLEET_CUES.search(memory.text)
     if mentions_own and not cue:
         return "project", f"names its own project ({own})"
